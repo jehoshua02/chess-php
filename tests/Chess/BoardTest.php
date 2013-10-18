@@ -5,6 +5,9 @@ use \Chess\Board;
 
 class BoardTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * Test that all the right pieces are in the right place on a fresh board
+     */
     public function testBuildAndGetPieces()
     {
         $board = new Board();
@@ -47,6 +50,9 @@ class BoardTest extends \PHPUnit_Framework_TestCase
 
     }
 
+    /**
+     * Test that all the right spaces are empty on a fresh board
+     */
     public function testEmptySpaces()
     {
         $board = new Board();
