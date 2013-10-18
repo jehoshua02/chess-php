@@ -46,4 +46,19 @@ class BoardTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($board->pieceAt('H8') === Board::BLACK_ROOK, 'H8 should be BLACK_ROOK');
 
     }
+
+    public function testEmptySpaces()
+    {
+        $board = new Board();
+
+        $letters = str_split('ABCDEFGH');
+        $numbers = str_split('3456');
+
+        foreach ($letters as $letter) {
+            foreach ($numbers as $number) {
+                $position = $letter . $number;
+                $this->assertFalse($board->pieceAt($position), "{$position} should be empty");
+            }
+        }
+    }
 }
