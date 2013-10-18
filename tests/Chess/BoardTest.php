@@ -7,7 +7,7 @@ class BoardTest extends \PHPUnit_Framework_TestCase
 {
     public function testBuildAndGetPieces()
     {
-        $board = Board::build();
+        $board = new Board();
 
         $this->assertTrue($board->pieceAt('a1') === Board::WHITE_ROOK);
         $this->assertTrue($board->pieceAt('b1') === Board::WHITE_KNIGHT);
