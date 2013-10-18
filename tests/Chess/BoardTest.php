@@ -80,4 +80,17 @@ class BoardTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($board->pieceAt('A1') === Board::LIGHT_PAWN);
         $this->assertFalse($board->pieceAt('B1'));
     }
+
+    /**
+     * Tests all the rules for moving a pawn
+     */
+    public function testPawn()
+    {
+        // basic movement (just a pawn on a board)
+        $board = new Board(array(
+            'D4' => Board::LIGHT_PAWN,
+        ));
+        $moves = $board->movesFor('D4');
+        $this->assertContains('D5', $moves, 'Pawn can move one forward');
+    }
 }
