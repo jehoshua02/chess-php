@@ -67,4 +67,17 @@ class BoardTest extends \PHPUnit_Framework_TestCase
             }
         }
     }
+
+    /**
+     * Test that custom board setups can be used (this will be super handy for setting up other tests)
+     */
+    public function testCustomBoard()
+    {
+        $board = new Board(array(
+            'A1' => Board::WHITE_PAWN,
+        ));
+
+        $this->assertTrue($board->pieceAt('A1') === Board::WHITE_PAWN);
+        $this->assertFalse($board->pieceAt('B1'));
+    }
 }
