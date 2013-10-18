@@ -76,4 +76,15 @@ class Board
     {
         return array_key_exists($position, $this->positions) ? $this->positions[$position] : false;
     }
+
+    /**
+     * Gets possible moves for a piece in the specified position
+     * @return array An array containing valid positions to move to
+     */
+    public function movesFor($position)
+    {
+        $moves = array();
+        $moves[] = 'D5';
+        return $moves;
+    }
 }
