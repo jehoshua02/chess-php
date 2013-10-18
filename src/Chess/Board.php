@@ -56,8 +56,13 @@ class Board
         'H8' => self::BLACK_ROOK,
     );
 
-    public function pieceAt($index)
+    /**
+     * Returns the piece type at specified position
+     * @param  string $position Algebraic notation (A1 through H8)
+     * @return string|false Returns false if position is empty
+     */
+    public function pieceAt($position)
     {
-        return $this->positions[$index];
+        return array_key_exists($position, $this->positions) ? $this->positions[$position] : false;
     }
 }
