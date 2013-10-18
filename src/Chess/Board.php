@@ -57,6 +57,17 @@ class Board
     );
 
     /**
+     * Construct method
+     * @param array|null $positions Array of positions, where key is algebraic notation (A1 through H8), and value is the piece (Board::WHITE_PAWN)
+     */
+    public function __construct(array $positions = null)
+    {
+        if ($positions !== null) {
+            $this->positions = $positions;
+        }
+    }
+
+    /**
      * Returns the piece type at specified position
      * @param  string $position Algebraic notation (A1 through H8)
      * @return string|false Returns false if position is empty
