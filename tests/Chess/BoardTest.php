@@ -82,6 +82,14 @@ class BoardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests that there are no possible moves for an empty space
+     */
+    public function testCannotMovePieceThatDoesNotExist()
+    {
+        // @todo
+    }
+
+    /**
      * Tests all the rules for moving a pawn
      */
     public function testPawn()
