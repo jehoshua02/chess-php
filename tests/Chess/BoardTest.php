@@ -93,5 +93,11 @@ class BoardTest extends \PHPUnit_Framework_TestCase
         $moves = $board->movesFor('D4');
         $this->assertCount(1, $moves, 'Pawn only has one possible move');
         $this->assertContains('D5', $moves, 'Pawn can move forward');
+
+        // @todo edge of board / promotion
+        // @todo blocked
+        // @todo start position
+        // @todo capturing
+        // @todo en passant
     }
 }
