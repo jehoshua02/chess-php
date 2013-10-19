@@ -57,12 +57,12 @@ class BoardTest extends \PHPUnit_Framework_TestCase
     {
         $board = new Board();
 
-        $letters = str_split('ABCDEFGH');
-        $numbers = str_split('3456');
+        $files = str_split('ABCDEFGH');
+        $ranks = str_split('3456');
 
-        foreach ($letters as $letter) {
-            foreach ($numbers as $number) {
-                $position = $letter . $number;
+        foreach ($files as $file) {
+            foreach ($ranks as $rank) {
+                $position = $file . $rank;
                 $this->assertFalse($board->pieceAt($position), "{$position} should be empty");
             }
         }
