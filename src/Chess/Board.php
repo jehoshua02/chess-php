@@ -84,7 +84,30 @@ class Board
     public function movesFor($position)
     {
         $moves = array();
-        $moves[] = 'D5';
+
+        list($file, $rank) = str_split($position);
+        $up = $this->up($position);
+
+        if (!$this->pieceAt($up)) {
+            $moves[] = $up;
+            $up = $this->up($up);
+
+            if ($rank === '2' && !$this->pieceAt($up)) {
+                $moves[] = $up;
+            }
+        }
+
         return $moves;
+    }
+
+    /**
+     * Returns the position above the position specified
+     * @param  string $position
+     * @return string
+     */
+    protected function up($position)
+    {
+        list($file, $rank) = str_split($position);
+        return $file . ($rank + 1);
     }
 }
