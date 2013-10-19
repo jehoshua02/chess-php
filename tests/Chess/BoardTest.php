@@ -94,6 +94,11 @@ class BoardTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(1, $moves, 'Pawn should have only one possible move');
         $this->assertContains('D5', $moves, 'Pawn should be able to move one forward');
 
+        // start position
+        $board = new Board();
+        $moves = $board->movesFor('A2');
+        $this->assertEquals(array('A3', 'A4'), $moves, 'Pawn should be able to move one or two spaces from start position');
+
         // blocked
         $board = new Board(array(
             'D4' => Board::LIGHT_PAWN,
@@ -103,7 +108,6 @@ class BoardTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(0, $moves, 'Pawn should have no possible moves');
 
         // @todo edge of board / promotion
-        // @todo start position
         // @todo capturing
         // @todo en passant
     }
