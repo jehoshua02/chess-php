@@ -2,61 +2,58 @@
 
 namespace Chess;
 use \Chess\Board;
+use \Chess\Piece\King;
+use \Chess\Piece\Queen;
+use \Chess\Piece\Bishop;
+use \Chess\Piece\Knight;
+use \Chess\Piece\Rook;
+use \Chess\Piece\Pawn;
 
 class BoardTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * Tests that all the right pieces are in the right place on a fresh board
-     */
-    public function testBuildAndGetPieces()
+    public function testVanillaBoard()
     {
         $board = new Board();
 
-        $this->assertEquals($board->pieceAt('A1'), Board::LIGHT_ROOK, 'A1 should be LIGHT_ROOK');
-        $this->assertEquals($board->pieceAt('B1'), Board::LIGHT_KNIGHT, 'B1 should be LIGHT_KNIGHT');
-        $this->assertEquals($board->pieceAt('C1'), Board::LIGHT_BISHOP, 'C1 should be LIGHT_BISHOP');
-        $this->assertEquals($board->pieceAt('D1'), Board::LIGHT_QUEEN, 'D1 should be LIGHT_QUEEN');
-        $this->assertEquals($board->pieceAt('E1'), Board::LIGHT_KING, 'E1 should be LIGHT_KING');
-        $this->assertEquals($board->pieceAt('F1'), Board::LIGHT_BISHOP, 'F1 should be LIGHT_BISHOP');
-        $this->assertEquals($board->pieceAt('G1'), Board::LIGHT_KNIGHT, 'G1 should be LIGHT_KNIGHT');
-        $this->assertEquals($board->pieceAt('H1'), Board::LIGHT_ROOK, 'H1 should be LIGHT_ROOK');
+        // check piece types
+        $expectations = array(
+            array('King', array('E1', 'E8')),
+            array('Queen', array('D1', 'D8')),
+            array('Bishop', array('C1', 'C8', 'F1', 'F8')),
+            array('Knight', array('B1', 'B8', 'G1', 'G8')),
+            array('Rook', array('A1', 'A8', 'H1', 'H8')),
+            array('Pawn', array('A2', 'B2', 'C2', 'D2', 'E2', 'F2', 'G2', 'H2')),
+            array('Pawn', array('A7', 'B7', 'C7', 'D7', 'E7', 'F7', 'G7', 'H7')),
+        );
 
-        $this->assertEquals($board->pieceAt('A2'), Board::LIGHT_PAWN, 'A2 should be LIGHT_PAWN');
-        $this->assertEquals($board->pieceAt('B2'), Board::LIGHT_PAWN, 'B2 should be LIGHT_PAWN');
-        $this->assertEquals($board->pieceAt('C2'), Board::LIGHT_PAWN, 'C2 should be LIGHT_PAWN');
-        $this->assertEquals($board->pieceAt('D2'), Board::LIGHT_PAWN, 'D2 should be LIGHT_PAWN');
-        $this->assertEquals($board->pieceAt('E2'), Board::LIGHT_PAWN, 'E2 should be LIGHT_PAWN');
-        $this->assertEquals($board->pieceAt('F2'), Board::LIGHT_PAWN, 'F2 should be LIGHT_PAWN');
-        $this->assertEquals($board->pieceAt('G2'), Board::LIGHT_PAWN, 'G2 should be LIGHT_PAWN');
-        $this->assertEquals($board->pieceAt('H2'), Board::LIGHT_PAWN, 'H2 should be LIGHT_PAWN');
+        foreach ($expectations as $expectation) {
+            list($class, $positions) = $expectation;
+            foreach ($positions as $position) {
+                $this->assertInstanceOf(
+                    sprintf('\\Chess\\Piece\\%s', $class),
+                    $board->pieceAt($position),
+                    sprintf('%s should be a %s', $position, $class)
+                );
+            }
+        }
 
-        $this->assertEquals($board->pieceAt('A7'), Board::DARK_PAWN, 'A7 should be DARK_PAWN');
-        $this->assertEquals($board->pieceAt('B7'), Board::DARK_PAWN, 'B7 should be DARK_PAWN');
-        $this->assertEquals($board->pieceAt('C7'), Board::DARK_PAWN, 'C7 should be DARK_PAWN');
-        $this->assertEquals($board->pieceAt('D7'), Board::DARK_PAWN, 'D7 should be DARK_PAWN');
-        $this->assertEquals($board->pieceAt('E7'), Board::DARK_PAWN, 'E7 should be DARK_PAWN');
-        $this->assertEquals($board->pieceAt('F7'), Board::DARK_PAWN, 'F7 should be DARK_PAWN');
-        $this->assertEquals($board->pieceAt('G7'), Board::DARK_PAWN, 'G7 should be DARK_PAWN');
-        $this->assertEquals($board->pieceAt('H7'), Board::DARK_PAWN, 'H7 should be DARK_PAWN');
+        // check piece color
+        $files = str_split('ABCDEFGH');
+        foreach ($files as $file) {
+            $position = $file . '1';
+            $this->assertEquals($board->pieceAt($position)->color(), Piece::LIGHT);
 
-        $this->assertEquals($board->pieceAt('A8'), Board::DARK_ROOK, 'A8 should be DARK_ROOK');
-        $this->assertEquals($board->pieceAt('B8'), Board::DARK_KNIGHT, 'B8 should be DARK_KNIGHT');
-        $this->assertEquals($board->pieceAt('C8'), Board::DARK_BISHOP, 'C8 should be DARK_BISHOP');
-        $this->assertEquals($board->pieceAt('D8'), Board::DARK_KING, 'D8 should be DARK_KING');
-        $this->assertEquals($board->pieceAt('E8'), Board::DARK_QUEEN, 'E8 should be DARK_QUEEN');
-        $this->assertEquals($board->pieceAt('F8'), Board::DARK_BISHOP, 'F8 should be DARK_BISHOP');
-        $this->assertEquals($board->pieceAt('G8'), Board::DARK_KNIGHT, 'G8 should be DARK_KNIGHT');
-        $this->assertEquals($board->pieceAt('H8'), Board::DARK_ROOK, 'H8 should be DARK_ROOK');
+            $position = $file . '2';
+            $this->assertEquals($board->pieceAt($position)->color(), Piece::LIGHT);
 
-    }
+            $position = $file . '7';
+            $this->assertEquals($board->pieceAt($position)->color(), Piece::DARK);
 
-    /**
-     * Tests that all the right spaces are empty on a fresh board
-     */
-    public function testEmptySpaces()
-    {
-        $board = new Board();
+            $position = $file . '8';
+            $this->assertEquals($board->pieceAt($position)->color(), Piece::DARK);
+        }
 
+        // check empty spaces
         $files = str_split('ABCDEFGH');
         $ranks = str_split('3456');
 
@@ -68,63 +65,40 @@ class BoardTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    /**
-     * Tests that custom board setups can be used (this will be super handy for setting up other tests)
-     */
-    public function testCustomBoard()
+    public function testUpDownLeftRightEtc()
     {
-        $board = new Board(array(
-            'A1' => Board::LIGHT_PAWN
-        ));
-
-        $this->assertEquals($board->pieceAt('A1'), Board::LIGHT_PAWN, 'A1 should be LIGHT_PAWN');
-        $this->assertFalse($board->pieceAt('B1'), 'B1 should be empty');
-    }
-
-    /**
-     * Tests that there are no possible moves for an empty space
-     */
-    public function testCannotMovePieceThatDoesNotExist()
-    {
-        // @todo
-    }
-
-    /**
-     * Tests all the rules for moving a pawn
-     */
-    public function testPawn()
-    {
-        // basic movement (just a pawn on a board)
-        $board = new Board(array(
-            'D4' => Board::LIGHT_PAWN,
-        ));
-        $moves = $board->movesFor('D4');
-        $this->assertCount(1, $moves, 'Pawn should have only one possible move');
-        $this->assertContains('D5', $moves, 'Pawn should be able to move one forward');
-
-        // start position
         $board = new Board();
-        $moves = $board->movesFor('A2');
-        $this->assertEquals(array('A3', 'A4'), $moves, 'Pawn should be able to move one or two spaces from start position');
 
-        // blocked
-        $board = new Board(array(
-            'D4' => Board::LIGHT_PAWN,
-            'D5' => Board::DARK_PAWN,
-        ));
-        $moves = $board->movesFor('D4');
-        $this->assertCount(0, $moves, 'Pawn should have no possible moves');
+        // test up
+        $this->assertEquals($board->up('A1'), 'A2', 'Postion above A1 should be A2');
+        $this->assertFalse($board->up('A8'), 'There should be nothing above A8');
 
-        $board = new Board(array(
-            'D2' => Board::LIGHT_PAWN,
-            'D4' => Board::DARK_PAWN,
-        ));
-        $moves = $board->movesFor('D2');
-        $this->assertCount(1, $moves, 'Pawn should have only one possible move');
-        $this->assertContains('D3', $moves, 'Pawn should be able to move one forward');
+        // test down
+        $this->assertEquals($board->down('A8'), 'A7', 'Postion below A8 should be A7');
+        $this->assertFalse($board->down('A1'), 'There should be nothing below A1');
 
-        // @todo edge of board / promotion
-        // @todo capturing
-        // @todo en passant
+        // test left
+        $this->assertEquals($board->left('H1'), 'G1', 'Position left of H1 should be G1');
+        $this->assertFalse($board->left('A1'), 'There should be nothing left of A1');
+
+        // test right
+        $this->assertEquals($board->right('A1'), 'B1', 'Position right of A1 should be B1');
+        $this->assertFalse($board->right('H1'), 'There should be nothing right of H1');
+
+        // test upLeft
+        $this->assertEquals($board->upLeft('H1'), 'G2', 'Position up and left of H1 should be G2');
+        $this->assertFalse($board->upLeft('A8'), 'There should be nothing up and left of A8');
+
+        // test upRight
+        $this->assertEquals($board->upRight('A1'), 'B2', 'Position up and right of A1 should be B2');
+        $this->assertFalse($board->upRight('H8'), 'There should be nothing up and right of H8');
+
+        // test downRight
+        $this->assertEquals($board->downRight('A8'), 'B7', 'Position down and right of A8 should be B7');
+        $this->assertFalse($board->downRight('H1'), 'There should be nothing down and right of H1');
+
+        // test downLeft
+        $this->assertEquals($board->downLeft('H8'), 'G7', 'Position down and right of H8 should be G7');
+        $this->assertFalse($board->downLeft('A1'), 'There should be nothing down and right of A1');
     }
 }

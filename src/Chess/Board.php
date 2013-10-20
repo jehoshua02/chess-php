@@ -1,70 +1,69 @@
 <?php
 
 namespace Chess;
+use \Chess\Piece\King;
+use \Chess\Piece\Queen;
+use \Chess\Piece\Bishop;
+use \Chess\Piece\Knight;
+use \Chess\Piece\Rook;
+use \Chess\Piece\Pawn;
 
 class Board
 {
-    const LIGHT_KING = 'LIGHT_KING';
-    const LIGHT_QUEEN = 'LIGHT_QUEEN';
-    const LIGHT_BISHOP = 'LIGHT_BISHOP';
-    const LIGHT_KNIGHT = 'LIGHT_KNIGHT';
-    const LIGHT_ROOK = 'LIGHT_ROOK';
-    const LIGHT_PAWN = 'LIGHT_PAWN';
-
-    const DARK_KING = 'DARK_KING';
-    const DARK_QUEEN = 'DARK_QUEEN';
-    const DARK_BISHOP = 'DARK_BISHOP';
-    const DARK_KNIGHT = 'DARK_KNIGHT';
-    const DARK_ROOK = 'DARK_ROOK';
-    const DARK_PAWN = 'DARK_PAWN';
-
-    protected $positions = array(
-        'A1' => self::LIGHT_ROOK,
-        'B1' => self::LIGHT_KNIGHT,
-        'C1' => self::LIGHT_BISHOP,
-        'D1' => self::LIGHT_QUEEN,
-        'E1' => self::LIGHT_KING,
-        'F1' => self::LIGHT_BISHOP,
-        'G1' => self::LIGHT_KNIGHT,
-        'H1' => self::LIGHT_ROOK,
-
-        'A2' => self::LIGHT_PAWN,
-        'B2' => self::LIGHT_PAWN,
-        'C2' => self::LIGHT_PAWN,
-        'D2' => self::LIGHT_PAWN,
-        'E2' => self::LIGHT_PAWN,
-        'F2' => self::LIGHT_PAWN,
-        'G2' => self::LIGHT_PAWN,
-        'H2' => self::LIGHT_PAWN,
-
-        'A7' => self::DARK_PAWN,
-        'B7' => self::DARK_PAWN,
-        'C7' => self::DARK_PAWN,
-        'D7' => self::DARK_PAWN,
-        'E7' => self::DARK_PAWN,
-        'F7' => self::DARK_PAWN,
-        'G7' => self::DARK_PAWN,
-        'H7' => self::DARK_PAWN,
-
-        'A8' => self::DARK_ROOK,
-        'B8' => self::DARK_KNIGHT,
-        'C8' => self::DARK_BISHOP,
-        'D8' => self::DARK_KING,
-        'E8' => self::DARK_QUEEN,
-        'F8' => self::DARK_BISHOP,
-        'G8' => self::DARK_KNIGHT,
-        'H8' => self::DARK_ROOK,
-    );
+    /**
+     * Stores positions of pieces
+     * @var array
+     */
+    protected $positions = array();
 
     /**
      * Construct method
      * @param array|null $positions Array of positions, where key is algebraic notation (A1 through H8), and value is the piece (Board::LIGHT_PAWN)
      */
-    public function __construct(array $positions = null)
+    public function __construct($positions = null)
     {
         if ($positions !== null) {
             $this->positions = $positions;
+            return;
         }
+
+        $this->positions = array(
+            'A1' => new Rook(Piece::LIGHT),
+            'B1' => new Knight(Piece::LIGHT),
+            'C1' => new Bishop(Piece::LIGHT),
+            'D1' => new Queen(Piece::LIGHT),
+            'E1' => new King(Piece::LIGHT),
+            'F1' => new Bishop(Piece::LIGHT),
+            'G1' => new Knight(Piece::LIGHT),
+            'H1' => new Rook(Piece::LIGHT),
+
+            'A2' => new Pawn(Piece::LIGHT),
+            'B2' => new Pawn(Piece::LIGHT),
+            'C2' => new Pawn(Piece::LIGHT),
+            'D2' => new Pawn(Piece::LIGHT),
+            'E2' => new Pawn(Piece::LIGHT),
+            'F2' => new Pawn(Piece::LIGHT),
+            'G2' => new Pawn(Piece::LIGHT),
+            'H2' => new Pawn(Piece::LIGHT),
+
+            'A7' => new Pawn(Piece::DARK),
+            'B7' => new Pawn(Piece::DARK),
+            'C7' => new Pawn(Piece::DARK),
+            'D7' => new Pawn(Piece::DARK),
+            'E7' => new Pawn(Piece::DARK),
+            'F7' => new Pawn(Piece::DARK),
+            'G7' => new Pawn(Piece::DARK),
+            'H7' => new Pawn(Piece::DARK),
+
+            'A8' => new Rook(Piece::DARK),
+            'B8' => new Knight(Piece::DARK),
+            'C8' => new Bishop(Piece::DARK),
+            'D8' => new Queen(Piece::DARK),
+            'E8' => new King(Piece::DARK),
+            'F8' => new Bishop(Piece::DARK),
+            'G8' => new Knight(Piece::DARK),
+            'H8' => new Rook(Piece::DARK),
+        );
     }
 
     /**
@@ -78,36 +77,104 @@ class Board
     }
 
     /**
-     * Gets possible moves for a piece in the specified position
-     * @return array An array containing valid positions to move to
+     * Returns the position above the position specified
+     * @param  string $position
+     * @return string|false
      */
-    public function movesFor($position)
+    public function up($position)
     {
-        $moves = array();
-
         list($file, $rank) = str_split($position);
-        $up = $this->up($position);
-
-        if (!$this->pieceAt($up)) {
-            $moves[] = $up;
-            $up = $this->up($up);
-
-            if ($rank === '2' && !$this->pieceAt($up)) {
-                $moves[] = $up;
-            }
+        if ($rank === '8') {
+            return false;
         }
-
-        return $moves;
+        return $file . ($rank + 1);
     }
 
     /**
-     * Returns the position above the position specified
+     * Returns the position below the position specified
+     * @param  string $position
+     * @return string|false
+     */
+    public function down($position)
+    {
+        list($file, $rank) = str_replace($position);
+        if ($rank == '1') {
+            return false;
+        }
+        return $file . ($rank - 1);
+    }
+
+    /**
+     * Returns the position left of specified position
+     * @param  string $position
+     * @return string|false
+     */
+    public function left($position)
+    {
+        list($file, $rank) = str_split($position);
+        if ($file === 'A') {
+            return false;
+        }
+        $files = str_split('ABCDEFGH');
+        return $files[array_search($file, $files) - 1] . $rank;
+    }
+
+    /**
+     * Returns the position right of specified position
+     * @param  string $position
+     * @return string|false
+     */
+    public function right($position)
+    {
+        list($file, $rank) = str_split($position);
+        if ($file === 'H') {
+            return false;
+        }
+        $files = str_split('ABCDEFGH');
+        return $files[array_search($file, $files) + 1] . $rank;
+    }
+
+    /**
+     * Returns the position up and left of specified position
      * @param  string $position
      * @return string
      */
-    protected function up($position)
+    public function upLeft($position)
     {
-        list($file, $rank) = str_split($position);
-        return $file . ($rank + 1);
+        $up = $this->up($position);
+        return $up ? $this->left($up) : false;
+    }
+
+    /**
+     * Returns the position up and right of specified position
+     * @param  string $position
+     * @return string
+     */
+    public function upRight($position)
+    {
+        $up = $this->up($position);
+        return $up ? $this->right($up) : false;
+    }
+
+    /**
+     * Returns the position down and right of specified position
+     * @param  string $position
+     * @return string
+     */
+    public function downRight($position)
+    {
+        $down = $this->down($position);
+        return $down ? $this->right($down) : false;
+    }
+
+    /**
+     * Returns the position down and left of specified position
+     * @param  string $position
+     * @return string
+     */
+    public function downLeft($position)
+    {
+        $down = $this->down($position);
+        return $down ? $this->left($down) : false;
     }
 }
