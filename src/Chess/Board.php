@@ -22,11 +22,6 @@ class Board
      */
     public function __construct($positions = null)
     {
-        if ($positions !== null) {
-            $this->positions = $positions;
-            return;
-        }
-
         $this->positions = array(
             'A1' => new Rook(Piece::LIGHT),
             'B1' => new Knight(Piece::LIGHT),
