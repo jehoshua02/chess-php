@@ -31,7 +31,7 @@ class BoardTest extends \PHPUnit_Framework_TestCase
             foreach ($positions as $position) {
                 $this->assertInstanceOf(
                     sprintf('\\Chess\\Piece\\%s', $class),
-                    $board->pieceAt($position),
+                    $board->get($position),
                     sprintf('%s should be a %s', $position, $class)
                 );
             }
@@ -41,16 +41,16 @@ class BoardTest extends \PHPUnit_Framework_TestCase
         $files = str_split('ABCDEFGH');
         foreach ($files as $file) {
             $position = $file . '1';
-            $this->assertEquals($board->pieceAt($position)->color(), Piece::LIGHT);
+            $this->assertEquals($board->get($position)->color(), Piece::LIGHT);
 
             $position = $file . '2';
-            $this->assertEquals($board->pieceAt($position)->color(), Piece::LIGHT);
+            $this->assertEquals($board->get($position)->color(), Piece::LIGHT);
 
             $position = $file . '7';
-            $this->assertEquals($board->pieceAt($position)->color(), Piece::DARK);
+            $this->assertEquals($board->get($position)->color(), Piece::DARK);
 
             $position = $file . '8';
-            $this->assertEquals($board->pieceAt($position)->color(), Piece::DARK);
+            $this->assertEquals($board->get($position)->color(), Piece::DARK);
         }
 
         // check empty spaces
@@ -60,7 +60,7 @@ class BoardTest extends \PHPUnit_Framework_TestCase
         foreach ($files as $file) {
             foreach ($ranks as $rank) {
                 $position = $file . $rank;
-                $this->assertFalse($board->pieceAt($position), "{$position} should be empty");
+                $this->assertFalse($board->get($position), "{$position} should be empty");
             }
         }
     }

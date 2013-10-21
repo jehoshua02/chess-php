@@ -69,9 +69,9 @@ class Board
     /**
      * Returns the piece type at specified position
      * @param  string $position Algebraic notation (A1 through H8)
-     * @return string|false Returns false if position is empty
+     * @return \Chess\Piece|false Returns false if position is empty
      */
-    public function pieceAt($position)
+    public function get($position)
     {
         return array_key_exists($position, $this->positions) ? $this->positions[$position] : false;
     }
