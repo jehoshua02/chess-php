@@ -90,6 +90,17 @@ class Board
     }
 
     /**
+     * Clears the specified position
+     * @param  string $position
+     */
+    public function clear($position)
+    {
+        if (array_key_exists($position, $this->positions)) {
+            unset($this->positions[$position]);
+        }
+    }
+
+    /**
      * Returns the position above the position specified
      * @param  string $position
      * @return string|false
