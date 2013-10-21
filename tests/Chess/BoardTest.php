@@ -73,8 +73,11 @@ class BoardTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($board->set('H9', new Pawn(Piece::DARK)), 'Set should return false');
     }
 
-        // set returns false
-        $this->assertFalse($board->set('H9', new Pawn(Piece::DARK)));
+    public function testClear()
+    {
+        $board = new Board();
+        $board->clear('A1');
+        $this->assertFalse($board->get('A1'), 'A1 should be clear');
     }
 
     public function testUpDownLeftRightEtc()
