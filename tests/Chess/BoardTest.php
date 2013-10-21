@@ -65,6 +65,18 @@ class BoardTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    public function testSet()
+    {
+        $board = new Board();
+        $this->assertTrue($board->set('A1', new Pawn(Piece::DARK)), 'Set should return true');
+        $this->assertInstanceOf('\\Chess\\Piece\\Pawn', $board->get('A1'), 'A1 should be a King');
+        $this->assertFalse($board->set('H9', new Pawn(Piece::DARK)), 'Set should return false');
+    }
+
+        // set returns false
+        $this->assertFalse($board->set('H9', new Pawn(Piece::DARK)));
+    }
+
     public function testUpDownLeftRightEtc()
     {
         $board = new Board();
