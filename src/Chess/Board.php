@@ -72,6 +72,24 @@ class Board
     }
 
     /**
+     * Sets piece for specified position
+     * @param string $position
+     * @param \Chess\Piece $piece
+     * @return boolean
+     */
+    public function set($position, \Chess\Piece $piece)
+    {
+        $files = str_split('ABCDEFGH');
+        $ranks = str_split('12345678');
+        list($file, $rank) = str_split($position);
+        $valid = in_array($file, $files) && in_array($rank, $ranks);
+        if ($valid) {
+            $this->positions[$position] = $piece;
+        }
+        return $valid;
+    }
+
+    /**
      * Returns the position above the position specified
      * @param  string $position
      * @return string|false
