@@ -18,47 +18,44 @@ class Board
 
     /**
      * Construct method
-     * @param array|null $positions Array of positions, where key is algebraic notation (A1 through H8), and value is the piece (Board::LIGHT_PAWN)
      */
-    public function __construct($positions = null)
+    public function __construct()
     {
-        $this->positions = array(
-            'A1' => new Rook(Piece::LIGHT),
-            'B1' => new Knight(Piece::LIGHT),
-            'C1' => new Bishop(Piece::LIGHT),
-            'D1' => new Queen(Piece::LIGHT),
-            'E1' => new King(Piece::LIGHT),
-            'F1' => new Bishop(Piece::LIGHT),
-            'G1' => new Knight(Piece::LIGHT),
-            'H1' => new Rook(Piece::LIGHT),
+        $this->set('A1', new Rook(Piece::LIGHT));
+        $this->set('B1', new Knight(Piece::LIGHT));
+        $this->set('C1', new Bishop(Piece::LIGHT));
+        $this->set('D1', new Queen(Piece::LIGHT));
+        $this->set('E1', new King(Piece::LIGHT));
+        $this->set('F1', new Bishop(Piece::LIGHT));
+        $this->set('G1', new Knight(Piece::LIGHT));
+        $this->set('H1', new Rook(Piece::LIGHT));
 
-            'A2' => new Pawn(Piece::LIGHT),
-            'B2' => new Pawn(Piece::LIGHT),
-            'C2' => new Pawn(Piece::LIGHT),
-            'D2' => new Pawn(Piece::LIGHT),
-            'E2' => new Pawn(Piece::LIGHT),
-            'F2' => new Pawn(Piece::LIGHT),
-            'G2' => new Pawn(Piece::LIGHT),
-            'H2' => new Pawn(Piece::LIGHT),
+        $this->set('A2', new Pawn(Piece::LIGHT));
+        $this->set('B2', new Pawn(Piece::LIGHT));
+        $this->set('C2', new Pawn(Piece::LIGHT));
+        $this->set('D2', new Pawn(Piece::LIGHT));
+        $this->set('E2', new Pawn(Piece::LIGHT));
+        $this->set('F2', new Pawn(Piece::LIGHT));
+        $this->set('G2', new Pawn(Piece::LIGHT));
+        $this->set('H2', new Pawn(Piece::LIGHT));
 
-            'A7' => new Pawn(Piece::DARK),
-            'B7' => new Pawn(Piece::DARK),
-            'C7' => new Pawn(Piece::DARK),
-            'D7' => new Pawn(Piece::DARK),
-            'E7' => new Pawn(Piece::DARK),
-            'F7' => new Pawn(Piece::DARK),
-            'G7' => new Pawn(Piece::DARK),
-            'H7' => new Pawn(Piece::DARK),
+        $this->set('A7', new Pawn(Piece::DARK));
+        $this->set('B7', new Pawn(Piece::DARK));
+        $this->set('C7', new Pawn(Piece::DARK));
+        $this->set('D7', new Pawn(Piece::DARK));
+        $this->set('E7', new Pawn(Piece::DARK));
+        $this->set('F7', new Pawn(Piece::DARK));
+        $this->set('G7', new Pawn(Piece::DARK));
+        $this->set('H7', new Pawn(Piece::DARK));
 
-            'A8' => new Rook(Piece::DARK),
-            'B8' => new Knight(Piece::DARK),
-            'C8' => new Bishop(Piece::DARK),
-            'D8' => new Queen(Piece::DARK),
-            'E8' => new King(Piece::DARK),
-            'F8' => new Bishop(Piece::DARK),
-            'G8' => new Knight(Piece::DARK),
-            'H8' => new Rook(Piece::DARK),
-        );
+        $this->set('A8', new Rook(Piece::DARK));
+        $this->set('B8', new Knight(Piece::DARK));
+        $this->set('C8', new Bishop(Piece::DARK));
+        $this->set('D8', new Queen(Piece::DARK));
+        $this->set('E8', new King(Piece::DARK));
+        $this->set('F8', new Bishop(Piece::DARK));
+        $this->set('G8', new Knight(Piece::DARK));
+        $this->set('H8', new Rook(Piece::DARK));
     }
 
     /**
