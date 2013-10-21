@@ -97,7 +97,7 @@ class Board
      */
     public function down($position)
     {
-        list($file, $rank) = str_replace($position);
+        list($file, $rank) = str_split($position);
         if ($rank == '1') {
             return false;
         }
