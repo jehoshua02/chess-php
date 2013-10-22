@@ -116,4 +116,14 @@ class BoardTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($board->downLeft('H8'), 'G7', 'Position down and right of H8 should be G7');
         $this->assertFalse($board->downLeft('A1'), 'There should be nothing down and right of A1');
     }
+
+    public function testCustomBoard()
+    {
+        $board = new Board(array(
+            'A1' => new Pawn(Piece::LIGHT),
+        ));
+
+        $this->assertInstanceOf('\\Chess\\Piece\\Pawn', $board->get('A1'), 'A1 should be a Pawn');
+        $this->assertFalse($board->get('A2'), "A2 should be empty");
+    }
 }
