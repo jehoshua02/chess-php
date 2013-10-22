@@ -19,8 +19,13 @@ class Board
     /**
      * Construct method
      */
-    public function __construct()
+    public function __construct($positions = null)
     {
+        if ($positions !== null) {
+            $this->positions = $positions;
+            return;
+        }
+
         $this->set('A1', new Rook(Piece::LIGHT));
         $this->set('B1', new Knight(Piece::LIGHT));
         $this->set('C1', new Bishop(Piece::LIGHT));
