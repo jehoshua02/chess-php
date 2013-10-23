@@ -54,6 +54,11 @@ class Pawn extends \Chess\Piece
      */
     public function upLeft()
     {
+        $upLeft = $this->board->upLeft($this->getPosition());
+        $piece = $this->board->get($upLeft);
+        if ($piece && $piece->color() !== $this->color()) {
+            return $upLeft;
+        }
         return false;
     }
 }
