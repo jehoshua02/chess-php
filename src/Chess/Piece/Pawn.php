@@ -29,4 +29,13 @@ class Pawn extends \Chess\Piece
         $down = $this->board->down($this->getPosition());
         return $this->board->get($down) ? false : $down;
     }
+
+    /**
+     * Returns false (pawns cannot move left)
+     * @return false
+     */
+    public function left()
+    {
+        return false;
+    }
 }
