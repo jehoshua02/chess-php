@@ -30,4 +30,13 @@ abstract class Piece
     {
         return $this->color;
     }
+
+    /**
+     * Returns piece's position
+     * @return string|false
+     */
+    public function getPosition()
+    {
+        return $this->board->find($this);
+    }
 }
