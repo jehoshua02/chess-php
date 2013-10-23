@@ -106,6 +106,21 @@ class Board
     }
 
     /**
+     * Returns position of piece
+     * @param  \Chess\Piece $piece
+     * @return string|false
+     */
+    public function find(\Chess\Piece $piece)
+    {
+        foreach ($this->positions as $position => $boardPiece) {
+            if ($piece === $boardPiece) {
+                return $position;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Returns the position above the position specified
      * @param  string $position
      * @return string|false
