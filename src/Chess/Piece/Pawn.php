@@ -61,4 +61,13 @@ class Pawn extends \Chess\Piece
         }
         return false;
     }
+
+    /**
+     * Returns position up and right of piece's position
+     * @return string|false Returns false if not valid move for piece
+     */
+    public function upRight()
+    {
+        return false;
+    }
 }
