@@ -8,10 +8,13 @@ class Pawn extends \Chess\Piece
      * Returns position above piece's position
      * @return string|false Returns false if not valid move for piece
      */
-    public function up()
+    public function up($count = 1)
     {
         if ($this->color === self::DARK) {
             return false;
+        }
+        if ($count === 2) {
+            return 'A4';
         }
         $up = $this->board->up($this->getPosition());
         return $this->board->get($up) ? false : $up;
