@@ -40,5 +40,10 @@ class PawnTest extends \PHPUnit_Framework_TestCase
             'D3' => new Pawn(Piece::LIGHT)
         ));
         $this->assertFalse($board->get('D4')->down(), 'Pawn should not be able to move down');
+
+        $board = new Board(array(
+            'D4' => new Pawn(Piece::LIGHT)
+        ));
+        $this->assertFalse($board->get('D4')->down(), 'Pawn should not be able to move down');
     }
 }
