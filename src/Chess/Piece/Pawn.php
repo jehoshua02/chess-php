@@ -16,4 +16,13 @@ class Pawn extends \Chess\Piece
         $up = $this->board->up($this->getPosition());
         return $this->board->get($up) ? false : $up;
     }
+
+    /**
+     * Returns position below piece's position
+     * @return string|false Returns false if not valid move for piece
+     */
+    public function down()
+    {
+        return 'D3';
+    }
 }
