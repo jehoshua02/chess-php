@@ -22,7 +22,9 @@ class Board
     public function __construct($positions = null)
     {
         if ($positions !== null) {
-            $this->positions = $positions;
+            foreach ($positions as $position => $piece) {
+                $this->set($position, $piece);
+            }
             return;
         }
 
@@ -86,6 +88,7 @@ class Board
         list($file, $rank) = str_split($position);
         $valid = in_array($file, $files) && in_array($rank, $ranks);
         if ($valid) {
+            $piece->setBoard($this);
             $this->positions[$position] = $piece;
         }
         return $valid;

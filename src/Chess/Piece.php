@@ -14,6 +14,12 @@ abstract class Piece
     protected $color;
 
     /**
+     * Board the piece is on
+     * @var \Chess\Board
+     */
+    protected $board;
+
+    /**
      * Construct method
      * @param int $color
      */
@@ -29,6 +35,16 @@ abstract class Piece
     public function color()
     {
         return $this->color;
+    }
+
+    /**
+     * Gets or sets board on piece
+     * @param  \Chess\Board|null $board
+     * @return \Chess\Board
+     */
+    public function setBoard(\Chess\Board $board)
+    {
+        $this->board = $board;
     }
 
     /**
