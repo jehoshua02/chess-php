@@ -10,6 +10,9 @@ class Pawn extends \Chess\Piece
      */
     public function up()
     {
+        if ($this->color === self::DARK) {
+            return false;
+        }
         $up = $this->board->up($this->getPosition());
         return $this->board->get($up) ? false : $up;
     }
