@@ -54,4 +54,12 @@ class PawnTest extends \PHPUnit_Framework_TestCase
         ));
         $this->assertFalse($board->get('D4')->left(), 'Pawn should not be able to move left');
     }
+
+    public function testRight()
+    {
+        $board = new Board(array(
+            'D4' => new Pawn(Piece::DARK)
+        ));
+        $this->assertFalse($board->get('D4')->right(), 'Pawn should not be able to move right');
+    }
 }
