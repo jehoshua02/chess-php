@@ -38,4 +38,13 @@ class Pawn extends \Chess\Piece
     {
         return false;
     }
+
+    /**
+     * Returns false (pawns cannot move right)
+     * @return false
+     */
+    public function right()
+    {
+        return false;
+    }
 }
