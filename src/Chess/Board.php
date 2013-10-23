@@ -1,113 +1,224 @@
 <?php
 
 namespace Chess;
+use \Chess\Piece\King;
+use \Chess\Piece\Queen;
+use \Chess\Piece\Bishop;
+use \Chess\Piece\Knight;
+use \Chess\Piece\Rook;
+use \Chess\Piece\Pawn;
 
 class Board
 {
-    const LIGHT_KING = 'LIGHT_KING';
-    const LIGHT_QUEEN = 'LIGHT_QUEEN';
-    const LIGHT_BISHOP = 'LIGHT_BISHOP';
-    const LIGHT_KNIGHT = 'LIGHT_KNIGHT';
-    const LIGHT_ROOK = 'LIGHT_ROOK';
-    const LIGHT_PAWN = 'LIGHT_PAWN';
-
-    const DARK_KING = 'DARK_KING';
-    const DARK_QUEEN = 'DARK_QUEEN';
-    const DARK_BISHOP = 'DARK_BISHOP';
-    const DARK_KNIGHT = 'DARK_KNIGHT';
-    const DARK_ROOK = 'DARK_ROOK';
-    const DARK_PAWN = 'DARK_PAWN';
-
-    protected $positions = array(
-        'A1' => self::LIGHT_ROOK,
-        'B1' => self::LIGHT_KNIGHT,
-        'C1' => self::LIGHT_BISHOP,
-        'D1' => self::LIGHT_QUEEN,
-        'E1' => self::LIGHT_KING,
-        'F1' => self::LIGHT_BISHOP,
-        'G1' => self::LIGHT_KNIGHT,
-        'H1' => self::LIGHT_ROOK,
-
-        'A2' => self::LIGHT_PAWN,
-        'B2' => self::LIGHT_PAWN,
-        'C2' => self::LIGHT_PAWN,
-        'D2' => self::LIGHT_PAWN,
-        'E2' => self::LIGHT_PAWN,
-        'F2' => self::LIGHT_PAWN,
-        'G2' => self::LIGHT_PAWN,
-        'H2' => self::LIGHT_PAWN,
-
-        'A7' => self::DARK_PAWN,
-        'B7' => self::DARK_PAWN,
-        'C7' => self::DARK_PAWN,
-        'D7' => self::DARK_PAWN,
-        'E7' => self::DARK_PAWN,
-        'F7' => self::DARK_PAWN,
-        'G7' => self::DARK_PAWN,
-        'H7' => self::DARK_PAWN,
-
-        'A8' => self::DARK_ROOK,
-        'B8' => self::DARK_KNIGHT,
-        'C8' => self::DARK_BISHOP,
-        'D8' => self::DARK_KING,
-        'E8' => self::DARK_QUEEN,
-        'F8' => self::DARK_BISHOP,
-        'G8' => self::DARK_KNIGHT,
-        'H8' => self::DARK_ROOK,
-    );
+    /**
+     * Stores positions of pieces
+     * @var array
+     */
+    protected $positions = array();
 
     /**
      * Construct method
-     * @param array|null $positions Array of positions, where key is algebraic notation (A1 through H8), and value is the piece (Board::LIGHT_PAWN)
      */
-    public function __construct(array $positions = null)
+    public function __construct($positions = null)
     {
         if ($positions !== null) {
-            $this->positions = $positions;
+            foreach ($positions as $position => $piece) {
+                $this->set($position, $piece);
+            }
+            return;
         }
+
+        $this->set('A1', new Rook(Piece::LIGHT));
+        $this->set('B1', new Knight(Piece::LIGHT));
+        $this->set('C1', new Bishop(Piece::LIGHT));
+        $this->set('D1', new Queen(Piece::LIGHT));
+        $this->set('E1', new King(Piece::LIGHT));
+        $this->set('F1', new Bishop(Piece::LIGHT));
+        $this->set('G1', new Knight(Piece::LIGHT));
+        $this->set('H1', new Rook(Piece::LIGHT));
+
+        $this->set('A2', new Pawn(Piece::LIGHT));
+        $this->set('B2', new Pawn(Piece::LIGHT));
+        $this->set('C2', new Pawn(Piece::LIGHT));
+        $this->set('D2', new Pawn(Piece::LIGHT));
+        $this->set('E2', new Pawn(Piece::LIGHT));
+        $this->set('F2', new Pawn(Piece::LIGHT));
+        $this->set('G2', new Pawn(Piece::LIGHT));
+        $this->set('H2', new Pawn(Piece::LIGHT));
+
+        $this->set('A7', new Pawn(Piece::DARK));
+        $this->set('B7', new Pawn(Piece::DARK));
+        $this->set('C7', new Pawn(Piece::DARK));
+        $this->set('D7', new Pawn(Piece::DARK));
+        $this->set('E7', new Pawn(Piece::DARK));
+        $this->set('F7', new Pawn(Piece::DARK));
+        $this->set('G7', new Pawn(Piece::DARK));
+        $this->set('H7', new Pawn(Piece::DARK));
+
+        $this->set('A8', new Rook(Piece::DARK));
+        $this->set('B8', new Knight(Piece::DARK));
+        $this->set('C8', new Bishop(Piece::DARK));
+        $this->set('D8', new Queen(Piece::DARK));
+        $this->set('E8', new King(Piece::DARK));
+        $this->set('F8', new Bishop(Piece::DARK));
+        $this->set('G8', new Knight(Piece::DARK));
+        $this->set('H8', new Rook(Piece::DARK));
     }
 
     /**
      * Returns the piece type at specified position
      * @param  string $position Algebraic notation (A1 through H8)
-     * @return string|false Returns false if position is empty
+     * @return \Chess\Piece|false Returns false if position is empty
      */
-    public function pieceAt($position)
+    public function get($position)
     {
         return array_key_exists($position, $this->positions) ? $this->positions[$position] : false;
     }
 
     /**
-     * Gets possible moves for a piece in the specified position
-     * @return array An array containing valid positions to move to
+     * Sets piece for specified position
+     * @param string $position
+     * @param \Chess\Piece $piece
+     * @return boolean
      */
-    public function movesFor($position)
+    public function set($position, \Chess\Piece $piece)
     {
-        $moves = array();
-
+        $files = str_split('ABCDEFGH');
+        $ranks = str_split('12345678');
         list($file, $rank) = str_split($position);
-        $up = $this->up($position);
+        $valid = in_array($file, $files) && in_array($rank, $ranks);
+        if ($valid) {
+            $piece->setBoard($this);
+            $this->positions[$position] = $piece;
+        }
+        return $valid;
+    }
 
-        if (!$this->pieceAt($up)) {
-            $moves[] = $up;
-            $up = $this->up($up);
+    /**
+     * Clears the specified position
+     * @param  string $position
+     */
+    public function clear($position)
+    {
+        if (array_key_exists($position, $this->positions)) {
+            unset($this->positions[$position]);
+        }
+    }
 
-            if ($rank === '2' && !$this->pieceAt($up)) {
-                $moves[] = $up;
+    /**
+     * Returns position of piece
+     * @param  \Chess\Piece $piece
+     * @return string|false
+     */
+    public function find(\Chess\Piece $piece)
+    {
+        foreach ($this->positions as $position => $boardPiece) {
+            if ($piece === $boardPiece) {
+                return $position;
             }
         }
-
-        return $moves;
+        return false;
     }
 
     /**
      * Returns the position above the position specified
      * @param  string $position
-     * @return string
+     * @return string|false
      */
-    protected function up($position)
+    public function up($position)
     {
         list($file, $rank) = str_split($position);
+        if ($rank === '8') {
+            return false;
+        }
         return $file . ($rank + 1);
+    }
+
+    /**
+     * Returns the position below the position specified
+     * @param  string $position
+     * @return string|false
+     */
+    public function down($position)
+    {
+        list($file, $rank) = str_split($position);
+        if ($rank == '1') {
+            return false;
+        }
+        return $file . ($rank - 1);
+    }
+
+    /**
+     * Returns the position left of specified position
+     * @param  string $position
+     * @return string|false
+     */
+    public function left($position)
+    {
+        list($file, $rank) = str_split($position);
+        if ($file === 'A') {
+            return false;
+        }
+        $files = str_split('ABCDEFGH');
+        return $files[array_search($file, $files) - 1] . $rank;
+    }
+
+    /**
+     * Returns the position right of specified position
+     * @param  string $position
+     * @return string|false
+     */
+    public function right($position)
+    {
+        list($file, $rank) = str_split($position);
+        if ($file === 'H') {
+            return false;
+        }
+        $files = str_split('ABCDEFGH');
+        return $files[array_search($file, $files) + 1] . $rank;
+    }
+
+    /**
+     * Returns the position up and left of specified position
+     * @param  string $position
+     * @return string
+     */
+    public function upLeft($position)
+    {
+        $up = $this->up($position);
+        return $up ? $this->left($up) : false;
+    }
+
+    /**
+     * Returns the position up and right of specified position
+     * @param  string $position
+     * @return string
+     */
+    public function upRight($position)
+    {
+        $up = $this->up($position);
+        return $up ? $this->right($up) : false;
+    }
+
+    /**
+     * Returns the position down and right of specified position
+     * @param  string $position
+     * @return string
+     */
+    public function downRight($position)
+    {
+        $down = $this->down($position);
+        return $down ? $this->right($down) : false;
+    }
+
+    /**
+     * Returns the position down and left of specified position
+     * @param  string $position
+     * @return string
+     */
+    public function downLeft($position)
+    {
+        $down = $this->down($position);
+        return $down ? $this->left($down) : false;
     }
 }
