@@ -126,4 +126,16 @@ class BoardTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\\Chess\\Piece\\Pawn', $board->get('A1'), 'A1 should be a Pawn');
         $this->assertFalse($board->get('A2'), "A2 should be empty");
     }
+
+    public function testFind()
+    {
+        $piece = new Pawn(Piece::LIGHT);
+        $board = new Board(array(
+            'A1' => $piece,
+        ));
+        $this->assertEquals('A1', $board->find($piece), 'Pawn should be on A1');
+
+        $anotherPiece = new Pawn(Piece::LIGHT);
+        $this->assertFalse($board->find($anotherPiece), 'Pawn should not be found on board');
+    }
 }
