@@ -23,6 +23,7 @@ class Pawn extends \Chess\Piece
      */
     public function down()
     {
-        return 'D3';
+        $down = $this->board->down($this->getPosition());
+        return $this->board->get($down) ? false : $down;
     }
 }
