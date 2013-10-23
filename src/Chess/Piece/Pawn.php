@@ -23,6 +23,9 @@ class Pawn extends \Chess\Piece
      */
     public function down()
     {
+        if ($this->color === self::LIGHT) {
+            return false;
+        }
         $down = $this->board->down($this->getPosition());
         return $this->board->get($down) ? false : $down;
     }
