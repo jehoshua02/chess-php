@@ -85,35 +85,35 @@ class BoardTest extends \PHPUnit_Framework_TestCase
         $board = new Board();
 
         // test up
-        $this->assertEquals($board->up('A1'), 'A2', 'Postion above A1 should be A2');
+        $this->assertEquals('A2', $board->up('A1'), 'Postion above A1 should be A2');
         $this->assertFalse($board->up('A8'), 'There should be nothing above A8');
 
         // test down
-        $this->assertEquals($board->down('A8'), 'A7', 'Postion below A8 should be A7');
+        $this->assertEquals('A7', $board->down('A8'), 'Postion below A8 should be A7');
         $this->assertFalse($board->down('A1'), 'There should be nothing below A1');
 
         // test left
-        $this->assertEquals($board->left('H1'), 'G1', 'Position left of H1 should be G1');
+        $this->assertEquals('G1', $board->left('H1'), 'Position left of H1 should be G1');
         $this->assertFalse($board->left('A1'), 'There should be nothing left of A1');
 
         // test right
-        $this->assertEquals($board->right('A1'), 'B1', 'Position right of A1 should be B1');
+        $this->assertEquals('B1', $board->right('A1'), 'Position right of A1 should be B1');
         $this->assertFalse($board->right('H1'), 'There should be nothing right of H1');
 
         // test upLeft
-        $this->assertEquals($board->upLeft('H1'), 'G2', 'Position up and left of H1 should be G2');
+        $this->assertEquals('G2', $board->upLeft('H1'), 'Position up and left of H1 should be G2');
         $this->assertFalse($board->upLeft('A8'), 'There should be nothing up and left of A8');
 
         // test upRight
-        $this->assertEquals($board->upRight('A1'), 'B2', 'Position up and right of A1 should be B2');
+        $this->assertEquals('B2', $board->upRight('A1'), 'Position up and right of A1 should be B2');
         $this->assertFalse($board->upRight('H8'), 'There should be nothing up and right of H8');
 
         // test downRight
-        $this->assertEquals($board->downRight('A8'), 'B7', 'Position down and right of A8 should be B7');
+        $this->assertEquals('B7', $board->downRight('A8'), 'Position down and right of A8 should be B7');
         $this->assertFalse($board->downRight('H1'), 'There should be nothing down and right of H1');
 
         // test downLeft
-        $this->assertEquals($board->downLeft('H8'), 'G7', 'Position down and right of H8 should be G7');
+        $this->assertEquals('G7', $board->downLeft('H8'), 'Position down and right of H8 should be G7');
         $this->assertFalse($board->downLeft('A1'), 'There should be nothing down and right of A1');
     }
 
