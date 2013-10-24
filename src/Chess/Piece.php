@@ -53,6 +53,6 @@ abstract class Piece
      */
     public function getPosition()
     {
-        return $this->board->find($this);
+        return $this->board->getPosition($this);
     }
 }

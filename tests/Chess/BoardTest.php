@@ -127,15 +127,15 @@ class BoardTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($board->getPiece('A2'), "A2 should be empty");
     }
 
-    public function testFind()
+    public function testGetPosition()
     {
         $piece = new Pawn(Piece::LIGHT);
         $board = new Board(array(
             'A1' => $piece,
         ));
-        $this->assertEquals('A1', $board->find($piece), 'Pawn should be on A1');
+        $this->assertEquals('A1', $board->getPosition($piece), 'Pawn should be on A1');
 
         $anotherPiece = new Pawn(Piece::LIGHT);
-        $this->assertFalse($board->find($anotherPiece), 'Pawn should not be found on board');
+        $this->assertFalse($board->getPosition($anotherPiece), 'Pawn should not be found on board');
     }
 }

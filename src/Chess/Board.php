@@ -110,7 +110,7 @@ class Board
      * @param  \Chess\Piece $piece
      * @return string|false
      */
-    public function find(\Chess\Piece $piece)
+    public function getPosition(\Chess\Piece $piece)
     {
         foreach ($this->positions as $position => $boardPiece) {
             if ($piece === $boardPiece) {
