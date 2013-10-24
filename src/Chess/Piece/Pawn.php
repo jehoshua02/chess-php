@@ -25,6 +25,11 @@ class Pawn extends \Chess\Piece
             return $up;
         }
 
+        list($file, $rank) = str_split($position);
+        if ($rank != 2) {
+            return false;
+        }
+
         $up = $this->board->up($up);
         if ($this->board->getPiece($up)) {
             return false;
