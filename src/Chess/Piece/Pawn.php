@@ -14,6 +14,10 @@ class Pawn extends \Chess\Piece
             return false;
         }
 
+        if ($count > 2) {
+            return false;
+        }
+
         $position = $this->getPosition();
 
         $up = $this->board->up($this->getPosition());
