@@ -13,11 +13,24 @@ class Pawn extends \Chess\Piece
         if ($this->color === self::DARK) {
             return false;
         }
-        if ($count === 2) {
-            return 'A4';
-        }
+
+        $position = $this->getPosition();
+
         $up = $this->board->up($this->getPosition());
-        return $this->board->getPiece($up) ? false : $up;
+        if ($this->board->getPiece($up)) {
+            return false;
+        }
+
+        if ($count === 1) {
+            return $up;
+        }
+
+        $up = $this->board->up($up);
+        if ($this->board->getPiece($up)) {
+            return false;
+        }
+
+        return $up;
     }
 
     /**
