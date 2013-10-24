@@ -23,46 +23,46 @@ class Board
     {
         if ($positions !== null) {
             foreach ($positions as $position => $piece) {
-                $this->set($position, $piece);
+                $this->setPiece($position, $piece);
             }
             return;
         }
 
-        $this->set('A1', new Rook(Piece::LIGHT));
-        $this->set('B1', new Knight(Piece::LIGHT));
-        $this->set('C1', new Bishop(Piece::LIGHT));
-        $this->set('D1', new Queen(Piece::LIGHT));
-        $this->set('E1', new King(Piece::LIGHT));
-        $this->set('F1', new Bishop(Piece::LIGHT));
-        $this->set('G1', new Knight(Piece::LIGHT));
-        $this->set('H1', new Rook(Piece::LIGHT));
+        $this->setPiece('A1', new Rook(Piece::LIGHT));
+        $this->setPiece('B1', new Knight(Piece::LIGHT));
+        $this->setPiece('C1', new Bishop(Piece::LIGHT));
+        $this->setPiece('D1', new Queen(Piece::LIGHT));
+        $this->setPiece('E1', new King(Piece::LIGHT));
+        $this->setPiece('F1', new Bishop(Piece::LIGHT));
+        $this->setPiece('G1', new Knight(Piece::LIGHT));
+        $this->setPiece('H1', new Rook(Piece::LIGHT));
 
-        $this->set('A2', new Pawn(Piece::LIGHT));
-        $this->set('B2', new Pawn(Piece::LIGHT));
-        $this->set('C2', new Pawn(Piece::LIGHT));
-        $this->set('D2', new Pawn(Piece::LIGHT));
-        $this->set('E2', new Pawn(Piece::LIGHT));
-        $this->set('F2', new Pawn(Piece::LIGHT));
-        $this->set('G2', new Pawn(Piece::LIGHT));
-        $this->set('H2', new Pawn(Piece::LIGHT));
+        $this->setPiece('A2', new Pawn(Piece::LIGHT));
+        $this->setPiece('B2', new Pawn(Piece::LIGHT));
+        $this->setPiece('C2', new Pawn(Piece::LIGHT));
+        $this->setPiece('D2', new Pawn(Piece::LIGHT));
+        $this->setPiece('E2', new Pawn(Piece::LIGHT));
+        $this->setPiece('F2', new Pawn(Piece::LIGHT));
+        $this->setPiece('G2', new Pawn(Piece::LIGHT));
+        $this->setPiece('H2', new Pawn(Piece::LIGHT));
 
-        $this->set('A7', new Pawn(Piece::DARK));
-        $this->set('B7', new Pawn(Piece::DARK));
-        $this->set('C7', new Pawn(Piece::DARK));
-        $this->set('D7', new Pawn(Piece::DARK));
-        $this->set('E7', new Pawn(Piece::DARK));
-        $this->set('F7', new Pawn(Piece::DARK));
-        $this->set('G7', new Pawn(Piece::DARK));
-        $this->set('H7', new Pawn(Piece::DARK));
+        $this->setPiece('A7', new Pawn(Piece::DARK));
+        $this->setPiece('B7', new Pawn(Piece::DARK));
+        $this->setPiece('C7', new Pawn(Piece::DARK));
+        $this->setPiece('D7', new Pawn(Piece::DARK));
+        $this->setPiece('E7', new Pawn(Piece::DARK));
+        $this->setPiece('F7', new Pawn(Piece::DARK));
+        $this->setPiece('G7', new Pawn(Piece::DARK));
+        $this->setPiece('H7', new Pawn(Piece::DARK));
 
-        $this->set('A8', new Rook(Piece::DARK));
-        $this->set('B8', new Knight(Piece::DARK));
-        $this->set('C8', new Bishop(Piece::DARK));
-        $this->set('D8', new Queen(Piece::DARK));
-        $this->set('E8', new King(Piece::DARK));
-        $this->set('F8', new Bishop(Piece::DARK));
-        $this->set('G8', new Knight(Piece::DARK));
-        $this->set('H8', new Rook(Piece::DARK));
+        $this->setPiece('A8', new Rook(Piece::DARK));
+        $this->setPiece('B8', new Knight(Piece::DARK));
+        $this->setPiece('C8', new Bishop(Piece::DARK));
+        $this->setPiece('D8', new Queen(Piece::DARK));
+        $this->setPiece('E8', new King(Piece::DARK));
+        $this->setPiece('F8', new Bishop(Piece::DARK));
+        $this->setPiece('G8', new Knight(Piece::DARK));
+        $this->setPiece('H8', new Rook(Piece::DARK));
     }
 
     /**
@@ -81,7 +81,7 @@ class Board
      * @param \Chess\Piece $piece
      * @return boolean
      */
-    public function set($position, \Chess\Piece $piece)
+    public function setPiece($position, \Chess\Piece $piece)
     {
         $files = str_split('ABCDEFGH');
         $ranks = str_split('12345678');
