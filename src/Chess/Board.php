@@ -98,7 +98,7 @@ class Board
      * Clears the specified position
      * @param  string $position
      */
-    public function clear($position)
+    public function unsetPiece($position)
     {
         if (array_key_exists($position, $this->positions)) {
             unset($this->positions[$position]);
