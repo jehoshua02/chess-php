@@ -31,7 +31,7 @@ class BoardTest extends \PHPUnit_Framework_TestCase
             foreach ($positions as $position) {
                 $this->assertInstanceOf(
                     sprintf('\\Chess\\Piece\\%s', $class),
-                    $board->get($position),
+                    $board->getPiece($position),
                     sprintf('%s should be a %s', $position, $class)
                 );
             }
@@ -41,16 +41,16 @@ class BoardTest extends \PHPUnit_Framework_TestCase
         $files = str_split('ABCDEFGH');
         foreach ($files as $file) {
             $position = $file . '1';
-            $this->assertEquals($board->get($position)->color(), Piece::LIGHT);
+            $this->assertEquals($board->getPiece($position)->color(), Piece::LIGHT);
 
             $position = $file . '2';
-            $this->assertEquals($board->get($position)->color(), Piece::LIGHT);
+            $this->assertEquals($board->getPiece($position)->color(), Piece::LIGHT);
 
             $position = $file . '7';
-            $this->assertEquals($board->get($position)->color(), Piece::DARK);
+            $this->assertEquals($board->getPiece($position)->color(), Piece::DARK);
 
             $position = $file . '8';
-            $this->assertEquals($board->get($position)->color(), Piece::DARK);
+            $this->assertEquals($board->getPiece($position)->color(), Piece::DARK);
         }
 
         // check empty spaces
@@ -60,7 +60,7 @@ class BoardTest extends \PHPUnit_Framework_TestCase
         foreach ($files as $file) {
             foreach ($ranks as $rank) {
                 $position = $file . $rank;
-                $this->assertFalse($board->get($position), "{$position} should be empty");
+                $this->assertFalse($board->getPiece($position), "{$position} should be empty");
             }
         }
     }
@@ -69,7 +69,7 @@ class BoardTest extends \PHPUnit_Framework_TestCase
     {
         $board = new Board();
         $this->assertTrue($board->set('A1', new Pawn(Piece::DARK)), 'Set should return true');
-        $this->assertInstanceOf('\\Chess\\Piece\\Pawn', $board->get('A1'), 'A1 should be a King');
+        $this->assertInstanceOf('\\Chess\\Piece\\Pawn', $board->getPiece('A1'), 'A1 should be a King');
         $this->assertFalse($board->set('H9', new Pawn(Piece::DARK)), 'Set should return false');
     }
 
@@ -77,7 +77,7 @@ class BoardTest extends \PHPUnit_Framework_TestCase
     {
         $board = new Board();
         $board->clear('A1');
-        $this->assertFalse($board->get('A1'), 'A1 should be clear');
+        $this->assertFalse($board->getPiece('A1'), 'A1 should be clear');
     }
 
     public function testUpDownLeftRightEtc()
@@ -123,8 +123,8 @@ class BoardTest extends \PHPUnit_Framework_TestCase
             'A1' => new Pawn(Piece::LIGHT),
         ));
 
-        $this->assertInstanceOf('\\Chess\\Piece\\Pawn', $board->get('A1'), 'A1 should be a Pawn');
-        $this->assertFalse($board->get('A2'), "A2 should be empty");
+        $this->assertInstanceOf('\\Chess\\Piece\\Pawn', $board->getPiece('A1'), 'A1 should be a Pawn');
+        $this->assertFalse($board->getPiece('A2'), "A2 should be empty");
     }
 
     public function testFind()
