@@ -70,7 +70,7 @@ class Board
      * @param  string $position Algebraic notation (A1 through H8)
      * @return \Chess\Piece|false Returns false if position is empty
      */
-    public function get($position)
+    public function getPiece($position)
     {
         return array_key_exists($position, $this->positions) ? $this->positions[$position] : false;
     }

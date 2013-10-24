@@ -17,7 +17,7 @@ class Pawn extends \Chess\Piece
             return 'A4';
         }
         $up = $this->board->up($this->getPosition());
-        return $this->board->get($up) ? false : $up;
+        return $this->board->getPiece($up) ? false : $up;
     }
 
     /**
@@ -30,7 +30,7 @@ class Pawn extends \Chess\Piece
             return false;
         }
         $down = $this->board->down($this->getPosition());
-        return $this->board->get($down) ? false : $down;
+        return $this->board->getPiece($down) ? false : $down;
     }
 
     /**
@@ -64,7 +64,7 @@ class Pawn extends \Chess\Piece
         if (!$upLeft) {
             return false;
         }
-        $piece = $this->board->get($upLeft);
+        $piece = $this->board->getPiece($upLeft);
         if ($piece && $piece->color() !== $this->color()) {
             return $upLeft;
         }
@@ -84,7 +84,7 @@ class Pawn extends \Chess\Piece
         if (!$upRight) {
             return false;
         }
-        $piece = $this->board->get($upRight);
+        $piece = $this->board->getPiece($upRight);
         if ($piece && $piece->color() !== $this->color()) {
             return $upRight;
         }
