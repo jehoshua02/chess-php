@@ -57,7 +57,7 @@ class Pawn extends \Chess\Piece
      */
     public function upLeft()
     {
-        if ($this->color() === self::DARK) {
+        if ($this->getColor() === self::DARK) {
             return false;
         }
         $upLeft = $this->board->upLeft($this->getPosition());
@@ -65,7 +65,7 @@ class Pawn extends \Chess\Piece
             return false;
         }
         $piece = $this->board->getPiece($upLeft);
-        if ($piece && $piece->color() !== $this->color()) {
+        if ($piece && $piece->getColor() !== $this->getColor()) {
             return $upLeft;
         }
         return false;
@@ -77,7 +77,7 @@ class Pawn extends \Chess\Piece
      */
     public function upRight()
     {
-        if ($this->color() === self::DARK) {
+        if ($this->getColor() === self::DARK) {
             return false;
         }
         $upRight = $this->board->upRight($this->getPosition());
@@ -85,7 +85,7 @@ class Pawn extends \Chess\Piece
             return false;
         }
         $piece = $this->board->getPiece($upRight);
-        if ($piece && $piece->color() !== $this->color()) {
+        if ($piece && $piece->getColor() !== $this->getColor()) {
             return $upRight;
         }
         return false;

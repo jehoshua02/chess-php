@@ -41,16 +41,16 @@ class BoardTest extends \PHPUnit_Framework_TestCase
         $files = str_split('ABCDEFGH');
         foreach ($files as $file) {
             $position = $file . '1';
-            $this->assertEquals($board->getPiece($position)->color(), Piece::LIGHT);
+            $this->assertEquals($board->getPiece($position)->getColor(), Piece::LIGHT);
 
             $position = $file . '2';
-            $this->assertEquals($board->getPiece($position)->color(), Piece::LIGHT);
+            $this->assertEquals($board->getPiece($position)->getColor(), Piece::LIGHT);
 
             $position = $file . '7';
-            $this->assertEquals($board->getPiece($position)->color(), Piece::DARK);
+            $this->assertEquals($board->getPiece($position)->getColor(), Piece::DARK);
 
             $position = $file . '8';
-            $this->assertEquals($board->getPiece($position)->color(), Piece::DARK);
+            $this->assertEquals($board->getPiece($position)->getColor(), Piece::DARK);
         }
 
         // check empty spaces
