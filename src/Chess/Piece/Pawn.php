@@ -6,6 +6,7 @@ class Pawn extends \Chess\Piece
 {
     /**
      * Returns position above piece's position
+     * @param int $count
      * @return string|false Returns false if not valid move for piece
      */
     public function up($count = 1)
@@ -20,7 +21,7 @@ class Pawn extends \Chess\Piece
 
         $position = $this->getPosition();
 
-        $up = $this->board->up($this->getPosition());
+        $up = $this->board->up($position);
         if ($this->board->getPiece($up)) {
             return false;
         }
