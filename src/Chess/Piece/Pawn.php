@@ -44,15 +44,41 @@ class Pawn extends \Chess\Piece
 
     /**
      * Returns position below piece's position
+     * @param int $count
      * @return string|false Returns false if not valid move for piece
      */
-    public function down()
+    public function down($count = 1)
     {
         if ($this->color === self::LIGHT) {
             return false;
         }
-        $down = $this->board->down($this->getPosition());
-        return $this->board->getPiece($down) ? false : $down;
+
+        if ($count > 2) {
+            return false;
+        }
+
+        $position = $this->getPosition();
+
+        $down = $this->board->down($position);
+        if ($this->board->getPiece($down)) {
+            return false;
+        }
+
+        if ($count === 1) {
+            return $down;
+        }
+
+        list($file, $rank) = str_split($position);
+        if ($rank != 7) {
+            return false;
+        }
+
+        $down = $this->board->down($down);
+        if ($this->board->getPiece($down)) {
+            return false;
+        }
+
+        return $down;
     }
 
     /**
