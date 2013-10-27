@@ -38,7 +38,7 @@ abstract class Piece
     }
 
     /**
-     * Gets or sets board on piece
+     * Gets or pieces board on piece
      * @param  \Chess\Board|null $board
      * @return \Chess\Board
      */

@@ -22,7 +22,7 @@ class Pawn extends \Chess\Piece
         $position = $this->position();
 
         $up = $this->board->up($position);
-        if ($this->board->get($up)) {
+        if ($this->board->piece($up)) {
             return false;
         }
 
@@ -36,7 +36,7 @@ class Pawn extends \Chess\Piece
         }
 
         $up = $this->board->up($up);
-        if ($this->board->get($up)) {
+        if ($this->board->piece($up)) {
             return false;
         }
 
@@ -61,7 +61,7 @@ class Pawn extends \Chess\Piece
         $position = $this->position();
 
         $down = $this->board->down($position);
-        if ($this->board->get($down)) {
+        if ($this->board->piece($down)) {
             return false;
         }
 
@@ -75,7 +75,7 @@ class Pawn extends \Chess\Piece
         }
 
         $down = $this->board->down($down);
-        if ($this->board->get($down)) {
+        if ($this->board->piece($down)) {
             return false;
         }
 
@@ -113,7 +113,7 @@ class Pawn extends \Chess\Piece
         if (!$upLeft) {
             return false;
         }
-        $piece = $this->board->get($upLeft);
+        $piece = $this->board->piece($upLeft);
         if ($piece && $piece->color() !== $this->color()) {
             return $upLeft;
         }
@@ -133,7 +133,7 @@ class Pawn extends \Chess\Piece
         if (!$upRight) {
             return false;
         }
-        $piece = $this->board->get($upRight);
+        $piece = $this->board->piece($upRight);
         if ($piece && $piece->color() !== $this->color()) {
             return $upRight;
         }
@@ -153,7 +153,7 @@ class Pawn extends \Chess\Piece
         if (!$downLeft) {
             return false;
         }
-        $piece = $this->board->get($downLeft);
+        $piece = $this->board->piece($downLeft);
         if ($piece && $piece->color() !== $this->color()) {
             return $downLeft;
         }
@@ -173,7 +173,7 @@ class Pawn extends \Chess\Piece
         if (!$downRight) {
             return false;
         }
-        $piece = $this->board->get($downRight);
+        $piece = $this->board->piece($downRight);
         if ($piece && $piece->color() !== $this->color()) {
             return $downRight;
         }

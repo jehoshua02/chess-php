@@ -23,86 +23,86 @@ class Board
     {
         if ($positions !== null) {
             foreach ($positions as $position => $piece) {
-                $this->set($position, $piece);
+                $this->piece($position, $piece);
             }
             return;
         }
 
-        $this->set('A1', new Rook(Piece::LIGHT));
-        $this->set('B1', new Knight(Piece::LIGHT));
-        $this->set('C1', new Bishop(Piece::LIGHT));
-        $this->set('D1', new Queen(Piece::LIGHT));
-        $this->set('E1', new King(Piece::LIGHT));
-        $this->set('F1', new Bishop(Piece::LIGHT));
-        $this->set('G1', new Knight(Piece::LIGHT));
-        $this->set('H1', new Rook(Piece::LIGHT));
+        $this->piece('A1', new Rook(Piece::LIGHT));
+        $this->piece('B1', new Knight(Piece::LIGHT));
+        $this->piece('C1', new Bishop(Piece::LIGHT));
+        $this->piece('D1', new Queen(Piece::LIGHT));
+        $this->piece('E1', new King(Piece::LIGHT));
+        $this->piece('F1', new Bishop(Piece::LIGHT));
+        $this->piece('G1', new Knight(Piece::LIGHT));
+        $this->piece('H1', new Rook(Piece::LIGHT));
 
-        $this->set('A2', new Pawn(Piece::LIGHT));
-        $this->set('B2', new Pawn(Piece::LIGHT));
-        $this->set('C2', new Pawn(Piece::LIGHT));
-        $this->set('D2', new Pawn(Piece::LIGHT));
-        $this->set('E2', new Pawn(Piece::LIGHT));
-        $this->set('F2', new Pawn(Piece::LIGHT));
-        $this->set('G2', new Pawn(Piece::LIGHT));
-        $this->set('H2', new Pawn(Piece::LIGHT));
+        $this->piece('A2', new Pawn(Piece::LIGHT));
+        $this->piece('B2', new Pawn(Piece::LIGHT));
+        $this->piece('C2', new Pawn(Piece::LIGHT));
+        $this->piece('D2', new Pawn(Piece::LIGHT));
+        $this->piece('E2', new Pawn(Piece::LIGHT));
+        $this->piece('F2', new Pawn(Piece::LIGHT));
+        $this->piece('G2', new Pawn(Piece::LIGHT));
+        $this->piece('H2', new Pawn(Piece::LIGHT));
 
-        $this->set('A7', new Pawn(Piece::DARK));
-        $this->set('B7', new Pawn(Piece::DARK));
-        $this->set('C7', new Pawn(Piece::DARK));
-        $this->set('D7', new Pawn(Piece::DARK));
-        $this->set('E7', new Pawn(Piece::DARK));
-        $this->set('F7', new Pawn(Piece::DARK));
-        $this->set('G7', new Pawn(Piece::DARK));
-        $this->set('H7', new Pawn(Piece::DARK));
+        $this->piece('A7', new Pawn(Piece::DARK));
+        $this->piece('B7', new Pawn(Piece::DARK));
+        $this->piece('C7', new Pawn(Piece::DARK));
+        $this->piece('D7', new Pawn(Piece::DARK));
+        $this->piece('E7', new Pawn(Piece::DARK));
+        $this->piece('F7', new Pawn(Piece::DARK));
+        $this->piece('G7', new Pawn(Piece::DARK));
+        $this->piece('H7', new Pawn(Piece::DARK));
 
-        $this->set('A8', new Rook(Piece::DARK));
-        $this->set('B8', new Knight(Piece::DARK));
-        $this->set('C8', new Bishop(Piece::DARK));
-        $this->set('D8', new Queen(Piece::DARK));
-        $this->set('E8', new King(Piece::DARK));
-        $this->set('F8', new Bishop(Piece::DARK));
-        $this->set('G8', new Knight(Piece::DARK));
-        $this->set('H8', new Rook(Piece::DARK));
+        $this->piece('A8', new Rook(Piece::DARK));
+        $this->piece('B8', new Knight(Piece::DARK));
+        $this->piece('C8', new Bishop(Piece::DARK));
+        $this->piece('D8', new Queen(Piece::DARK));
+        $this->piece('E8', new King(Piece::DARK));
+        $this->piece('F8', new Bishop(Piece::DARK));
+        $this->piece('G8', new Knight(Piece::DARK));
+        $this->piece('H8', new Rook(Piece::DARK));
     }
 
     /**
-     * Returns the piece type at specified position
-     * @param  string $position Algebraic notation (A1 through H8)
-     * @return \Chess\Piece|false Returns false if position is empty
+     * Gets, sets, or unsets piece for specified position
+     * @param  string $position
+     * @param  \Chess\Piece|null $piece Omit to just get piece. Pass null to unset piece.
+     * @return \Chess\Piece|null|false Returns null if position is empty. Returns false if position invalid.
      */
-    public function get($position)
-    {
-        return array_key_exists($position, $this->positions) ? $this->positions[$position] : false;
-    }
-
-    /**
-     * Sets piece for specified position
-     * @param string $position
-     * @param \Chess\Piece $piece
-     * @return boolean
-     */
-    public function set($position, \Chess\Piece $piece)
+    public function piece($position, \Chess\Piece $piece = null)
     {
         $files = str_split('ABCDEFGH');
         $ranks = str_split('12345678');
         list($file, $rank) = str_split($position);
         $valid = in_array($file, $files) && in_array($rank, $ranks);
-        if ($valid) {
-            $piece->board($this);
-            $this->positions[$position] = $piece;
-        }
-        return $valid;
-    }
 
-    /**
-     * Clears the specified position
-     * @param  string $position
-     */
-    public function remove($position)
-    {
-        if (array_key_exists($position, $this->positions)) {
-            unset($this->positions[$position]);
+        if (!$valid) {
+            return false;
         }
+
+        $args = func_get_args();
+        if (count($args) === 1) {
+            // piece piece
+            if (!array_key_exists($position, $this->positions)) {
+                return null;
+            }
+            return $this->positions[$position];
+        }
+
+        if ($piece === null) {
+            // remove piece
+            if (array_key_exists($position, $this->positions)) {
+                unset($this->positions[$position]);
+            }
+            return null;
+        }
+
+        // piece piece
+        $piece->board($this);
+        $this->positions[$position] = $piece;
+        return $piece;
     }
 
     /**
