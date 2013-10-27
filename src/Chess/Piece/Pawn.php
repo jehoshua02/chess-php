@@ -8,9 +8,24 @@ class Pawn extends \Chess\Piece
      * Returns all possible moves
      * @return array
      */
-    public function possibleMoves()
+    public function moves()
     {
-        return array(null);
+        $moves = array(
+            $this->up(),
+            $this->up(2),
+            $this->upLeft(),
+            $this->upRight(),
+            $this->down(),
+            $this->down(2),
+            $this->downLeft(),
+            $this->downRight()
+        );
+
+        $moves = array_filter($moves, function ($move) {
+            return $move !== false;
+        });
+
+        return $moves;
     }
 
     /**
@@ -18,13 +33,9 @@ class Pawn extends \Chess\Piece
      * @param int $count
      * @return string|false Returns false if not valid move for piece
      */
-    public function up($count = 1)
+    protected function up($count = 1)
     {
         if ($this->color() === self::DARK) {
-            return false;
-        }
-
-        if ($count > 2) {
             return false;
         }
 
@@ -57,13 +68,9 @@ class Pawn extends \Chess\Piece
      * @param int $count
      * @return string|false Returns false if not valid move for piece
      */
-    public function down($count = 1)
+    protected function down($count = 1)
     {
         if ($this->color() === self::LIGHT) {
-            return false;
-        }
-
-        if ($count > 2) {
             return false;
         }
 
@@ -92,28 +99,10 @@ class Pawn extends \Chess\Piece
     }
 
     /**
-     * Returns false (pawns cannot move left)
-     * @return false
-     */
-    public function left()
-    {
-        return false;
-    }
-
-    /**
-     * Returns false (pawns cannot move right)
-     * @return false
-     */
-    public function right()
-    {
-        return false;
-    }
-
-    /**
      * Returns position up and left of piece's position
      * @return string|false Returns false if not valid move for piece
      */
-    public function upLeft()
+    protected function upLeft()
     {
         if ($this->color() === self::DARK) {
             return false;
@@ -133,7 +122,7 @@ class Pawn extends \Chess\Piece
      * Returns position up and right of piece's position
      * @return string|false Returns false if not valid move for piece
      */
-    public function upRight()
+    protected function upRight()
     {
         if ($this->color() === self::DARK) {
             return false;
@@ -153,7 +142,7 @@ class Pawn extends \Chess\Piece
      * Returns position down and left of piece's position
      * @return string|false Returns false if not valid move for piece
      */
-    public function downLeft()
+    protected function downLeft()
     {
         if ($this->color() === self::LIGHT) {
             return false;
@@ -173,7 +162,7 @@ class Pawn extends \Chess\Piece
      * Returns position down and right of piece's position
      * @return string|false Returns false if not valid move for piece
      */
-    public function downRight()
+    protected function downRight()
     {
         if ($this->color() === self::LIGHT) {
             return false;

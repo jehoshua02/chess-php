@@ -6,251 +6,361 @@ use \Chess\Piece\Pawn;
 
 class PawnTest extends \PHPUnit_Framework_TestCase
 {
-    public function testPossibleMoves()
+    public function testNoMoves()
     {
-        // up
-        $board = new Board(array(
-            'D4' => new Pawn(Piece::LIGHT)
-        ));
-        $moves = $board->piece('D4')->possibleMoves();
-        $this->assertCount(1, $moves);
-        $this->assertContains('D5', $moves, 'Pawn should be able to move up');
-    }
-
-    public function testUp()
-    {
-        $board = new Board(array(
-            'D4' => new Pawn(Piece::LIGHT)
-        ));
-        $this->assertEquals('D5', $board->piece('D4')->up(), 'Pawn should be able to move up');
-
-        // blocked
+        // pawn should have no moves
         $board = new Board(array(
             'D4' => new Pawn(Piece::LIGHT),
             'D5' => new Pawn(Piece::DARK)
         ));
-        $this->assertFalse($board->piece('D4')->up(), 'Pawn should not be able to move up');
-
-        // dark
-        $board = new Board(array(
-            'D4' => new Pawn(Piece::DARK)
-        ));
-        $this->assertFalse($board->piece('D4')->up(), 'Pawn should not be able to move up');
-
-        // two
-        $board = new Board(array(
-            'A2' => new Pawn(Piece::LIGHT)
-        ));
-        $this->assertEquals('A4', $board->piece('A2')->up(2), 'Pawn should be able to move two up from starting position');
-
-        // two blocked
-        $board = new Board(array(
-            'A2' => new Pawn(Piece::LIGHT),
-            'A3' => new Pawn(Piece::DARK)
-        ));
-        $this->assertFalse($board->piece('A2')->up(2), 'Pawn should be blocked from moving two up');
-
-        $board = new Board(array(
-            'A2' => new Pawn(Piece::LIGHT),
-            'A4' => new Pawn(Piece::DARK)
-        ));
-        $this->assertFalse($board->piece('A2')->up(2), 'Pawn should be blocked from moving two up');
-
-        // not on start position
-        $board = new Board(array(
-            'A3' => new Pawn(Piece::LIGHT)
-        ));
-        $this->assertFalse($board->piece('A3')->up(2), 'Pawn should be blocked from moving two up');
-
-        // three
-        $board = new Board(array(
-            'A2' => new Pawn(Piece::LIGHT)
-        ));
-        $this->assertFalse($board->piece('A2')->up(3), 'Pawn cannot move three up');
+        $moves = $board->piece('D4')->moves();
+        $this->assertCount(0, $moves, 'Pawn should have no possible moves');
+        $moves = $board->piece('D5')->moves();
+        $this->assertCount(0, $moves, 'Pawn should have no possible moves');
     }
 
-    public function testDown()
+    public function testOneMove()
     {
-        $board = new Board(array(
-            'D4' => new Pawn(Piece::DARK)
-        ));
-        $this->assertEquals('D3', $board->piece('D4')->down(), 'Pawn should be able to move down');
-
-        // blocked
-        $board = new Board(array(
-            'D4' => new Pawn(Piece::DARK),
-            'D3' => new Pawn(Piece::LIGHT)
-        ));
-        $this->assertFalse($board->piece('D4')->down(), 'Pawn should not be able to move down');
-
-        // light
+        // pawn should have one move: up one
         $board = new Board(array(
             'D4' => new Pawn(Piece::LIGHT)
         ));
-        $this->assertFalse($board->piece('D4')->down(), 'Pawn should not be able to move down');
+        $moves = $board->piece('D4')->moves();
+        $this->assertCount(1, $moves, 'Pawn should have one possible move');
+        $this->assertContains('D5', $moves, 'Pawn should be able to move up one');
 
-        // two
+        // pawn should have one move: down one
         $board = new Board(array(
-            'A7' => new Pawn(Piece::DARK)
+            'D5' => new Pawn(Piece::DARK)
         ));
-        $this->assertEquals('A5', $board->piece('A7')->down(2), 'Pawn should be able to move two down from starting position');
+        $moves = $board->piece('D5')->moves();
+        $this->assertCount(1, $moves, 'Pawn should have one possible move');
+        $this->assertContains('D4', $moves, 'Pawn should be able to move down one');
 
-        $board = new Board(array(
-            'A7' => new Pawn(Piece::DARK),
-            'A5' => new Pawn(Piece::LIGHT)
-        ));
-        $this->assertFalse($board->piece('A7')->down(2), 'Pawn should be blocked from moving two down');
-
-        // not on start position
-        $board = new Board(array(
-            'A6' => new Pawn(Piece::DARK)
-        ));
-        $this->assertFalse($board->piece('A6')->down(2), 'Pawn should be blocked from moving two down');
-
-        // three
-        $board = new Board(array(
-            'A7' => new Pawn(Piece::DARK)
-        ));
-        $this->assertFalse($board->piece('A7')->down(3), 'Pawn cannot move three down');
-    }
-
-    public function testLeft()
-    {
-        $board = new Board(array(
-            'D4' => new Pawn(Piece::DARK)
-        ));
-        $this->assertFalse($board->piece('D4')->left(), 'Pawn should not be able to move left');
-    }
-
-    public function testRight()
-    {
-        $board = new Board(array(
-            'D4' => new Pawn(Piece::DARK)
-        ));
-        $this->assertFalse($board->piece('D4')->right(), 'Pawn should not be able to move right');
-    }
-
-    public function testUpLeft()
-    {
-        $board = new Board(array(
-            'D4' => new Pawn(Piece::LIGHT)
-        ));
-        $this->assertFalse($board->piece('D4')->upLeft(), 'Pawn should not be able to move up and left');
-
+        // pawn should have one move: capture up left
         $board = new Board(array(
             'D4' => new Pawn(Piece::LIGHT),
-            'C5' => new Pawn(Piece::LIGHT)
+            'D5' => new Pawn(Piece::DARK),
+            'C5' => new Pawn(Piece::DARK)
         ));
-        $this->assertFalse($board->piece('D4')->upLeft(), 'Pawn should not be able to capture own color');
+        $moves = $board->piece('D4')->moves();
+        $this->assertCount(1, $moves, 'Pawn should have one possible move');
+        $this->assertContains('C5', $moves, 'Pawn should be able to capture up left');
 
+        // pawn should have one move: capture up right
+        $board = new Board(array(
+            'D4' => new Pawn(Piece::LIGHT),
+            'D5' => new Pawn(Piece::DARK),
+            'E5' => new Pawn(Piece::DARK)
+        ));
+        $moves = $board->piece('D4')->moves();
+        $this->assertCount(1, $moves, 'Pawn should have one possible move');
+        $this->assertContains('E5', $moves, 'Pawn should be able to capture up right');
+
+        // pawn should have one move: capture down left
+        $board = new Board(array(
+            'D5' => new Pawn(Piece::DARK),
+            'D4' => new Pawn(Piece::LIGHT),
+            'C4' => new Pawn(Piece::LIGHT)
+        ));
+        $moves = $board->piece('D5')->moves();
+        $this->assertCount(1, $moves, 'Pawn should have one possible move');
+        $this->assertContains('C4', $moves, 'Pawn should be able to capture down left');
+
+        // pawn should have one move: capture down right
+        $board = new Board(array(
+            'D5' => new Pawn(Piece::DARK),
+            'D4' => new Pawn(Piece::LIGHT),
+            'E4' => new Pawn(Piece::LIGHT)
+        ));
+        $moves = $board->piece('D5')->moves();
+        $this->assertCount(1, $moves, 'Pawn should have one possible move');
+        $this->assertContains('E4', $moves, 'Pawn should be able to capture down right');
+    }
+
+    public function testTwoMoves()
+    {
+        // pawn should have two moves: up, up two
+        $board = new Board(array(
+            'D2' => new Pawn(Piece::LIGHT)
+        ));
+        $moves = $board->piece('D2')->moves();
+        $this->assertCount(2, $moves);
+        $this->assertContains('D3', $moves, 'Pawn should be able to move up one');
+        $this->assertContains('D4', $moves, 'Pawn should be able to move up two');
+
+        // pawn should have two moves: up, up left
         $board = new Board(array(
             'D4' => new Pawn(Piece::LIGHT),
             'C5' => new Pawn(Piece::DARK)
         ));
-        $this->assertEquals('C5', $board->piece('D4')->upLeft(), 'Pawn should be able to capture up and left');
+        $moves = $board->piece('D4')->moves();
+        $this->assertCount(2, $moves, 'Pawn should have two possible moves');
+        $this->assertContains('D5', $moves, 'Pawn should be able to move up');
+        $this->assertContains('C5', $moves, 'Pawn should be able to capture up and left');
 
+        // pawn should have two moves: up, up left (up two blocked)
         $board = new Board(array(
-            'A4' => new Pawn(Piece::LIGHT)
-        ));
-        $this->assertFalse($board->piece('A4')->upLeft(), 'Pawn should not be able to move off edge of board');
-
-        $board = new Board(array(
+            'D2' => new Pawn(Piece::LIGHT),
             'D4' => new Pawn(Piece::DARK),
-            'C5' => new Pawn(Piece::LIGHT)
+            'C3' => new Pawn(Piece::DARK)
         ));
-        $this->assertFalse($board->piece('D4')->upLeft(), 'Dark pawn should not be able to move up and left');
-    }
+        $moves = $board->piece('D2')->moves();
+        $this->assertCount(2, $moves, 'Pawn should have two possible moves');
+        $this->assertContains('D3', $moves, 'Pawn should be able to move up one');
+        $this->assertContains('C3', $moves, 'Pawn should be able to capture up left');
 
-    public function testUpRight()
-    {
-        $board = new Board(array(
-            'D4' => new Pawn(Piece::LIGHT)
-        ));
-        $this->assertFalse($board->piece('D4')->upRight(), 'Pawn should not be able to move up and right');
-
-        $board = new Board(array(
-            'D4' => new Pawn(Piece::LIGHT),
-            'E5' => new Pawn(Piece::LIGHT)
-        ));
-        $this->assertFalse($board->piece('D4')->upRight(), 'Pawn should not be able to capture own color');
-
+        // pawn should have two moves: up, up right
         $board = new Board(array(
             'D4' => new Pawn(Piece::LIGHT),
             'E5' => new Pawn(Piece::DARK)
         ));
-        $this->assertEquals('E5', $board->piece('D4')->upRight(), 'Pawn should be able to capture up and right');
+        $moves = $board->piece('D4')->moves();
+        $this->assertCount(2, $moves, 'Pawn should have two possible moves');
+        $this->assertContains('D5', $moves, 'Pawn should be able to move up');
+        $this->assertContains('E5', $moves, 'Pawn should be able to capture up right');
 
+        // pawn should have two moves: up, up right (up two blocked)
         $board = new Board(array(
-            'H4' => new Pawn(Piece::LIGHT)
+            'D2' => new Pawn(Piece::LIGHT),
+            'E3' => new Pawn(Piece::DARK),
+            'D4' => new Pawn(Piece::DARK)
         ));
-        $this->assertFalse($board->piece('H4')->upRight(), 'Pawn should not be able to move off edge of board');
+        $moves = $board->piece('D2')->moves();
+        $this->assertCount(2, $moves, 'Pawn should have two possible moves');
+        $this->assertContains('D3', $moves, 'Pawn should be able to move up');
+        $this->assertContains('E3', $moves, 'Pawn should be able to capture up right');
 
+        // pawn should have two moves: up left, up right
         $board = new Board(array(
-            'D4' => new Pawn(Piece::DARK),
-            'E5' => new Pawn(Piece::LIGHT)
-        ));
-        $this->assertFalse($board->piece('D4')->upRight(), 'Dark pawn should not be able to move up and right');
-    }
-
-    public function testDownLeft()
-    {
-        $board = new Board(array(
-            'D5' => new Pawn(Piece::DARK)
-        ));
-        $this->assertFalse($board->piece('D5')->downLeft(), 'Pawn should not be able to move down and left');
-
-        $board = new Board(array(
+            'D4' => new Pawn(Piece::LIGHT),
             'D5' => new Pawn(Piece::DARK),
-            'C4' => new Pawn(Piece::DARK)
+            'C5' => new Pawn(Piece::DARK),
+            'E5' => new Pawn(Piece::DARK)
         ));
-        $this->assertFalse($board->piece('D5')->downLeft(), 'Pawn should not be able to capture own color');
+        $moves = $board->piece('D4')->moves();
+        $this->assertCount(2, $moves, 'Pawn should have two possible moves');
+        $this->assertContains('C5', $moves, 'Pawn should be able to capture up left');
+        $this->assertContains('E5', $moves, 'Pawn should be able to capture up right');
 
+        // pawn should have two moves: down, down two
+        $board = new Board(array(
+            'D7' => new Pawn(Piece::DARK)
+        ));
+        $moves = $board->piece('D7')->moves();
+        $this->assertCount(2, $moves, 'Pawn should have two possible moves');
+        $this->assertContains('D6', $moves, 'Pawn should be able to move down one');
+        $this->assertContains('D5', $moves, 'Pawn should be able to move down two');
+
+        // pawn should have two moves: down, down left
         $board = new Board(array(
             'D5' => new Pawn(Piece::DARK),
             'C4' => new Pawn(Piece::LIGHT)
         ));
-        $this->assertEquals('C4', $board->piece('D5')->downLeft(), 'Pawn should be able to capture down and left');
+        $moves = $board->piece('D5')->moves();
+        $this->assertCount(2, $moves, 'Pawn should have two possible moves');
+        $this->assertContains('D4', $moves, 'Pawn should be able to move down');
+        $this->assertContains('C4', $moves, 'Pawn should be able to capture down left');
 
+        // pawn should have two moves: down, down left (down two blocked)
         $board = new Board(array(
-            'A5' => new Pawn(Piece::DARK)
+            'D7' => new Pawn(Piece::DARK),
+            'C6' => new Pawn(Piece::LIGHT),
+            'D5' => new Pawn(Piece::LIGHT)
         ));
-        $this->assertFalse($board->piece('A5')->downLeft(), 'Pawn should not be able to move off edge of board');
+        $moves = $board->piece('D7')->moves();
+        $this->assertCount(2, $moves, 'Pawn should have two possible moves');
+        $this->assertContains('D6', $moves, 'Pawn should be able to move down');
+        $this->assertContains('C6', $moves, 'Pawn should be able to capture down left');
 
-        $board = new Board(array(
-            'D5' => new Pawn(Piece::LIGHT),
-            'C4' => new Pawn(Piece::DARK)
-        ));
-        $this->assertFalse($board->piece('D5')->downLeft(), 'Light pawn should not be able to move down and left');
-    }
-
-    public function testDownRight()
-    {
-        $board = new Board(array(
-            'D5' => new Pawn(Piece::DARK)
-        ));
-        $this->assertFalse($board->piece('D5')->downRight(), 'Pawn should not be able to move down and right');
-
-        $board = new Board(array(
-            'D5' => new Pawn(Piece::DARK),
-            'E4' => new Pawn(Piece::DARK)
-        ));
-        $this->assertFalse($board->piece('D5')->downRight(), 'Pawn should not be able to capture own color');
-
+        // pawn should have two moves: down, down right
         $board = new Board(array(
             'D5' => new Pawn(Piece::DARK),
             'E4' => new Pawn(Piece::LIGHT)
         ));
-        $this->assertEquals('E4', $board->piece('D5')->downRight(), 'Pawn should be able to capture down and right');
+        $moves = $board->piece('D5')->moves();
+        $this->assertCount(2, $moves, 'Pawn should have two possible moves');
+        $this->assertContains('D4', $moves, 'Pawn should be able to move down');
+        $this->assertContains('E4', $moves, 'Pawn should be able to capture down right');
 
+        // pawn should have two moves: down, down right (down two blocked)
         $board = new Board(array(
-            'H4' => new Pawn(Piece::DARK)
+            'D7' => new Pawn(Piece::DARK),
+            'E6' => new Pawn(Piece::LIGHT),
+            'D5' => new Pawn(Piece::LIGHT)
         ));
-        $this->assertFalse($board->piece('H4')->downRight(), 'Pawn should not be able to move off edge of board');
+        $moves = $board->piece('D7')->moves();
+        $this->assertCount(2, $moves, 'Pawn should have two possible moves');
+        $this->assertContains('D6', $moves, 'Pawn should be able to move down');
+        $this->assertContains('E6', $moves, 'Pawn should be able to capture down right');
 
+        // pawn should have two moves: down left, down right
         $board = new Board(array(
+            'D5' => new Pawn(Piece::DARK),
+            'D4' => new Pawn(Piece::LIGHT),
+            'C4' => new Pawn(Piece::LIGHT),
+            'E4' => new Pawn(Piece::LIGHT)
+        ));
+        $moves = $board->piece('D5')->moves();
+        $this->assertCount(2, $moves, 'Pawn should have two possible moves');
+        $this->assertContains('C4', $moves, 'Pawn should be able to capture down left');
+        $this->assertContains('E4', $moves, 'Pawn should be able to capture down right');
+    }
+
+    public function testThreeMoves()
+    {
+        // pawn should have three moves: up, up two, up left
+        $board = new Board(array(
+            'D2' => new Pawn(Piece::LIGHT),
+            'C3' => new Pawn(Piece::DARK)
+        ));
+        $moves = $board->piece('D2')->moves();
+        $this->assertCount(3, $moves, 'Pawn should have three possible moves');
+        $this->assertContains('D3', $moves, 'Pawn should be able to move up one');
+        $this->assertContains('D4', $moves, 'Pawn should be able to move up two');
+        $this->assertContains('C3', $moves, 'Pawn should be able to capture up left');
+
+        // pawn should have three moves: up, up two, up right
+        $board = new Board(array(
+            'D2' => new Pawn(Piece::LIGHT),
+            'E3' => new Pawn(Piece::DARK)
+        ));
+        $moves = $board->piece('D2')->moves();
+        $this->assertCount(3, $moves, 'Pawn should have three possible moves');
+        $this->assertContains('D3', $moves, 'Pawn should be able to move up one');
+        $this->assertContains('D4', $moves, 'Pawn should be able to move up two');
+        $this->assertContains('E3', $moves, 'Pawn should be able to capture up right');
+
+        // pawn should have three moves: up, up left, up right
+        $board = new Board(array(
+            'D4' => new Pawn(Piece::LIGHT),
+            'C5' => new Pawn(Piece::DARK),
+            'E5' => new Pawn(Piece::DARK)
+        ));
+        $moves = $board->piece('D4')->moves();
+        $this->assertCount(3, $moves, 'Pawn should have three possible moves');
+        $this->assertContains('D5', $moves, 'Pawn should be able to move up one');
+        $this->assertContains('C5', $moves, 'Pawn should be able to capture up left');
+        $this->assertContains('E5', $moves, 'Pawn should be able to capture up right');
+
+        // pawn should have three moves: up, up left, up right (up two blocked)
+        $board = new Board(array(
+            'D2' => new Pawn(Piece::LIGHT),
+            'D4' => new Pawn(Piece::DARK),
+            'C3' => new Pawn(Piece::DARK),
+            'E3' => new Pawn(Piece::DARK)
+        ));
+        $moves = $board->piece('D2')->moves();
+        $this->assertCount(3, $moves, 'Pawn should have three possible moves');
+        $this->assertContains('D3', $moves, 'Pawn should be able to move up one');
+        $this->assertContains('C3', $moves, 'Pawn should be able to capture up left');
+        $this->assertContains('E3', $moves, 'Pawn should be able to capture up right');
+
+        // pawn should have three moves: down, down two, down left
+        $board = new Board(array(
+            'D7' => new Pawn(Piece::DARK),
+            'C6' => new Pawn(Piece::LIGHT)
+        ));
+        $moves = $board->piece('D7')->moves();
+        $this->assertCount(3, $moves, 'Pawn should have three possible moves');
+        $this->assertContains('D6', $moves, 'Pawn should be able to move down one');
+        $this->assertContains('D5', $moves, 'Pawn should be able to move down two');
+        $this->assertContains('C6', $moves, 'Pawn should be able to capture down left');
+
+        // pawn should have three moves: down, down two, down right
+        $board = new Board(array(
+            'D7' => new Pawn(Piece::DARK),
+            'E6' => new Pawn(Piece::LIGHT)
+        ));
+        $moves = $board->piece('D7')->moves();
+        $this->assertCount(3, $moves, 'Pawn should have three possible moves');
+        $this->assertContains('D6', $moves, 'Pawn should be able to move down one');
+        $this->assertContains('D5', $moves, 'Pawn should be able to move down two');
+        $this->assertContains('E6', $moves, 'Pawn should be able to capture down right');
+
+        // pawn should have three moves: down, down left, down right
+        $board = new Board(array(
+            'D5' => new Pawn(Piece::DARK),
+            'C4' => new Pawn(Piece::LIGHT),
+            'E4' => new Pawn(Piece::LIGHT)
+        ));
+        $moves = $board->piece('D5')->moves();
+        $this->assertCount(3, $moves, 'Pawn should have three possible moves');
+        $this->assertContains('D4', $moves, 'Pawn should be able to move down one');
+        $this->assertContains('C4', $moves, 'Pawn should be able to capture down left');
+        $this->assertContains('E4', $moves, 'Pawn should be able to capture down right');
+
+        // pawn should have three moves: down, down left, down right (down two blocked)
+        $board = new Board(array(
+            'D7' => new Pawn(Piece::DARK),
             'D5' => new Pawn(Piece::LIGHT),
-            'E4' => new Pawn(Piece::DARK)
+            'C6' => new Pawn(Piece::LIGHT),
+            'E6' => new Pawn(Piece::LIGHT)
         ));
-        $this->assertFalse($board->piece('D5')->downRight(), 'Light pawn should not be able to move down and right');
+        $moves = $board->piece('D7')->moves();
+        $this->assertCount(3, $moves, 'Pawn should have three possible moves');
+        $this->assertContains('D6', $moves, 'Pawn should be able to move down one');
+        $this->assertContains('C6', $moves, 'Pawn should be able to capture down left');
+        $this->assertContains('E6', $moves, 'Pawn should be able to capture down right');
+    }
+
+    public function testFourMoves()
+    {
+        // pawn should have four moves: up, up two, up left, up right
+        $board = new Board(array(
+            'D2' => new Pawn(Piece::LIGHT),
+            'C3' => new Pawn(Piece::DARK),
+            'E3' => new Pawn(Piece::DARK)
+        ));
+        $moves = $board->piece('D2')->moves();
+        $this->assertCount(4, $moves, 'Pawn should have four possible moves');
+        $this->assertContains('D3', $moves, 'Pawn should be able to move up one');
+        $this->assertContains('D4', $moves, 'Pawn should be able to move up two');
+        $this->assertContains('C3', $moves, 'Pawn should be able to capture up left');
+        $this->assertContains('E3', $moves, 'Pawn should be able to capture up right');
+
+        // pawn should have four moves: down, down two, down left, down right
+        $board = new Board(array(
+            'D7' => new Pawn(Piece::DARK),
+            'C6' => new Pawn(Piece::LIGHT),
+            'E6' => new Pawn(Piece::LIGHT)
+        ));
+        $moves = $board->piece('D7')->moves();
+        $this->assertCount(4, $moves, 'Pawn should have four possible moves');
+        $this->assertContains('D6', $moves, 'Pawn should be able to move down one');
+        $this->assertContains('D5', $moves, 'Pawn should be able to move down two');
+        $this->assertContains('C6', $moves, 'Pawn should be able to capture down left');
+        $this->assertContains('E6', $moves, 'Pawn should be able to capture down right');
+    }
+
+    public function testEdgeOfBoard()
+    {
+        $board = new Board(array(
+            'A4' => new Pawn(Piece::LIGHT)
+        ));
+        $moves = $board->piece('A4')->moves();
+        $this->assertCount(1, $moves, 'Pawn should have one possible move');
+        $this->assertContains('A5', $moves, 'Pawn should be able to move up');
+
+        $board = new Board(array(
+            'H4' => new Pawn(Piece::LIGHT)
+        ));
+        $moves = $board->piece('H4')->moves();
+        $this->assertCount(1, $moves, 'Pawn should have one possible move');
+        $this->assertContains('H5', $moves, 'Pawn should be able to move up');
+
+        $board = new Board(array(
+            'A5' => new Pawn(Piece::DARK)
+        ));
+        $moves = $board->piece('A5')->moves();
+        $this->assertCount(1, $moves, 'Pawn should have one possible move');
+        $this->assertContains('A4', $moves, 'Pawn should be able to move down');
+
+        $board = new Board(array(
+            'H5' => new Pawn(Piece::DARK)
+        ));
+        $moves = $board->piece('H5')->moves();
+        $this->assertCount(1, $moves, 'Pawn should have one possible move');
+        $this->assertContains('H4', $moves, 'Pawn should be able to move down');
     }
 }
