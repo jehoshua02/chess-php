@@ -14,6 +14,7 @@ class PawnTest extends \PHPUnit_Framework_TestCase
         ));
         $moves = $board->piece('D4')->possibleMoves();
         $this->assertCount(1, $moves);
+        $this->assertContains('D5', $moves, 'Pawn should be able to move up');
     }
 
     public function testUp()
