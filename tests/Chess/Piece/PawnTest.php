@@ -6,6 +6,15 @@ use \Chess\Piece\Pawn;
 
 class PawnTest extends \PHPUnit_Framework_TestCase
 {
+    public function testPossibleMoves()
+    {
+        // up
+        $board = new Board(array(
+            'D4' => new Pawn(Piece::LIGHT)
+        ));
+        $moves = $board->piece('D4')->possibleMoves();
+    }
+
     public function testUp()
     {
         $board = new Board(array(
