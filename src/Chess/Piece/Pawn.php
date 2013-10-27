@@ -5,6 +5,14 @@ namespace Chess\Piece;
 class Pawn extends \Chess\Piece
 {
     /**
+     * Returns all possible moves
+     * @return array
+     */
+    public function possibleMoves()
+    {
+    }
+
+    /**
      * Returns position above piece's position
      * @param int $count
      * @return string|false Returns false if not valid move for piece
