@@ -42,7 +42,7 @@ abstract class Piece
      * @param  \Chess\Board|null $board
      * @return \Chess\Board
      */
-    public function setBoard(\Chess\Board $board)
+    public function board(\Chess\Board $board)
     {
         $this->board = $board;
     }
@@ -51,8 +51,8 @@ abstract class Piece
      * Returns piece's position
      * @return string|false
      */
-    public function getPosition()
+    public function position()
     {
-        return $this->board->getPosition($this);
+        return $this->board->position($this);
     }
 }
