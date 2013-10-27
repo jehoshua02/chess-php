@@ -44,10 +44,10 @@ abstract class Piece
      */
     public function board(\Chess\Board $board = null)
     {
-        if (!empty($this->board)) {
-            return $this->board;
+        if (empty($this->board)) {
+            $this->board = $board;
         }
-        $this->board = $board;
+        return $this->board;
     }
 
     /**
