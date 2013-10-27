@@ -166,6 +166,11 @@ class Pawn extends \Chess\Piece
      */
     public function downRight()
     {
+        $downRight = $this->board->downRight($this->getPosition());
+        $piece = $this->board->getPiece($downRight);
+        if ($piece && $piece->getColor() !== $this->getColor()) {
+            return $downRight;
+        }
         return false;
     }
 
