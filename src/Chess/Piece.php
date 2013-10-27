@@ -38,12 +38,15 @@ abstract class Piece
     }
 
     /**
-     * Gets or pieces board on piece
+     * Gets or sets board
      * @param  \Chess\Board|null $board
      * @return \Chess\Board
      */
-    public function board(\Chess\Board $board)
+    public function board(\Chess\Board $board = null)
     {
+        if (!empty($this->board)) {
+            return $this->board;
+        }
         $this->board = $board;
     }
 
