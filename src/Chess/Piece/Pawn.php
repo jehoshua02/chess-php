@@ -10,6 +10,7 @@ class Pawn extends \Chess\Piece
      */
     public function possibleMoves()
     {
+        return array(null);
     }
 
     /**
