@@ -1,6 +1,5 @@
 <?php
 
-namespace Chess\Piece;
 use \Chess\Board;
 use \Chess\Piece;
 use \Chess\Piece\Pawn;

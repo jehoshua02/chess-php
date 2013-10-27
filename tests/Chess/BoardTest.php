@@ -1,6 +1,6 @@
 <?php
 
-namespace Chess;
+use \Chess\Piece;
 use \Chess\Board;
 use \Chess\Piece\King;
 use \Chess\Piece\Queen;
