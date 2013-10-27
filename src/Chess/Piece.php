@@ -32,7 +32,7 @@ abstract class Piece
      * Returns color of the piece
      * @return int
      */
-    public function getColor()
+    public function color()
     {
         return $this->color;
     }
