@@ -13,6 +13,7 @@ class PawnTest extends \PHPUnit_Framework_TestCase
             'D4' => new Pawn(Piece::LIGHT)
         ));
         $moves = $board->piece('D4')->possibleMoves();
+        $this->assertCount(1, $moves);
     }
 
     public function testUp()
