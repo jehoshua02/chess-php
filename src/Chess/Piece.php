@@ -56,6 +56,6 @@ abstract class Piece
      */
     public function position()
     {
-        return $this->board->position($this);
+        return $this->board()->position($this);
     }
 }
