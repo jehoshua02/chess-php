@@ -7,4 +7,4 @@ php:
 install: composer install --dev
 script:
 - ./vendor/bin/phpunit
-- php ./coverage_check.php
+- php ./tests/coverage_check.php
