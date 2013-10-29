@@ -20,6 +20,10 @@ class Pawn extends \Chess\Piece
 
         // promotion
         if (array_key_exists('promote', $options)) {
+            $valid = in_array($options['promote'], array('Queen', 'Bishop', 'Knight', 'Rook'));
+            if (!$valid) {
+                return false;
+            }
             $class = sprintf('\\Chess\\Piece\\%s', $options['promote']);
             $piece = new $class($this->color());
         }
