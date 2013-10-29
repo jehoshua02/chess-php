@@ -1,7 +1,7 @@
 <?php
 
 $expected = 100;
-$inputFile = __DIR__ . '/tests/coverage/clover.xml';
+$inputFile = __DIR__ . '/coverage/clover.xml';
 
 if (!file_exists($inputFile)) {
     echo "No coverage reports found!\n";
