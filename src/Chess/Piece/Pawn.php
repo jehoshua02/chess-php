@@ -5,6 +5,23 @@ namespace Chess\Piece;
 class Pawn extends \Chess\Piece
 {
     /**
+     * Moves piece to specified position
+     * @param  string $position
+     * @return boolean
+     */
+    public function move($position)
+    {
+        $moves = $this->moves();
+        if (!in_array($position, $moves)) {
+            return false;
+        }
+
+        $this->board()->piece($this->position(), null);
+        $this->board()->piece($position, $this);
+        return true;
+    }
+
+    /**
      * Returns all possible moves
      * @return array
      */
