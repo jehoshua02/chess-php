@@ -26,6 +26,21 @@ class PawnTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($board->piece('D4') === $piece, 'Pawn should be in D4 still');
     }
 
+    public function testPromotion()
+    {
+        // allowed promotions
+        foreach (array('Queen', 'Bishop', 'Knight', 'Rook') as $promotion) {
+            $board = new Board(array(
+                'D7' => new Pawn(Piece::LIGHT)
+            ));
+            $piece = $board->piece('D7');
+            $piece->move('D8', array('promote' => $promotion));
+            $class = sprintf('\\Chess\\Piece\\%s', $promotion);
+            $this->assertInstanceOf($class, $board->piece('D8'), sprintf('Pawn should promote to %s', $promotion));
+            $this->assertEquals($piece->color(), $board->piece('D8')->color(), 'Piece should be same color after promotion');
+        }
+    }
+
     public function testNoMoves()
     {
         // pawn should have no moves
