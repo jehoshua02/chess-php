@@ -6,6 +6,26 @@ use \Chess\Piece\Pawn;
 
 class PawnTest extends \PHPUnit_Framework_TestCase
 {
+    public function testMove()
+    {
+        // valid move
+        $board = new Board(array(
+            'D4' => new Pawn(Piece::LIGHT)
+        ));
+        $piece = $board->piece('D4');
+        $this->assertTrue($board->piece('D4')->move('D5'), 'Pawn should be able to move');
+        $this->assertNull($board->piece('D4'), 'Pawn should not be in D4 anymore');
+        $this->assertTrue($board->piece('D5') === $piece, 'Pawn should now be in D5');
+
+        // invalid move
+        $board = new Board(array(
+            'D4' => new Pawn(Piece::LIGHT)
+        ));
+        $piece = $board->piece('D4');
+        $this->assertFalse($board->piece('D4')->move('D3'), 'Pawn should not be able to move');
+        $this->assertTrue($board->piece('D4') === $piece, 'Pawn should be in D4 still');
+    }
+
     public function testNoMoves()
     {
         // pawn should have no moves
