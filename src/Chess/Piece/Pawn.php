@@ -9,15 +9,23 @@ class Pawn extends \Chess\Piece
      * @param  string $position
      * @return boolean
      */
-    public function move($position)
+    public function move($position, array $options = array())
     {
         $moves = $this->moves();
         if (!in_array($position, $moves)) {
             return false;
         }
 
+        $piece = $this;
+
+        // promotion
+        if (array_key_exists('promote', $options)) {
+            $class = sprintf('\\Chess\\Piece\\%s', $options['promote']);
+            $piece = new $class($this->color());
+        }
+
         $this->board()->piece($this->position(), null);
-        $this->board()->piece($position, $this);
+        $this->board()->piece($position, $piece);
         return true;
     }
 
