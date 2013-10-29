@@ -12,7 +12,7 @@
     </filter>
 
     <logging>
-        <log type="coverage-clover" target="./tests/coverage/.xml" />
+        <log type="coverage-clover" target="./tests/coverage/clover.xml" />
         <log type="coverage-html" target="./tests/coverage" />
         <log type="coverage-text" target="php://stdout" />
     </logging>
