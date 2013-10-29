@@ -48,6 +48,8 @@ class PawnTest extends \PHPUnit_Framework_TestCase
             $piece = $board->piece('D7');
             $moved = $piece->move('D8', array('promote' => $promotion));
             $this->assertFalse($moved, sprintf('Pawn should not be able to promote to %s', $promotion));
+            $failed = $board->piece('D8') === null && $board->piece('D7') === $piece;
+            $this->assertTrue($failed, 'Pawn should still be in the same place when promotion fails');
         }
     }
 
