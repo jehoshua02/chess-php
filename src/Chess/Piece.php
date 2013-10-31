@@ -58,4 +58,37 @@ abstract class Piece
     {
         return $this->board()->position($this);
     }
+
+    /**
+     * Returns all moves in one direction
+     * @param  string $direction
+     * @return array
+     */
+    protected function slide($direction)
+    {
+        $moves = array();
+
+        $position = $this->position();
+        while (true) {
+            $position = $this->board()->$direction($position);
+
+            if (!$position) {
+                break;
+            }
+
+            $piece = $this->board()->piece($position);
+            if (!$piece) {
+                $moves[] = $position;
+                continue;
+            }
+
+            if ($piece->color() !== $this->color()) {
+                $moves[] = $position;
+            }
+
+            break;
+        }
+
+        return $moves;
+    }
 }
