@@ -106,6 +106,15 @@ class Board
     }
 
     /**
+     * Returns all the pieces on the board indexed by position
+     * @return array
+     */
+    public function pieces()
+    {
+        return $this->positions;
+    }
+
+    /**
      * Returns position of piece
      * @param  \Chess\Piece $piece
      * @return string|false
