@@ -98,6 +98,10 @@ abstract class Piece
      */
     public function king()
     {
+        if (!$this->board()) {
+            return false;
+        }
+
         foreach ($this->board()->pieces() as $piece) {
             if (is_a($piece, '\\Chess\\Piece\\King')) {
                 return $piece;
