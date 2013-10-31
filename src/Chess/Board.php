@@ -11,18 +11,18 @@ use \Chess\Piece\Pawn;
 class Board
 {
     /**
-     * Stores positions of pieces
+     * Stores pieces indexed by position
      * @var array
      */
-    protected $positions = array();
+    protected $pieces = array();
 
     /**
      * Construct method
      */
-    public function __construct($positions = null)
+    public function __construct($pieces = null)
     {
-        if ($positions !== null) {
-            foreach ($positions as $position => $piece) {
+        if ($pieces !== null) {
+            foreach ($pieces as $position => $piece) {
                 $this->piece($position, $piece);
             }
             return;
@@ -85,23 +85,23 @@ class Board
         $args = func_get_args();
         if (count($args) === 1) {
             // piece piece
-            if (!array_key_exists($position, $this->positions)) {
+            if (!array_key_exists($position, $this->pieces)) {
                 return null;
             }
-            return $this->positions[$position];
+            return $this->pieces[$position];
         }
 
         if ($piece === null) {
             // remove piece
-            if (array_key_exists($position, $this->positions)) {
-                unset($this->positions[$position]);
+            if (array_key_exists($position, $this->pieces)) {
+                unset($this->pieces[$position]);
             }
             return null;
         }
 
         // piece piece
         $piece->board($this);
-        $this->positions[$position] = $piece;
+        $this->pieces[$position] = $piece;
         return $piece;
     }
 
@@ -111,7 +111,7 @@ class Board
      */
     public function pieces()
     {
-        return $this->positions;
+        return $this->pieces;
     }
 
     /**
@@ -121,7 +121,7 @@ class Board
      */
     public function position(\Chess\Piece $piece)
     {
-        foreach ($this->positions as $position => $boardPiece) {
+        foreach ($this->pieces() as $position => $boardPiece) {
             if ($piece === $boardPiece) {
                 return $position;
             }
