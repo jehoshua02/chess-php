@@ -34,7 +34,17 @@ class Bishop extends \Chess\Piece
                 break;
             }
 
-            $moves[] = $position;
+            $piece = $this->board()->piece($position);
+            if (!$piece) {
+                $moves[] = $position;
+                continue;
+            }
+
+            if ($piece->color() !== $this->color()) {
+                $moves[] = $position;
+            }
+
+            break;
         }
 
         return $moves;
