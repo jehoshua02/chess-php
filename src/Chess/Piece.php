@@ -103,7 +103,10 @@ abstract class Piece
         }
 
         foreach ($this->board()->pieces() as $piece) {
-            if (is_a($piece, '\\Chess\\Piece\\King')) {
+            if (
+                is_a($piece, '\\Chess\\Piece\\King')
+                && $piece->color() === $this->color()
+            ) {
                 return $piece;
             }
         }
