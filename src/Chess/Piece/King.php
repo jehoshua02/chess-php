@@ -4,12 +4,8 @@ namespace Chess\Piece;
 
 class King extends \Chess\Piece
 {
-    /**
-     * Returns all possible moves
-     * @return array
-     */
-    public function moves()
+    public function check()
     {
-        return array();
+        return false;
     }
 }
