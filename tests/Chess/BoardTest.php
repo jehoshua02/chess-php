@@ -142,4 +142,13 @@ class BoardTest extends \PHPUnit_Framework_TestCase
         $anotherPiece = new Pawn(Piece::LIGHT);
         $this->assertFalse($board->position($anotherPiece), 'Pawn should not be found on board');
     }
+
+    public function testPieces()
+    {
+        $pieces = array(
+            'D4' => new Pawn(Piece::LIGHT)
+        );
+        $board = new Board($pieces);
+        $this->assertEquals($pieces, $board->pieces(), 'Board should return all the pieces');
+    }
 }
