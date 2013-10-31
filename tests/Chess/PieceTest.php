@@ -37,5 +37,10 @@ class PieceTest extends PHPUnit_Framework_TestCase
             'D4' => $piece
         ));
         $this->assertFalse($piece->king(), 'Piece on board with no King has no King');
+
+        // no board
+        $piece = new PieceStub(Piece::LIGHT);
+        $this->assertFalse($piece->king(), 'Piece without a board has no King');
+
     }
 }
