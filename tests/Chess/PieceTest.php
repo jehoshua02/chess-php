@@ -3,6 +3,7 @@
 use \Chess\Board;
 use \Chess\Piece;
 use \Chess\Piece\King;
+use \Chess\Piece\Pawn;
 
 class PieceStub extends \Chess\Piece
 {
@@ -46,5 +47,16 @@ class PieceTest extends PHPUnit_Framework_TestCase
         // no board
         $piece = new PieceStub(Piece::LIGHT);
         $this->assertFalse($piece->king(), 'Piece without a board has no King');
+    }
+
+    public function testCheck()
+    {
+        $piece = new PieceStub(Piece::LIGHT);
+        $board = new Board(array(
+            'A1' => $piece,
+            'D4' => new King(Piece::LIGHT),
+            'E5' => new Pawn(Piece::DARK)
+        ));
+        $this->assertTrue($piece->check(), 'King should be in check');
     }
 }
