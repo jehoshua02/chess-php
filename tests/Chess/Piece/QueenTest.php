@@ -26,4 +26,36 @@ class QueenTest extends \PHPUnit_Framework_TestCase
             $this->assertContains($position, $moves, sprintf($message, $position));
         }
     }
+
+    public function testMovesBlocked()
+    {
+        $board = new Board(array(
+            'D4' => new Queen(Piece::LIGHT),
+
+            // from RookTest
+            'C4' => new Pawn(Piece::LIGHT),
+            'D2' => new Pawn(Piece::LIGHT),
+            'D5' => new Pawn(Piece::DARK),
+            'F4' => new Pawn(Piece::DARK),
+
+            // from BishopTest
+            'C5' => new Pawn(Piece::DARK),
+            'F6' => new Pawn(Piece::DARK),
+            'C3' => new Pawn(Piece::LIGHT),
+            'F2' => new Pawn(Piece::LIGHT)
+        ));
+        $moves = $board->piece('D4')->moves();
+        $this->assertCount(8, $moves, 'Queen should have eight possible moves');
+
+        $message = 'Queen should be able to move to %s';
+        $positions = array(
+            // from RookTest
+            'D3', 'D5', 'E4', 'F4',
+            // from BishopTest
+            'E5', 'F6', 'C5', 'E3'
+        );
+        foreach ($positions as $position) {
+            $this->assertContains($position, $moves, sprintf($message, $position));
+        }
+    }
 }
