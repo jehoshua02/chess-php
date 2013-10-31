@@ -1,7 +1,8 @@
 <?php
 
-use \Chess\Piece;
 use \Chess\Board;
+use \Chess\Piece;
+use \Chess\Piece\King;
 
 class PieceStub extends \Chess\Piece
 {
@@ -26,7 +27,11 @@ class PieceTest extends PHPUnit_Framework_TestCase
     public function testKing()
     {
         $piece = new PieceStub(Piece::LIGHT);
-        $board = new Board();
+        $board = new Board(array(
+            'D4' => $piece,
+            'E8' => new King(Piece::DARK),
+            'E1' => new King(Piece::LIGHT)
+        ));
         $board->piece('D4', $piece);
         $king = $board->piece('E1');
         $this->assertTrue($king === $piece->king(), 'Every piece should know it\'s King');
@@ -41,6 +46,5 @@ class PieceTest extends PHPUnit_Framework_TestCase
         // no board
         $piece = new PieceStub(Piece::LIGHT);
         $this->assertFalse($piece->king(), 'Piece without a board has no King');
-
     }
 }
