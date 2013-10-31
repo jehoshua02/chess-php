@@ -84,7 +84,7 @@ class Board
 
         $args = func_get_args();
         if (count($args) === 1) {
-            // piece piece
+            // get piece
             if (!array_key_exists($position, $this->pieces)) {
                 return null;
             }
@@ -99,7 +99,7 @@ class Board
             return null;
         }
 
-        // piece piece
+        // set piece
         $piece->board($this);
         $this->pieces[$position] = $piece;
         return $piece;
