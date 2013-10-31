@@ -46,4 +46,13 @@ class KnightTest extends \PHPUnit_Framework_TestCase
             $this->assertContains($position, $moves, sprintf($message, $position));
         }
     }
+
+    public function testEdgeOfBoard()
+    {
+        $board = new Board(array(
+            'B4' => new Knight(Piece::LIGHT)
+        ));
+        $moves = $board->piece('B4')->moves();
+        $this->assertCount(6, $moves, 'Knight should have six possible moves');
+    }
 }
