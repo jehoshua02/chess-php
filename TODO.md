@@ -3,8 +3,7 @@
 ### Check / Checkmate / Stalemate
 
 + Determine if King is in check
-    + Piece->king(): finds king of same color in Board->pieces()
-        + Piece->check(): check if Piece->king()->position() is a possible move for each piece on the board
+    + Piece->check(): check if Piece->king()->position() is a possible move for each piece on the board
 
 + Determine if a move would put King into check
     + Piece->move: Move the piece, Piece->check(), undo move if in check.
