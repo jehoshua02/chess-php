@@ -4,6 +4,10 @@ namespace Chess\Piece;
 
 class Rook extends \Chess\Piece
 {
+    /**
+     * Returns all possible moves
+     * @return array
+     */
     public function moves()
     {
         $moves = array();
