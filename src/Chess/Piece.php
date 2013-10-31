@@ -113,4 +113,30 @@ abstract class Piece
 
         return false;
     }
+
+    /**
+     * Returns possible moves for piece
+     * @return array
+     */
+    public function moves()
+    {
+        return array();
+    }
+
+    /**
+     * Determines if the King is in check
+     * @return boolean
+     */
+    public function check()
+    {
+        $position = $this->king()->position();
+
+        foreach ($this->board()->pieces() as $piece) {
+            if (in_array($position, $piece->moves())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
