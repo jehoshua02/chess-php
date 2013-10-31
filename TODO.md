@@ -1,8 +1,5 @@
 # TODO
 
-+ KnightTest::testMoves
-+ KnightTest::testMovesBlocked
-
 ## King
 
 + King should have no possible moves
