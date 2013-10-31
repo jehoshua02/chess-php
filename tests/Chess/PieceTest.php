@@ -22,4 +22,13 @@ class PieceTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($anotherBoard === $piece->board($anotherBoard), 'Piece board should be immutable');
         $this->assertTrue($board === $piece->board(), 'Piece board should not have changed');
     }
+
+    public function testKing()
+    {
+        $piece = new PieceStub(Piece::LIGHT);
+        $board = new Board();
+        $board->piece('D4', $piece);
+        $king = $board->piece('E1');
+        $this->assertTrue($king === $piece->king(), 'Every piece should know it\'s King');
+    }
 }
