@@ -30,5 +30,12 @@ class PieceTest extends PHPUnit_Framework_TestCase
         $board->piece('D4', $piece);
         $king = $board->piece('E1');
         $this->assertTrue($king === $piece->king(), 'Every piece should know it\'s King');
+
+        // no king
+        $piece = new PieceStub(Piece::LIGHT);
+        $board = new Board(array(
+            'D4' => $piece
+        ));
+        $this->assertFalse($piece->king(), 'Piece on board with no King has no King');
     }
 }
