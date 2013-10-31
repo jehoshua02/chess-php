@@ -58,5 +58,14 @@ class PieceTest extends PHPUnit_Framework_TestCase
             'E5' => new Pawn(Piece::DARK)
         ));
         $this->assertTrue($piece->check(), 'King should be in check');
+
+        // not in check
+        $piece = new PieceStub(Piece::LIGHT);
+        $board = new Board(array(
+            'A1' => $piece,
+            'D4' => new King(Piece::LIGHT),
+            'E5' => new Pawn(Piece::LIGHT)
+        ));
+        $this->assertFalse($piece->check(), 'King should not be in check');
     }
 }
