@@ -2,25 +2,11 @@
 
 ### Check / Checkmate / Stalemate
 
-+ Determine if King is in check
-    + Piece->check(): check if Piece->king()->position() is a possible move for each piece on the board
 
-+ Determine if a move would put King into check
-    + Piece->move: Move the piece, Piece->check(), undo move if in check.
++ Piece->moves() should exclude moves that put King in check, or don't save him from Check. In other words, if I were to make the move, and afterward the King is in check, it's not a possible move. Exclude.
+    + Piece->checkmate(): no possible moves for any piece
 
-+ King cannot move into check
-    + Inherits Piece->move
-
-+ Determine if King is in checkmate
-    + Piece->checkmate(): Piece->check() && count(King->moves()) === 0
-
-+ Determine what moves would remove King from check / Determine why the King is in check
-+ No piece can move unless it removes King from check
-
-+ Stalemate (King not in check and no possible moves; no possible way to put King into checkmate)
-
-+ No piece can make a move if it would put King of the same color into check
-    + Piece->move
++ Stalemate (not in check but has no possible moves)
 
 ### Castling
 
