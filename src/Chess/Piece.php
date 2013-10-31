@@ -91,4 +91,19 @@ abstract class Piece
 
         return $moves;
     }
+
+    /**
+     * Returns the King piece
+     * @return \Chess\Piece\King|false Returns false if unable to find King
+     */
+    public function king()
+    {
+        foreach ($this->board()->pieces() as $piece) {
+            if (is_a($piece, '\\Chess\\Piece\\King')) {
+                return $piece;
+            }
+        }
+
+        return false;
+    }
 }
