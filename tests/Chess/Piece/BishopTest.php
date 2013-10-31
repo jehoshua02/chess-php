@@ -35,7 +35,7 @@ class BishopTest extends \PHPUnit_Framework_TestCase
         $message = 'Bishop should be able to move to %s';
         $positions = array('E5', 'F6', 'C5', 'E3');
         foreach ($positions as $position) {
-            $this->assertContains($position, $moves, sprintf($message, $positions));
+            $this->assertContains($position, $moves, sprintf($message, $position));
         }
     }
 }
