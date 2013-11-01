@@ -16,5 +16,15 @@ class KingTest extends \PHPUnit_Framework_TestCase
         foreach (array('C5', 'D5', 'E5', 'C4', 'E4', 'C3', 'D3', 'E3') as $position) {
             $this->assertContains($position, $moves, sprintf('King should be able to move to %s', $position));
         }
+
+        // edge of board
+        $board = new Board(array(
+            'A4' => new King(Piece::LIGHT)
+        ));
+        $moves = $board->piece('A4')->moves();
+        $this->assertCount(5, $moves, 'King should have five possible moves');
+        foreach (array('A5', 'B5', 'B4', 'A3', 'B3') as $position) {
+            $this->assertContains($position, $moves, sprintf('King should be able to move to %s', $position));
+        }
     }
 }
