@@ -6,12 +6,15 @@ use \Chess\Piece\King;
 
 class KingTest extends \PHPUnit_Framework_TestCase
 {
-    public function testCheck()
+    public function testMoves()
     {
-        $king = new King(Piece::LIGHT);
         $board = new Board(array(
-            'D4' => $king
+            'D4' => new King(Piece::LIGHT)
         ));
-        $this->assertFalse($king->check(), 'King should not be in check');
+        $moves = $board->piece('D4')->moves();
+        $this->assertCount(8, $moves, 'King should have eight possible moves');
+        foreach (array('C5', 'D5', 'E5', 'C4', 'E4', 'C3', 'D3', 'E3') as $position) {
+            $this->assertContains($position, $moves, sprintf('King should be able to move to %s', $position));
+        }
     }
 }
