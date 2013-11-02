@@ -1,10 +1,10 @@
 # TODO
 
++ Profile to look for optimization
+
 ### Check / Checkmate / Stalemate
 
-
-+ Piece->moves() should exclude moves that put King in check, or don't save him from Check. In other words, if I were to make the move, and afterward the King is in check, it's not a possible move. Exclude.
-    + Piece->checkmate(): no possible moves for any piece
++ Piece->checkmate(): no possible moves for any piece
 
 + Stalemate (not in check but has no possible moves)
 
