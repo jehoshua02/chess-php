@@ -105,5 +105,12 @@ class PieceTest extends PHPUnit_Framework_TestCase
             'D3' => new Queen(Piece::DARK)
         ));
         $this->assertTrue($board->piece('A1')->stalemate(), 'King should be in stalemate');
+
+        $board = new Board(array(
+            'A1' => new PieceStub(Piece::LIGHT),
+            'D1' => new King(Piece::LIGHT),
+            'D2' => new Pawn(Piece::DARK)
+        ));
+        $this->assertFalse($board->piece('A1')->stalemate(), 'King should not be in stalemate');
     }
 }
