@@ -5,7 +5,7 @@ use \Chess\Piece;
 use \Chess\Piece\Pawn;
 use \Chess\Piece\King;
 
-class KingTest extends \PHPUnit_Framework_TestCase
+class KingTest extends \Chess\PieceTestCase
 {
     public function testMoves()
     {
@@ -38,5 +38,12 @@ class KingTest extends \PHPUnit_Framework_TestCase
         foreach (array('C5', 'E5', 'C4', 'E4', 'C3', 'D3', 'E3') as $position) {
             $this->assertContains($position, $moves, sprintf('King should be able to move to %s', $position));
         }
+
+        // cannot move into check
+        $board = new Board(array(
+            'D4' => new King(Piece::LIGHT),
+            'F5' => new Pawn(Piece::DARK)
+        ));
+        $this->assertMoves($board->piece('D4'), array('C5', 'D5', 'E5', 'C4', 'C3', 'D3', 'E3'));
     }
 }
