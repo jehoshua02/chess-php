@@ -4,6 +4,7 @@ use \Chess\Board;
 use \Chess\Piece;
 use \Chess\Piece\King;
 use \Chess\Piece\Pawn;
+use \Chess\Piece\Queen;
 
 class PieceStub extends \Chess\Piece
 {
@@ -67,5 +68,22 @@ class PieceTest extends PHPUnit_Framework_TestCase
             'E5' => new Pawn(Piece::LIGHT)
         ));
         $this->assertFalse($piece->check(), 'King should not be in check');
+    }
+
+    public function testCheckmate()
+    {
+        $board = new Board(array(
+            'D4' => new King(Piece::LIGHT),
+            'D5' => new Queen(Piece::DARK),
+            'D3' => new Queen(Piece::DARK)
+        ));
+        $this->assertTrue($board->piece('D4')->checkmate(), 'King should be in checkmate');
+
+        $board = new Board(array(
+            'D4' => new King(Piece::LIGHT),
+            'D5' => new Queen(Piece::DARK),
+            'D3' => new Pawn(Piece::DARK)
+        ));
+        $this->assertFalse($board->piece('D4')->checkmate(), 'King should not be in checkmate');
     }
 }
