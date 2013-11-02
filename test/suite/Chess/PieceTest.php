@@ -95,4 +95,15 @@ class PieceTest extends PHPUnit_Framework_TestCase
         $checkmate = $board->piece('D1')->checkmate();
         $this->assertFalse($checkmate && $check === false, 'Stalemate is not the same as checkmate');
     }
+
+    public function testStalemate()
+    {
+        $board = new Board(array(
+            'A1' => new PieceStub(Piece::LIGHT),
+            'D1' => new King(Piece::LIGHT),
+            'D2' => new Pawn(Piece::DARK),
+            'D3' => new Queen(Piece::DARK)
+        ));
+        $this->assertTrue($board->piece('A1')->stalemate(), 'King should be in stalemate');
+    }
 }
