@@ -9,16 +9,26 @@ abstract class PieceTestCase extends \PHPUnit_Framework_TestCase
      * @param  \Chess\Piece $piece
      * @param  array $expected
      */
-    protected function assertMoves($piece, $expected)
+    protected function assertMoves($piece, $expected, $message = null)
     {
+        // get type of piece
         $class = get_class($piece);
         $parts = explode('\\', $class);
         $type = array_pop($parts);
-        $moves = $piece->moves();
+
+        // message
+        if ($message !== null) {
+            $message .= ': ';
+        }
+
+        // get moves and count
         $count = count($expected);
-        $this->assertCount($count, $moves, sprintf('%s should have %s possible moves', $type, $count));
+        $moves = $piece->moves();
+
+        // assertions
+        $this->assertCount($count, $moves, sprintf('%s%s should have %s possible moves', $message, $type, $count));
         foreach ($expected as $position) {
-            $this->assertContains($position, $moves, sprintf('%s should be able to move to %s', $type, $position));
+            $this->assertContains($position, $moves, sprintf('%s%s should be able to move to %s', $message, $type, $position));
         }
     }
 }

@@ -44,6 +44,6 @@ class KingTest extends \Chess\PieceTestCase
             'D4' => new King(Piece::LIGHT),
             'F5' => new Pawn(Piece::DARK)
         ));
-        $this->assertMoves($board->piece('D4'), array('C5', 'D5', 'E5', 'C4', 'C3', 'D3', 'E3'));
+        $this->assertMoves($board->piece('D4'), array('C5', 'D5', 'E5', 'C4', 'C3', 'D3', 'E3'), 'King cannot move into check');
     }
 }
