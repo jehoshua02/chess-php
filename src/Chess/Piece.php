@@ -60,6 +60,54 @@ abstract class Piece
     }
 
     /**
+     * Returns possible moves for piece
+     * @return array
+     */
+    public function moves()
+    {
+        return array();
+    }
+
+    /**
+     * Returns the King piece
+     * @return \Chess\Piece\King|false Returns false if unable to find King
+     */
+    public function king()
+    {
+        if (!$this->board()) {
+            return false;
+        }
+
+        foreach ($this->board()->pieces() as $piece) {
+            if (
+                is_a($piece, '\\Chess\\Piece\\King')
+                && $piece->color() === $this->color()
+            ) {
+                return $piece;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Determines if the King is in check
+     * @return boolean
+     */
+    public function check()
+    {
+        $position = $this->king()->position();
+
+        foreach ($this->board()->pieces() as $piece) {
+            if (in_array($position, $piece->moves())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Returns all moves in one direction
      * @param  string $direction
      * @return array
@@ -90,53 +138,5 @@ abstract class Piece
         }
 
         return $moves;
-    }
-
-    /**
-     * Returns the King piece
-     * @return \Chess\Piece\King|false Returns false if unable to find King
-     */
-    public function king()
-    {
-        if (!$this->board()) {
-            return false;
-        }
-
-        foreach ($this->board()->pieces() as $piece) {
-            if (
-                is_a($piece, '\\Chess\\Piece\\King')
-                && $piece->color() === $this->color()
-            ) {
-                return $piece;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Returns possible moves for piece
-     * @return array
-     */
-    public function moves()
-    {
-        return array();
-    }
-
-    /**
-     * Determines if the King is in check
-     * @return boolean
-     */
-    public function check()
-    {
-        $position = $this->king()->position();
-
-        foreach ($this->board()->pieces() as $piece) {
-            if (in_array($position, $piece->moves())) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }
