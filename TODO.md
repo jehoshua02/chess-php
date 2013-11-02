@@ -4,8 +4,6 @@
 
 ### Check / Checkmate / Stalemate
 
-+ Piece->checkmate(): no possible moves for any piece
-
 + Stalemate (not in check but has no possible moves)
 
 ### Castling

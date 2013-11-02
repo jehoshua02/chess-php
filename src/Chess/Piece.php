@@ -117,6 +117,25 @@ abstract class Piece
     }
 
     /**
+     * Determines if checkmate
+     * @return boolean
+     */
+    public function checkmate()
+    {
+        $checkmate = true;
+        foreach ($this->board()->pieces() as $piece) {
+            if ($piece->color() !== $this->color()) {
+                continue;
+            }
+            if (count($piece->moves()) > 0) {
+                $checkmate = false;
+                break;
+            }
+        }
+        return $checkmate;
+    }
+
+    /**
      * Returns all moves in one direction
      * @param  string $direction
      * @return array
