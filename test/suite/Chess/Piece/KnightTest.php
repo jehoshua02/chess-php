@@ -5,21 +5,18 @@ use \Chess\Piece;
 use \Chess\Piece\Pawn;
 use \Chess\Piece\Knight;
 
-class KnightTest extends \PHPUnit_Framework_TestCase
+class KnightTest extends \Chess\PieceTestCase
 {
     public function testMoves()
     {
         $board = new Board(array(
             'D4' => new Knight(Piece::LIGHT)
         ));
-        $moves = $board->piece('D4')->moves();
-        $this->assertCount(8, $moves, 'Knight should have eight possible moves');
-
-        $message = 'Knight should be able to move to %s';
-        $positions = array('C6', 'E6', 'C2', 'E2', 'B3', 'B5', 'F3', 'F5');
-        foreach ($positions as $position) {
-            $this->assertContains($position, $moves, sprintf($message, $position));
-        }
+        $this->assertMoves(
+            $board->piece('D4'), 8,
+            array('C6', 'E6', 'C2', 'E2', 'B3', 'B5', 'F3', 'F5'),
+            'Knight should be able to make any basic move'
+        );
     }
 
     public function testMovesBlocked()
@@ -37,14 +34,11 @@ class KnightTest extends \PHPUnit_Framework_TestCase
             // same color will block E2
             'E2' => new Pawn(Piece::LIGHT)
         ));
-        $moves = $board->piece('D4')->moves();
-        $this->assertCount(7, $moves, 'Knight should have eight possible moves');
-
-        $message = 'Knight should be able to move to %s';
-        $positions = array('C6', 'E6', 'C2', 'B3', 'B5', 'F3', 'F5');
-        foreach ($positions as $position) {
-            $this->assertContains($position, $moves, sprintf($message, $position));
-        }
+        $this->assertMoves(
+            $board->piece('D4'), 7,
+            array('C6', 'E6', 'C2', 'B3', 'B5', 'F3', 'F5'),
+            'Knight should be blocked'
+        );
     }
 
     public function testEdgeOfBoard()
@@ -52,7 +46,10 @@ class KnightTest extends \PHPUnit_Framework_TestCase
         $board = new Board(array(
             'B4' => new Knight(Piece::LIGHT)
         ));
-        $moves = $board->piece('B4')->moves();
-        $this->assertCount(6, $moves, 'Knight should have six possible moves');
+        $this->assertMoves(
+            $board->piece('B4'), 6,
+            array('A6', 'C6', 'D5', 'D3', 'C2', 'A2'),
+            'Knight should not be able to move off board'
+        );
     }
 }
