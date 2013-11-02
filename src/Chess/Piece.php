@@ -122,19 +122,7 @@ abstract class Piece
      */
     public function checkmate()
     {
-        if (!$this->check()) {
-            return false;
-        }
-
-        foreach ($this->board()->pieces() as $piece) {
-            if ($piece->color() !== $this->color()) {
-                continue;
-            }
-            if (count($piece->moves()) > 0) {
-                return false;
-            }
-        }
-        return true;
+        return $this->check() && !$this->hasMoves();
     }
 
     /**
@@ -143,7 +131,24 @@ abstract class Piece
      */
     public function stalemate()
     {
-        return true;
+        return !$this->check() && !$this->hasMoves();
+    }
+
+    /**
+     * Determines if any piece has possible moves
+     * @return boolean
+     */
+    protected function hasMoves()
+    {
+        foreach ($this->board()->pieces() as $piece) {
+            if ($piece->color() !== $this->color()) {
+                continue;
+            }
+            if (count($piece->moves()) > 0) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
