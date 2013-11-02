@@ -16,3 +16,12 @@ The [PHPUnit command-line test runner](http://phpunit.de/manual/current/en/textu
 ```
 $ ./vendor/bin/phpunit
 ```
+
+
+## Code Coverage
+
+Code coverage reports are generated every time tests are executed. View them like so:
+
+```
+$ open ./test/coverage/index.html
+```
