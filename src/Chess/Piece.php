@@ -138,6 +138,15 @@ abstract class Piece
     }
 
     /**
+     * Determins if stalemate
+     * @return boolean
+     */
+    public function stalemate()
+    {
+        return true;
+    }
+
+    /**
      * Returns all moves in one direction
      * @param  string $direction
      * @return array
