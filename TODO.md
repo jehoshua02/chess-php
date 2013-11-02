@@ -1,35 +1,14 @@
 # TODO
 
+
++ King: Castling
+    + Need a way to determine if King or Rook have moved before
+    + Castling only allowed if King or Rook have not moved before
+    + Cannot castle when in check / cannot castle into check
++ Pawn: Capture En Passant
+    + Pawn of different color on same rank and neighboring pawn move two spaces in previous move
+
 + Profile to look for optimization
-
-### Check / Checkmate / Stalemate
-
-+ Stalemate (not in check but has no possible moves)
-
-### Castling
-
-+ King should be able to castle
-+ King should not be able to castle
-+ King cannot castle when in check
-
-## King
-
-+ King should have no possible moves
-+ King should have one possible move
-+ King should have two possible moves
-+ King should have three possible moves
-+ King should have four possible moves
-+ King should have five possible moves
-+ King should have six possible moves
-+ King should have seven possible moves
-+ King should have eight possible moves: up, down, left, right, upLeft, upRight, downLeft, downRight
-
-
-
-## General
-
-+ King, Queen, Bishop, Knight, Rook
-+ Movement history (at least enough to support capture en passant)
-+ Pawn should be able to capture en passant
 + Game Runner/Engine (encapsulates board, pieces, players, turn order, history, etc, whatever, the "glue" of it all)
 + Presentation layer?
++ NPC/AI
