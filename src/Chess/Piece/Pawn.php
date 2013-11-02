@@ -54,6 +54,8 @@ class Pawn extends \Chess\Piece
             return $move !== false;
         });
 
+        $moves = $this->filterCheckMoves($moves);
+
         return $moves;
     }
 
@@ -71,6 +73,10 @@ class Pawn extends \Chess\Piece
         $position = $this->position();
 
         $up = $this->board()->up($position);
+        if (!$up) {
+            return false;
+        }
+
         if ($this->board()->piece($up)) {
             return false;
         }

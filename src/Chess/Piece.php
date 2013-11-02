@@ -96,9 +96,18 @@ abstract class Piece
      */
     public function check()
     {
-        $position = $this->king()->position();
+        $king = $this->king();
+
+        if (!$king) {
+            return false;
+        }
+
+        $position = $king->position();
 
         foreach ($this->board()->pieces() as $piece) {
+            if ($piece === $king) {
+                continue;
+            }
             if (in_array($position, $piece->moves())) {
                 return true;
             }
@@ -138,5 +147,45 @@ abstract class Piece
         }
 
         return $moves;
+    }
+
+    /**
+     * Filters moves that result in check
+     * @param array $moves
+     * @return array
+     */
+    protected function filterCheckMoves($moves)
+    {
+        foreach ($moves as $key => $move) {
+            if ($this->isCheckAfterMove($move)) {
+                unset($moves[$key]);
+            }
+        }
+
+        return $moves;
+    }
+
+    /**
+     * Determines King would be in check after a move
+     * @param string $position
+     * @return boolean
+     */
+    protected function isCheckAfterMove($position)
+    {
+        // save what is needed to undo move
+        $current = $this->position();
+        $piece = $this->board()->piece($position);
+
+        // execute move
+        $this->board()->piece($current, null);
+        $this->board()->piece($position, $this);
+
+        $check = $this->check();
+
+        // put the pieces back
+        $this->board()->piece($position, $piece);
+        $this->board()->piece($current, $this);
+
+        return $check;
     }
 }

@@ -25,6 +25,8 @@ class Knight extends \Chess\Piece
             return $move !== false;
         });
 
+        $moves = $this->filterCheckMoves($moves);
+
         return $moves;
     }
 
