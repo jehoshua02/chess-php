@@ -122,17 +122,19 @@ abstract class Piece
      */
     public function checkmate()
     {
-        $checkmate = true;
+        if (!$this->check()) {
+            return false;
+        }
+
         foreach ($this->board()->pieces() as $piece) {
             if ($piece->color() !== $this->color()) {
                 continue;
             }
             if (count($piece->moves()) > 0) {
-                $checkmate = false;
-                break;
+                return false;
             }
         }
-        return $checkmate;
+        return true;
     }
 
     /**
