@@ -102,13 +102,16 @@ abstract class Piece
             return false;
         }
 
-        $position = $king->position();
+        return $king->underThreat();
+    }
 
+    public function underThreat()
+    {
         foreach ($this->board()->pieces() as $piece) {
-            if ($piece === $king) {
+            if ($piece->color() === $this->color()) {
                 continue;
             }
-            if (in_array($position, $piece->moves())) {
+            if (in_array($this->position(), $piece->moves())) {
                 return true;
             }
         }
