@@ -4,6 +4,7 @@ use \Chess\Board;
 use \Chess\Piece;
 use \Chess\Piece\Pawn;
 use \Chess\Piece\King;
+use \Chess\Piece\Rook;
 
 class KingTest extends \Chess\PieceTestCase
 {
@@ -48,6 +49,19 @@ class KingTest extends \Chess\PieceTestCase
             $board->piece('D4'), 7,
             array('C5', 'D5', 'E5', 'C4', 'C3', 'D3', 'E3'),
             'King cannot move into check'
+        );
+    }
+
+    public function testCastling()
+    {
+        $board = new Board(array(
+            'E1' => new King(Piece::LIGHT),
+            'A1' => new Rook(Piece::LIGHT),
+            'H1' => new Rook(Piece::LIGHT)
+        ));
+        $this->assertMoves(
+            $board->piece('E1'), 7, array('D2', 'E2', 'F2', 'D1', 'C1', 'F1', 'G1'),
+            'King should be able to castle'
         );
     }
 }
