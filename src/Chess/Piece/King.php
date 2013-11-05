@@ -21,6 +21,9 @@ class King extends \Chess\Piece
             $moves[] = $this->step($direction);
         }
 
+        $moves[] = $this->castle('left');
+        $moves[] = $this->castle('right');
+
         $moves = array_filter($moves, function ($move) {
             return $move !== false;
         });
@@ -49,5 +52,56 @@ class King extends \Chess\Piece
         }
 
         return $position;
+    }
+
+    /**
+     * Returns castling position to the left
+     * @return string|false Returns false if not valid move
+     */
+    protected function castle($direction)
+    {
+        // cannot castle if king moved
+        if ($this->moved()) {
+            return false;
+        }
+
+        // cannot castle if king in check
+        if ($this->check()) {
+            return false;
+        }
+
+        // get all positions to the left until edge of board
+        $positions = array();
+        $position = $this->position();
+        while ($position = $this->board()->$direction($position)) {
+            $positions[] = $position;
+        }
+
+        // must be enough room to move two spaces and a rook
+        if (count($positions) < 3) {
+            return false;
+        }
+
+        // cannot castle if last position does not contain unmoved rook of same color
+        $last = array_pop($positions);
+        $piece = $this->board()->piece($last);
+        if (
+            !$piece
+            || !is_a($piece, '\\Chess\\Piece\\Rook')
+            || $piece->color() !== $this->color()
+            || $piece->moved()
+        ) {
+            return false;
+        }
+
+        // cannot be any pieces in between
+        foreach ($positions as $position) {
+            if ($this->board()->piece($position)) {
+                return false;
+            }
+        }
+
+        // return position left two
+        return $positions[1];
     }
 }

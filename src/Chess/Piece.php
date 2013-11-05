@@ -20,12 +20,38 @@ abstract class Piece
     protected $board;
 
     /**
+     * Tells whether the piece has been moved before
+     * @var boolean
+     */
+    protected $moved = false;
+
+    /**
      * Construct method
      * @param int $color
      */
     public function __construct($color)
     {
         $this->color = $color;
+    }
+
+    /**
+     * Moves piece to specified position. Override in subclass
+     * @param  string $position
+     * @return boolean Returns false if move not allowed
+     */
+    public function move($position)
+    {
+        $this->moved = true;
+        return true;
+    }
+
+    /**
+     * Tells whether piece has been moved
+     * @return boolean
+     */
+    public function moved()
+    {
+        return $this->moved;
     }
 
     /**
