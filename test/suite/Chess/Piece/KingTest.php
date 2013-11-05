@@ -5,6 +5,8 @@ use \Chess\Piece;
 use \Chess\Piece\Pawn;
 use \Chess\Piece\King;
 use \Chess\Piece\Rook;
+use \Chess\Piece\Knight;
+use \Chess\Piece\Bishop;
 
 class KingTest extends \Chess\PieceTestCase
 {
@@ -60,8 +62,98 @@ class KingTest extends \Chess\PieceTestCase
             'H1' => new Rook(Piece::LIGHT)
         ));
         $this->assertMoves(
-            $board->piece('E1'), 7, array('D2', 'E2', 'F2', 'D1', 'C1', 'F1', 'G1'),
+            $board->piece('E1'), 7,
+            array(
+                // all the normal moves
+                'D2', 'E2', 'F2', 'D1', 'F1',
+                // left castle and right castle
+                'C1', 'G1'
+            ),
             'King should be able to castle'
+        );
+
+        // no rooks
+        $board = new Board(array(
+            'E1' => new King(Piece::LIGHT)
+        ));
+        $this->assertMoves(
+            $board->piece('E1'), 5,
+            array(
+                // only the normal moves
+                'D2', 'E2', 'F2', 'D1', 'F1'
+            ),
+            'King should not be able to castle with no rooks'
+        );
+
+        // blocked
+        $board = new Board(array(
+            'E1' => new King(Piece::LIGHT),
+            'A1' => new Rook(Piece::LIGHT),
+            'H1' => new Rook(Piece::LIGHT),
+
+            // blocking pieces
+            'B1' => new Knight(Piece::LIGHT),
+            'F1' => new Bishop(Piece::LIGHT)
+        ));
+        $this->assertMoves(
+            $board->piece('E1'), 5,
+            array(
+                // only the normal moves
+                'D2', 'E2', 'F2', 'D1', 'F1'
+            ),
+            'King should not be able to castle with pieces in the way'
+        );
+
+        // check
+        $board = new Board(array(
+            'E1' => new King(Piece::LIGHT),
+            'A1' => new Rook(Piece::LIGHT),
+            'H1' => new Rook(Piece::LIGHT),
+
+            // threatening piece
+            'E4' => new Rook(Piece::DARK)
+        ));
+        $this->assertMoves(
+            $board->piece('E1'), 5,
+            array(
+                // only the normal moves
+                'D2', 'E2', 'F2', 'D1', 'F1'
+            ),
+            'King should not be able to castle while in check'
+        );
+
+        // rook already moved
+        $board = new Board(array(
+            'E1' => new King(Piece::LIGHT),
+            'A1' => new Rook(Piece::LIGHT)
+        ));
+        // move rook
+        $board->piece('A1')->move('A2');
+        $board->piece('A1')->move('A1');
+        $this->assertMoves(
+            $board->piece('E1'), 5,
+            array(
+                // only the normal moves
+                'D2', 'E2', 'F2', 'D1', 'F1'
+            ),
+            'King should not be able to castle if Rook has moved'
+        );
+
+        // king already moved
+        $board = new Board(array(
+            'E1' => new King(Piece::LIGHT),
+            'A1' => new Rook(Piece::LIGHT)
+        ));
+        // move king
+        $board->piece('E1')->move('E2');
+        $board->piece('E1')->move('E1');
+        $this->assertMoves(
+            $board->piece('E1'), 5,
+            array(
+                // only the normal moves
+                'D2', 'E2', 'F2', 'D1', 'F1'
+            ),
+            'King should not be able to castle if it has moved'
         );
     }
 }
