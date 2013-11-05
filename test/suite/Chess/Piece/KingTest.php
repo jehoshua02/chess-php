@@ -96,10 +96,10 @@ class KingTest extends \Chess\PieceTestCase
             'F1' => new Bishop(Piece::LIGHT)
         ));
         $this->assertMoves(
-            $board->piece('E1'), 5,
+            $board->piece('E1'), 4,
             array(
                 // only the normal moves
-                'D2', 'E2', 'F2', 'D1', 'F1'
+                'D2', 'E2', 'F2', 'D1'
             ),
             'King should not be able to castle with pieces in the way'
         );
@@ -114,10 +114,10 @@ class KingTest extends \Chess\PieceTestCase
             'E4' => new Rook(Piece::DARK)
         ));
         $this->assertMoves(
-            $board->piece('E1'), 5,
+            $board->piece('E1'), 4,
             array(
                 // only the normal moves
-                'D2', 'E2', 'F2', 'D1', 'F1'
+                'D2', 'F2', 'D1', 'F1'
             ),
             'King should not be able to castle while in check'
         );
