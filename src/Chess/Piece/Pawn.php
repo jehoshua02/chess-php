@@ -73,9 +73,6 @@ class Pawn extends \Chess\Piece
         $position = $this->position();
 
         $up = $this->board()->up($position);
-        if (!$up) {
-            return false;
-        }
 
         if ($this->board()->piece($up)) {
             return false;
