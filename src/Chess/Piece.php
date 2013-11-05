@@ -96,15 +96,16 @@ abstract class Piece
      */
     public function check()
     {
-        $king = $this->king();
-
-        if (!$king) {
+        if (!$this->king()) {
             return false;
         }
-
-        return $king->underThreat();
+        return $this->king()->underThreat();
     }
 
+    /**
+     * Determines whether piece is under threat of being captured
+     * @return boolean
+     */
     public function underThreat()
     {
         foreach ($this->board()->pieces() as $piece) {
