@@ -155,5 +155,17 @@ class KingTest extends \Chess\PieceTestCase
             ),
             'King should not be able to castle if it has moved'
         );
+
+        // cannot castle into check
+        $board = new Board(array(
+            'E1' => new King(Piece::LIGHT),
+            'A1' => new Rook(Piece::LIGHT),
+            'C4' => new Rook(Piece::DARK)
+        ));
+        $this->assertMoves(
+            $board->piece('E1'), 5,
+            array('D2', 'E2', 'F2', 'D1', 'F1'),
+            'King should not be able to castle into check'
+        );
     }
 }
