@@ -1,6 +1,7 @@
 <?php
 
 namespace Chess;
+use \Chess\Move;
 
 abstract class Piece
 {
@@ -147,8 +148,12 @@ abstract class Piece
             if ($piece->color() === $this->color()) {
                 continue;
             }
-            if (in_array($this->position(), $piece->moves())) {
-                return true;
+
+            $position = $this->position();
+            foreach ($piece->moves() as $move) {
+                if ($move->to() === $position) {
+                    return true;
+                }
             }
         }
 
@@ -209,12 +214,12 @@ abstract class Piece
 
             $piece = $this->board()->piece($position);
             if (!$piece) {
-                $moves[] = $position;
+                $moves[] = new Move($this, $position);
                 continue;
             }
 
             if ($piece->color() !== $this->color()) {
-                $moves[] = $position;
+                $moves[] = new Move($this, $position);
             }
 
             break;
@@ -235,31 +240,20 @@ abstract class Piece
                 unset($moves[$key]);
             }
         }
-
         return $moves;
     }
 
     /**
      * Determines King would be in check after a move
-     * @param string $position
+     * @param \Chess\Move
      * @return boolean
      */
-    protected function isCheckAfterMove($position)
+    protected function isCheckAfterMove(\Chess\Move $move)
     {
-        // save what is needed to undo move
-        $current = $this->position();
-        $piece = $this->board()->piece($position);
-
         // execute move
-        $this->board()->piece($current, null);
-        $this->board()->piece($position, $this);
-
+        $this->board()->move($move);
         $check = $this->check();
-
-        // put the pieces back
-        $this->board()->piece($position, $piece);
-        $this->board()->piece($current, $this);
-
+        $this->board()->undo();
         return $check;
     }
 }

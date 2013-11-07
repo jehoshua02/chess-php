@@ -6,7 +6,7 @@ class Queen extends \Chess\Piece
 {
     /**
      * Returns all possible moves
-     * @return array
+     * @return array Returns array of \Chess\Move objects
      */
     public function moves()
     {

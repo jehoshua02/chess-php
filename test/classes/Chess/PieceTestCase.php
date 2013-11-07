@@ -24,7 +24,9 @@ abstract class PieceTestCase extends \PHPUnit_Framework_TestCase
 
         // get moves and count
         $count = count($expectedMoves);
-        $moves = $piece->moves();
+        $moves = array_map(function ($move) {
+            return $move->to();
+        }, $piece->moves());
 
         // assertions
         $this->assertCount($expectedCount, $expectedMoves, sprintf('%sExpected count does not agree with expected moves', $message));

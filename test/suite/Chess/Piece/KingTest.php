@@ -129,7 +129,7 @@ class KingTest extends \Chess\PieceTestCase
         ));
         // move rook
         $board->piece('A1')->move('A2');
-        $board->piece('A1')->move('A1');
+        $board->piece('A2')->move('A1');
         $this->assertMoves(
             $board->piece('E1'), 5,
             array(
@@ -146,7 +146,7 @@ class KingTest extends \Chess\PieceTestCase
         ));
         // move king
         $board->piece('E1')->move('E2');
-        $board->piece('E1')->move('E1');
+        $board->piece('E2')->move('E1');
         $this->assertMoves(
             $board->piece('E1'), 5,
             array(
