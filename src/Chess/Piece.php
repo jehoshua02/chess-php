@@ -41,8 +41,26 @@ abstract class Piece
      */
     public function move($position)
     {
-        $this->moved = true;
-        return true;
+        $moves = $this->moves();
+
+        foreach ($moves as $move) {
+            if ($move->to() === $position) {
+                $this->board()->move($move);
+                $this->moved = true;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns possible moves for piece
+     * @return array
+     */
+    public function moves()
+    {
+        return array();
     }
 
     /**
@@ -83,15 +101,6 @@ abstract class Piece
     public function position()
     {
         return $this->board()->position($this);
-    }
-
-    /**
-     * Returns possible moves for piece
-     * @return array
-     */
-    public function moves()
-    {
-        return array();
     }
 
     /**
