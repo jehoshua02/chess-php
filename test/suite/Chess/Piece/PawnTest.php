@@ -412,4 +412,17 @@ class PawnTest extends \Chess\PieceTestCase
             'Pawn should have one possible move'
         );
     }
+
+    public function testEnPassant()
+    {
+        $board = new Board(array(
+            'D4' => new Pawn(Piece::DARK),
+            'C2' => new Pawn(Piece::LIGHT)
+        ));
+        $board->piece('C2')->move('C4');
+        $this->assertMoves(
+            $board->piece('D4'), 2, array('D3', 'C3'),
+            'Pawn should be able to capture en passant'
+        );
+    }
 }
