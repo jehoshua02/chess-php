@@ -1,6 +1,8 @@
 # TODO
 
-+ Pawn: Capture En Passant
++ Refactor options out of move
++ Restore PawnTest::testPromotion
++ Restore/Finish PawnTest::testEnPassant
     + Pawn should be able to capture en passant
         + Pawn of different color to right or left
         + Pawn to right or left just moved two spaces
