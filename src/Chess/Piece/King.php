@@ -103,6 +103,6 @@ class King extends \Chess\Piece
         }
 
         // return position left two
-        return new Move($this, $positions[1], array($positions[0], $piece));
+        return new Move($this, $positions[1], array(array($positions[0], $piece)));
     }
 }

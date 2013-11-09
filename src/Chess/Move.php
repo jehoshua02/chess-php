@@ -8,13 +8,10 @@ class Move
      * List of board changes
      * @var array
      */
-    protected $changes = array();
-
-    /**
-     * List of board changes to undo move
-     * @var array
-     */
-    protected $undo = array();
+    protected $changes = array(
+        'do' => array(),
+        'undo' => array()
+    );
 
     /**
      * Piece to move
@@ -40,43 +37,30 @@ class Move
      * @param string $to Position to move to
      * @param array $changes, ... Additional board changes to include in move
      */
-    public function __construct(\Chess\Piece $piece, $to, array $change = null)
+    public function __construct(\Chess\Piece $piece, $to, array $changes = array())
     {
-        $args = func_get_args();
-
-        $this->piece = array_shift($args);
+        $this->piece = $piece;
         $this->from = $this->piece->position();
-        $this->to = array_shift($args);
+        $this->to = $to;
 
-        $changes = $args;
-        array_unshift(
-            $changes,
-            array($this->from, null),
-            array($this->to, $this->piece)
-        );
-
+        $this->addChange($this->from, null);
+        $this->addChange($this->to, $piece);
         foreach ($changes as $change) {
             list($position, $value) = $change;
             $this->addChange($position, $value);
         }
+
+
     }
 
     /**
      * Returns list of board changes
      * @return array
      */
-    public function changes()
+    public function changes($undo = false)
     {
-        return $this->changes;
-    }
-
-    /**
-     * Returns list of board changes to undo
-     * @return array
-     */
-    public function undo()
-    {
-        return $this->undo;
+        $key = ($undo) ? 'undo' : 'do';
+        return $this->changes[$key];
     }
 
     /**
@@ -113,7 +97,7 @@ class Move
      */
     protected function addChange($position, $value)
     {
-        array_push($this->changes, array($position, $value));
-        array_unshift($this->undo, array($position, $this->piece->board()->piece($position)));
+        array_push($this->changes['do'], array($position, $value));
+        array_unshift($this->changes['undo'], array($position, $this->piece->board()->piece($position)));
     }
 }

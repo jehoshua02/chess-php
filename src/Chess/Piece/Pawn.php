@@ -123,7 +123,7 @@ class Pawn extends \Chess\Piece
             return false;
         }
 
-        return new Move($this, $upLeft, array($piece->position(), null));
+        return new Move($this, $upLeft, array(array($piece->position(), null)));
     }
 
     /**
@@ -172,7 +172,7 @@ class Pawn extends \Chess\Piece
             return false;
         }
 
-        return new Move($this, $upRight, array($piece->position(), null));
+        return new Move($this, $upRight, array(array($piece->position(), null)));
     }
 
     /**
@@ -221,7 +221,7 @@ class Pawn extends \Chess\Piece
             return false;
         }
 
-        return new Move($this, $downLeft, array($piece->position(), null));
+        return new Move($this, $downLeft, array(array($piece->position(), null)));
     }
 
     /**
@@ -270,7 +270,7 @@ class Pawn extends \Chess\Piece
             return false;
         }
 
-        return new Move($this, $downRight, array($piece->position(), null));
+        return new Move($this, $downRight, array(array($piece->position(), null)));
     }
 
 }

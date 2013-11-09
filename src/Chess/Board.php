@@ -155,7 +155,7 @@ class Board
     public function undo()
     {
         $move = array_pop($this->moves);
-        foreach ($move->undo() as $change) {
+        foreach ($move->changes(true) as $change) {
             list($position, $value) = $change;
             $this->piece($position, $value);
         }
@@ -169,7 +169,7 @@ class Board
     {
         $key = count($this->moves) - 1;
         if (array_key_exists($key, $this->moves)) {
-            $this->moves[$key];
+            return $this->moves[$key];
         }
         return false;
     }
