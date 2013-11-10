@@ -2,6 +2,7 @@
 
 namespace Chess;
 use \Chess\Move;
+use \Chess\Moves;
 
 abstract class Piece
 {
@@ -37,31 +38,28 @@ abstract class Piece
 
     /**
      * Moves piece to specified position. Override in subclass
-     * @param  string $position
-     * @return boolean Returns false if move not allowed
+     * @param  string $to
+     * @param  array $properties Additional properties to filter moves
+     * @return boolean Returns false if move not legal
      */
-    public function move($position)
+    public function move($to, array $properties = array())
     {
         $moves = $this->moves();
 
-        foreach ($moves as $move) {
-            if ($move->to() === $position) {
-                $this->board()->move($move);
-                $this->moved = true;
-                return true;
-            }
+        foreach ($properties as $property => $value) {
+            $moves = $moves->filter($property, $value);
         }
 
-        return false;
+        return $moves->make();
     }
 
     /**
      * Returns possible moves for piece
-     * @return array
+     * @return \Chess\Moves
      */
     public function moves()
     {
-        return array();
+        return new Moves();
     }
 
     /**

@@ -2,12 +2,13 @@
 
 namespace Chess\Piece;
 use \Chess\Move;
+use \Chess\Moves;
 
 class King extends \Chess\Piece
 {
     /**
      * Returns possible moves for piece
-     * @return array Returns array of \Chess\Move objects
+     * @return \Chess\Moves
      */
     public function moves()
     {
@@ -31,7 +32,7 @@ class King extends \Chess\Piece
 
         $moves = $this->filterCheckMoves($moves);
 
-        return $moves;
+        return new Moves($moves);
     }
 
     /**

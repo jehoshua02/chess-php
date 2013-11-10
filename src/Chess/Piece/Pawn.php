@@ -2,52 +2,36 @@
 
 namespace Chess\Piece;
 use \Chess\Move;
+use \Chess\Moves;
 
 class Pawn extends \Chess\Piece
 {
     /**
-     * Returns all possible moves
-     * @return array Returns array of \Chess\Move objects
+     * Returns possible moves
+     * @return \Chess\Moves
      */
     public function moves()
     {
         $moves = array_merge(
-            $this->slide('up'),
-            $this->slide('down'),
-            array(
-                $this->upLeft(),
-                $this->upRight(),
-                $this->downLeft(),
-                $this->downRight()
-            )
+            $this->forward(),
+            $this->diagonal('left'),
+            $this->diagonal('right')
         );
-
-        $moves = array_filter($moves, function ($move) {
-            return $move !== false;
-        });
 
         $moves = $this->filterCheckMoves($moves);
 
-        return $moves;
+        return new Moves($moves);
     }
 
     /**
      * Returns possible moves in one direction
      * @return array Returns array of \Chess\Move objects
      */
-    protected function slide($direction)
+    protected function forward()
     {
+        $direction = $this->direction();
+
         $moves = array();
-
-        // dark cannot move up
-        if ($direction === 'up' && $this->color() === self::DARK) {
-            return $moves;
-        }
-
-        // light cannot move down
-        if ($direction === 'down' && $this->color() === self::LIGHT) {
-            return $moves;
-        }
 
         // one
         $position = $this->board()->$direction($this->position());
@@ -55,15 +39,10 @@ class Pawn extends \Chess\Piece
             return $moves;
         }
 
-        $moves[] = new Move($this, $position);
+        $moves = array_merge($moves, $this->makeMoves($position));
 
         // two
-        list($file, $rank) = str_split($this->position());
-        if ($direction === 'up' && $rank != 2) {
-            return $moves;
-        }
-
-        if ($direction === 'down' && $rank != 7) {
+        if (!$this->canMoveTwo()) {
             return $moves;
         }
 
@@ -78,199 +57,132 @@ class Pawn extends \Chess\Piece
     }
 
     /**
-     * Returns up left move
-     * @return \Chess\Move|false Returns false if not valid move for piece
+     * Returns forward diagonal moves to side specified
+     * @param string $side
+     * @return array Returns array of \Chess\Move objects
      */
-    protected function upLeft()
+    protected function diagonal($side)
     {
-        if ($this->color() === self::DARK) {
-            return false;
+        $direction = $this->direction() . ucfirst($side);
+
+        $moves = array();
+
+        $diagonal = $this->board()->$direction($this->position());
+        if (!$diagonal) {
+            return $moves;
         }
 
-        $upLeft = $this->board()->upLeft($this->position());
-        if (!$upLeft) {
-            return false;
-        }
-
-        $piece = $this->board()->piece($upLeft);
+        $piece = $this->board()->piece($diagonal);
         if ($piece && $piece->color() !== $this->color()) {
-            return new Move($this, $upLeft);
+            $moves = array_merge($moves, $this->makeMoves($diagonal));
+            return $moves;
         }
 
         // en passant
-        $left = $this->board()->left($this->position());
-        if (!$left) {
-            return false;
+        $side = $this->board()->$side($this->position());
+        if (!$side) {
+            return $moves;
         }
 
-        $piece = $this->board()->piece($left);
+        $piece = $this->board()->piece($side);
         if (!$piece || $piece->color() === $this->color()) {
-            return false;
+            return $moves;
         }
 
         $move = $this->board()->getLastMove();
         if (!$move) {
-            return false;
+            return $moves;
         }
 
         if ($move->piece() !== $piece) {
-            return false;
+            return $moves;
         }
 
-        $from = $this->board()->down($piece->position());
-        $from = $this->board()->down($from);
+        $forward = $this->foward();
+        $from = $this->board()->$forward($piece->position());
+        $from = $this->board()->$forward($from);
         if ($move->from() === $from) {
-            return false;
+            return $moves;
         }
 
-        return new Move($this, $upLeft, array(array($piece->position(), null)));
+        $moves[] = new Move($this, $diagonal, array(array($piece->position(), null)));
+        return $moves;
     }
 
     /**
-     * Returns up right move
-     * @return \Chess\Move|false Returns false if not valid move for piece
+     * Returns forward direction
+     * @return string
      */
-    protected function upRight()
+    protected function direction()
     {
-        if ($this->color() === self::DARK) {
-            return false;
-        }
-
-        $upRight = $this->board()->upRight($this->position());
-        if (!$upRight) {
-            return false;
-        }
-
-        $piece = $this->board()->piece($upRight);
-        if ($piece && $piece->color() !== $this->color()) {
-            return new Move($this, $upRight);
-        }
-
-        // en passant
-        $right = $this->board()->right($this->position());
-        if (!$right) {
-            return false;
-        }
-
-        $piece = $this->board()->piece($right);
-        if (!$piece || $piece->color() === $this->color()) {
-            return false;
-        }
-
-        $move = $this->board()->getLastMove();
-        if (!$move) {
-            return false;
-        }
-
-        if ($move->piece() !== $piece) {
-            return false;
-        }
-
-        $from = $this->board()->down($piece->position());
-        $from = $this->board()->down($from);
-        if ($move->from() === $from) {
-            return false;
-        }
-
-        return new Move($this, $upRight, array(array($piece->position(), null)));
+        $direction = array(
+            self::LIGHT => 'up',
+            self::DARK => 'down'
+        );
+        return $direction[$this->color()];
     }
 
     /**
-     * Returns down left move
-     * @return \Chess\Move|false Returns false if not valid move for piece
+     * Determines if pawn can move two spaces
+     * @return boolean
      */
-    protected function downLeft()
+    protected function canMoveTwo()
     {
-        if ($this->color() === self::LIGHT) {
-            return false;
-        }
-
-        $downLeft = $this->board()->downLeft($this->position());
-        if (!$downLeft) {
-            return false;
-        }
-
-        $piece = $this->board()->piece($downLeft);
-        if ($piece && $piece->color() !== $this->color()) {
-            return new Move($this, $downLeft);
-        }
-
-        // en passant
-        $left = $this->board()->left($this->position());
-        if (!$left) {
-            return false;
-        }
-
-        $piece = $this->board()->piece($left);
-        if (!$piece || $piece->color() === $this->color()) {
-            return false;
-        }
-
-        $move = $this->board()->getLastMove();
-        if (!$move) {
-            return false;
-        }
-
-        if ($move->piece() !== $piece) {
-            return false;
-        }
-
-        $from = $this->board()->down($piece->position());
-        $from = $this->board()->down($from);
-        if ($move->from() === $from) {
-            return false;
-        }
-
-        return new Move($this, $downLeft, array(array($piece->position(), null)));
+        $startRanks = array(
+            self::LIGHT => 2,
+            self::DARK => 7
+        );
+        $startRank = $startRanks[$this->color()];
+        list($file, $rank) = $this->position();
+        return $rank == $startRank;
     }
 
     /**
-     * Returns down right move
-     * @return \Chess\Move|false Returns false if not valid move for piece
+     * Makes moves for specified position
+     * @param  string $position
+     * @return array Returns array of \Chess\Move objects
      */
-    protected function downRight()
+    protected function makeMoves($position)
     {
-        if ($this->color() === self::LIGHT) {
-            return false;
+        $moves = array();
+        if ($this->isPromotion($position)) {
+            foreach (array('Queen', 'Bishop', 'Knight', 'Rook') as $promotion) {
+                $moves[] = $this->makePromotionMove($position, $promotion);
+            }
+        } else {
+            $moves[] = new Move($this, $position);
         }
-
-        $downRight = $this->board()->downRight($this->position());
-        if (!$downRight) {
-            return false;
-        }
-
-        $piece = $this->board()->piece($downRight);
-        if ($piece && $piece->color() !== $this->color()) {
-            return new Move($this, $downRight);
-        }
-
-        // en passant
-        $right = $this->board()->right($this->position());
-        if (!$right) {
-            return false;
-        }
-
-        $piece = $this->board()->piece($right);
-        if (!$piece || $piece->color() === $this->color()) {
-            return false;
-        }
-
-        $move = $this->board()->getLastMove();
-        if (!$move) {
-            return false;
-        }
-
-        if ($move->piece() !== $piece) {
-            return false;
-        }
-
-        $from = $this->board()->down($piece->position());
-        $from = $this->board()->down($from);
-        if ($move->from() === $from) {
-            return false;
-        }
-
-        return new Move($this, $downRight, array(array($piece->position(), null)));
+        return $moves;
     }
 
+    /**
+     * Determines if position is promotion
+     * @param string $position
+     * @return boolean
+     */
+    protected function isPromotion($position)
+    {
+        $promotionRanks = array(
+            self::LIGHT => 8,
+            self::DARK => 1
+        );
+        $promoteRank = $promotionRanks[$this->color()];
+        list($file, $rank) = $this->position();
+        return $rank == $promoteRank;
+    }
+
+    /**
+     * Creates a promotion move
+     * @param  string $position
+     * @param  string $promotion
+     * @return \Chess\Move
+     */
+    protected function makePromotionMove($position, $promotion)
+    {
+        $class = sprintf('\\Chess\\Piece\\%s', $promotion);
+        $piece = new $class($this->color());
+        $changes = array(array($position, $piece));
+        $properties = array('promote' => $promotion);
+        return new Move($this, $position, $changes, $properties);
+    }
 }

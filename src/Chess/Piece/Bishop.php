@@ -1,12 +1,13 @@
 <?php
 
 namespace Chess\Piece;
+use \Chess\Moves;
 
 class Bishop extends \Chess\Piece
 {
     /**
      * Returns all possible moves
-     * @return array Returns array of \Chess\Move objects
+     * @return \Chess\Moves
      */
     public function moves()
     {
@@ -18,6 +19,6 @@ class Bishop extends \Chess\Piece
 
         $moves = $this->filterCheckMoves($moves);
 
-        return $moves;
+        return new Moves($moves);
     }
 }

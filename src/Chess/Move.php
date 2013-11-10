@@ -5,15 +5,6 @@ namespace Chess;
 class Move
 {
     /**
-     * List of board changes
-     * @var array
-     */
-    protected $changes = array(
-        'do' => array(),
-        'undo' => array()
-    );
-
-    /**
      * Piece to move
      * @var \Chess\Piece
      */
@@ -32,12 +23,28 @@ class Move
     protected $to;
 
     /**
+     * List of board changes
+     * @var array
+     */
+    protected $changes = array(
+        'do' => array(),
+        'undo' => array()
+    );
+
+    /**
+     * Holds properties used for move filtering
+     * @var array
+     */
+    protected $properties = array();
+
+    /**
      * Construct method
      * @param \Chess\Piece $piece Piece to move
      * @param string $to Position to move to
-     * @param array $changes, ... Additional board changes to include in move
+     * @param array $changes Additional board changes to include in move
+     * @param array $properties Properties used for move filtering (ex. array('promote' => 'Queen'))
      */
-    public function __construct(\Chess\Piece $piece, $to, array $changes = array())
+    public function __construct(\Chess\Piece $piece, $to, array $changes = array(), array $properties = array())
     {
         $this->piece = $piece;
         $this->from = $this->piece->position();
@@ -50,7 +57,9 @@ class Move
             $this->addChange($position, $value);
         }
 
-
+        foreach ($properties as $property => $value) {
+            $this->addProperty($property, $value);
+        }
     }
 
     /**
@@ -91,6 +100,29 @@ class Move
     }
 
     /**
+     * Returns property value
+     * @param  string $name
+     * @return mixed
+     */
+    public function property($name)
+    {
+        if (array_key_exists($name, $this->properties)) {
+            return $this->properties[$name];
+        }
+
+        throw new Exception('Invalid property');
+    }
+
+    /**
+     * Returns properties for this move
+     * @return array
+     */
+    public function properties()
+    {
+        return $this->properties;
+    }
+
+    /**
      * Adds board change to move
      * @param string $position
      * @param \Chess\Piece|null $value
@@ -99,5 +131,15 @@ class Move
     {
         array_push($this->changes['do'], array($position, $value));
         array_unshift($this->changes['undo'], array($position, $this->piece->board()->piece($position)));
+    }
+
+    /**
+     * Add property to move used for move filtering
+     * @param string $name
+     * @param mixed $value
+     */
+    protected function addProperty($name, $value)
+    {
+        $this->properties[$name] = $value;
     }
 }

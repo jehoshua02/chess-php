@@ -1,6 +1,6 @@
 # TODO
 
-+ Refactor options out of move
++ Refactor moves to use \Chess\Moves object
 + Restore PawnTest::testPromotion
 + Restore/Finish PawnTest::testEnPassant
     + Pawn should be able to capture en passant
