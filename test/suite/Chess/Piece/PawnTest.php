@@ -413,16 +413,18 @@ class PawnTest extends \Chess\PieceTestCase
         );
     }
 
-    // public function testEnPassant()
-    // {
-    //     $board = new Board(array(
-    //         'D4' => new Pawn(Piece::DARK),
-    //         'C2' => new Pawn(Piece::LIGHT)
-    //     ));
-    //     $board->piece('C2')->move('C4');
-    //     $this->assertMoves(
-    //         $board->piece('D4'), 2, array('D3', 'C3'),
-    //         'Pawn should be able to capture en passant'
-    //     );
-    // }
+    public function testEnPassant()
+    {
+        $board = new Board(array(
+            'D4' => new Pawn(Piece::DARK),
+            'C2' => new Pawn(Piece::LIGHT)
+        ));
+        $board->piece('C2')->move('C4');
+        $this->assertMoves(
+            $board->piece('D4'), 2, array('D3', 'C3'),
+            'Pawn should be able to capture en passant'
+        );
+        $board->piece('D4')->move('C3');
+        $this->assertNull($board->piece('C4'), 'Capturing En Passant should remove pawn from board');
+    }
 }
