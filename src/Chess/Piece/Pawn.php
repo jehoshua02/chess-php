@@ -98,7 +98,7 @@ class Pawn extends \Chess\Piece
             return $moves;
         }
 
-        $forward = $this->foward();
+        $forward = $this->direction();
         $from = $this->board()->$forward($piece->position());
         $from = $this->board()->$forward($from);
         if ($move->from() === $from) {

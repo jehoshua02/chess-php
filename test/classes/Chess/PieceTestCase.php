@@ -24,15 +24,23 @@ abstract class PieceTestCase extends \PHPUnit_Framework_TestCase
 
         // get moves and count
         $count = count($expectedMoves);
-        $moves = array_map(function ($move) {
-            return $move->to();
-        }, $piece->moves());
+        $moves = $piece->moves();
 
         // assertions
         $this->assertCount($expectedCount, $expectedMoves, sprintf('%sExpected count does not agree with expected moves', $message));
-        $this->assertCount($count, $moves, sprintf('%s%s should have %s possible moves', $message, $type, $count));
-        foreach ($expectedMoves as $position) {
-            $this->assertContains($position, $moves, sprintf('%s%s should be able to move to %s', $message, $type, $position));
+        $this->assertEquals($expectedCount, $moves->count(), sprintf('%s%s should have %s possible moves', $message, $type, $count));
+        foreach ($expectedMoves as $move) {
+            if (is_string($move)) {
+                $position = $move;
+                $properties = array();
+            } elseif (is_array($move)) {
+                @list($position, $properties) = $move;
+                if (!is_array($properties)) {
+                    $properties = array();
+                }
+            }
+            $move = call_user_func(array($moves, 'match'), $position, $properties);
+            $this->assertFalse($move === false, sprintf('%s%s should be able to move to %s', $message, $type, $position));
         }
     }
 }

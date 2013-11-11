@@ -138,7 +138,7 @@ class Board
 
     /**
      * Executes a move
-     * @param  \Chess\Move $move
+     * @param \Chess\Move $move
      */
     public function move(\Chess\Move $move)
     {

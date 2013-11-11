@@ -45,12 +45,13 @@ abstract class Piece
     public function move($to, array $properties = array())
     {
         $moves = $this->moves();
-
-        foreach ($properties as $property => $value) {
-            $moves = $moves->filter($property, $value);
+        $move = $moves->match($to, $properties);
+        if (!$move) {
+            return false;
         }
-
-        return $moves->make();
+        $this->board()->move($move);
+        $this->moved = true;
+        return true;
     }
 
     /**
@@ -59,7 +60,7 @@ abstract class Piece
      */
     public function moves()
     {
-        return new Moves();
+        return new Moves(array());
     }
 
     /**
@@ -147,11 +148,9 @@ abstract class Piece
                 continue;
             }
 
-            $position = $this->position();
-            foreach ($piece->moves() as $move) {
-                if ($move->to() === $position) {
-                    return true;
-                }
+            $moves = $piece->moves()->to($this->position());
+            if ($moves->count() > 0) {
+                return true;
             }
         }
 
@@ -186,7 +185,7 @@ abstract class Piece
             if ($piece->color() !== $this->color()) {
                 continue;
             }
-            if (count($piece->moves()) > 0) {
+            if ($piece->moves()->count() > 0) {
                 return true;
             }
         }

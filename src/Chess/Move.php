@@ -102,15 +102,14 @@ class Move
     /**
      * Returns property value
      * @param  string $name
-     * @return mixed
+     * @return mixed|null Returns null if property not set
      */
     public function property($name)
     {
         if (array_key_exists($name, $this->properties)) {
             return $this->properties[$name];
         }
-
-        throw new Exception('Invalid property');
+        return null;
     }
 
     /**
