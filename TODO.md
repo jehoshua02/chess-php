@@ -1,6 +1,5 @@
 # TODO
 
-+ Restore PawnTest::testPromotion
 + Restore/Finish PawnTest::testEnPassant
     + Pawn should be able to capture en passant
         + Pawn of different color to right or left

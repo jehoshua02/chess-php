@@ -167,7 +167,7 @@ class Pawn extends \Chess\Piece
             self::DARK => 1
         );
         $promoteRank = $promotionRanks[$this->color()];
-        list($file, $rank) = $this->position();
+        list($file, $rank) = $position;
         return $rank == $promoteRank;
     }
 
