@@ -51,6 +51,21 @@ class PawnTest extends \Chess\PieceTestCase
             $failed = $board->piece('D8') === null && $board->piece('D7') === $piece;
             $this->assertTrue($failed, 'Pawn should still be in the same place when promotion fails');
         }
+
+        // must specify piece to promote to
+        $board = new Board(array(
+            'D7' => new Pawn(Piece::LIGHT)
+        ));
+        try {
+            $board->piece('D7')->move('D8');
+        } catch (\Exception $exception) {
+            // do nothing
+        }
+
+        if (!isset($exception)) {
+            $this->fail('Promotion should throw exception if piece to promote to not specified');
+        }
+
     }
 
     public function testNoMoves()
@@ -426,5 +441,25 @@ class PawnTest extends \Chess\PieceTestCase
         );
         $board->piece('D4')->move('C3');
         $this->assertNull($board->piece('C4'), 'Capturing En Passant should remove pawn from board');
+
+        // no move history
+        $board = new Board(array(
+            'D4' => new Pawn(Piece::DARK),
+            'C4' => new Pawn(Piece::LIGHT)
+        ));
+        $this->assertMoves(
+            $board->piece('D4'), 1, array('D3'),
+            'Pawn should not be able to capture en passant with no move history'
+        );
+
+        // must be immediately after pawn moves two
+        $board = new Board(array(
+            'D4' => new Pawn(Piece::DARK),
+            'C2' => new Pawn(Piece::LIGHT),
+            'C7' => new Pawn(Piece::DARK)
+        ));
+        $board->piece('C2')->move('C4');
+        $board->piece('C7')->move('C6');
+        $this->assertFalse($board->piece('D4')->move('C3'), 'Pawn should not be able capture pawn en passant unless it just moved');
     }
 }

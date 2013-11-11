@@ -33,7 +33,7 @@ class Moves
         $moves = $this->to($to, $properties);
 
         if ($moves->count() > 1) {
-            throw new \Exception('Move than one matching move');
+            throw new \Exception('More than one matching move');
         }
 
         if ($moves->count() < 1) {

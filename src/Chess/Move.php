@@ -106,19 +106,7 @@ class Move
      */
     public function property($name)
     {
-        if (array_key_exists($name, $this->properties)) {
-            return $this->properties[$name];
-        }
-        return null;
-    }
-
-    /**
-     * Returns properties for this move
-     * @return array
-     */
-    public function properties()
-    {
-        return $this->properties;
+        return array_key_exists($name, $this->properties) ? $this->properties[$name] : null;
     }
 
     /**

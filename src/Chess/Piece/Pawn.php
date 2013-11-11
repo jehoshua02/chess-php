@@ -80,9 +80,6 @@ class Pawn extends \Chess\Piece
 
         // en passant
         $side = $this->board()->$side($this->position());
-        if (!$side) {
-            return $moves;
-        }
 
         $piece = $this->board()->piece($side);
         if (!$piece || $piece->color() === $this->color()) {
