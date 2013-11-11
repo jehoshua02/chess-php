@@ -1,6 +1,8 @@
 <?php
 
 namespace Chess;
+use \Chess\Move;
+use \Chess\Moves;
 
 abstract class Piece
 {
@@ -36,13 +38,29 @@ abstract class Piece
 
     /**
      * Moves piece to specified position. Override in subclass
-     * @param  string $position
-     * @return boolean Returns false if move not allowed
+     * @param  string $to
+     * @param  array $properties Additional properties to filter moves
+     * @return boolean Returns false if move not legal
      */
-    public function move($position)
+    public function move($to, array $properties = array())
     {
+        $moves = $this->moves();
+        $move = $moves->match($to, $properties);
+        if (!$move) {
+            return false;
+        }
+        $this->board()->move($move);
         $this->moved = true;
         return true;
+    }
+
+    /**
+     * Returns possible moves for piece
+     * @return \Chess\Moves
+     */
+    public function moves()
+    {
+        return new Moves(array());
     }
 
     /**
@@ -83,15 +101,6 @@ abstract class Piece
     public function position()
     {
         return $this->board()->position($this);
-    }
-
-    /**
-     * Returns possible moves for piece
-     * @return array
-     */
-    public function moves()
-    {
-        return array();
     }
 
     /**
@@ -138,7 +147,9 @@ abstract class Piece
             if ($piece->color() === $this->color()) {
                 continue;
             }
-            if (in_array($this->position(), $piece->moves())) {
+
+            $moves = $piece->moves()->to($this->position());
+            if ($moves->count() > 0) {
                 return true;
             }
         }
@@ -174,7 +185,7 @@ abstract class Piece
             if ($piece->color() !== $this->color()) {
                 continue;
             }
-            if (count($piece->moves()) > 0) {
+            if ($piece->moves()->count() > 0) {
                 return true;
             }
         }
@@ -200,12 +211,12 @@ abstract class Piece
 
             $piece = $this->board()->piece($position);
             if (!$piece) {
-                $moves[] = $position;
+                $moves[] = new Move($this, $position);
                 continue;
             }
 
             if ($piece->color() !== $this->color()) {
-                $moves[] = $position;
+                $moves[] = new Move($this, $position);
             }
 
             break;
@@ -226,31 +237,20 @@ abstract class Piece
                 unset($moves[$key]);
             }
         }
-
         return $moves;
     }
 
     /**
      * Determines King would be in check after a move
-     * @param string $position
+     * @param \Chess\Move
      * @return boolean
      */
-    protected function isCheckAfterMove($position)
+    protected function isCheckAfterMove(\Chess\Move $move)
     {
-        // save what is needed to undo move
-        $current = $this->position();
-        $piece = $this->board()->piece($position);
-
         // execute move
-        $this->board()->piece($current, null);
-        $this->board()->piece($position, $this);
-
+        $this->board()->move($move);
         $check = $this->check();
-
-        // put the pieces back
-        $this->board()->piece($position, $piece);
-        $this->board()->piece($current, $this);
-
+        $this->board()->undo();
         return $check;
     }
 }

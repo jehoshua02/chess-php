@@ -7,6 +7,7 @@ use \Chess\Piece\Bishop;
 use \Chess\Piece\Knight;
 use \Chess\Piece\Rook;
 use \Chess\Piece\Pawn;
+use \Chess\Move;
 
 class Board
 {
@@ -15,6 +16,12 @@ class Board
      * @var array
      */
     protected $pieces = array();
+
+    /**
+     * List of moves made
+     * @var array An array of \Chess\Move objects
+     */
+    protected $moves = array();
 
     /**
      * Construct method
@@ -125,6 +132,44 @@ class Board
             if ($piece === $boardPiece) {
                 return $position;
             }
+        }
+        return false;
+    }
+
+    /**
+     * Executes a move
+     * @param \Chess\Move $move
+     */
+    public function move(\Chess\Move $move)
+    {
+        foreach ($move->changes() as $change) {
+            list($position, $value) = $change;
+            $this->piece($position, $value);
+        }
+        array_push($this->moves, $move);
+    }
+
+    /**
+     * Undoes the last move in history
+     */
+    public function undo()
+    {
+        $move = array_pop($this->moves);
+        foreach ($move->changes(true) as $change) {
+            list($position, $value) = $change;
+            $this->piece($position, $value);
+        }
+    }
+
+    /**
+     * Returns last move
+     * @return \Chess\Move|false
+     */
+    public function getLastMove()
+    {
+        $key = count($this->moves) - 1;
+        if (array_key_exists($key, $this->moves)) {
+            return $this->moves[$key];
         }
         return false;
     }

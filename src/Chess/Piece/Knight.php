@@ -1,12 +1,14 @@
 <?php
 
 namespace Chess\Piece;
+use \Chess\Move;
+use \Chess\Moves;
 
 class Knight extends \Chess\Piece
 {
     /**
      * Returns all possible moves
-     * @return array
+     * @return \Chess\Moves
      */
     public function moves()
     {
@@ -27,13 +29,13 @@ class Knight extends \Chess\Piece
 
         $moves = $this->filterCheckMoves($moves);
 
-        return $moves;
+        return new Moves($moves);
     }
 
     /**
-     * Returns jump position
+     * Returns jump move
      * @param  string $direction, $direction, ...
-     * @return string|false Returns false if not a valid move for piece
+     * @return \Chess\Move|false Returns false if not a valid move for piece
      */
     protected function jump()
     {
@@ -51,6 +53,6 @@ class Knight extends \Chess\Piece
             return false;
         }
 
-        return $position;
+        return new Move($this, $position);
     }
 }

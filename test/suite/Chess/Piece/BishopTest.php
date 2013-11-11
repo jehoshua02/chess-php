@@ -15,7 +15,7 @@ class BishopTest extends \Chess\PieceTestCase
         $this->assertMoves(
             $board->piece('D4'), 13,
             array('A1', 'B2', 'C3', 'E5', 'F6', 'G7', 'H8', 'A7', 'B6', 'C5', 'E3', 'F2', 'G1'),
-            'Rook should be able to make any basic move'
+            'Bishop should be able to make any basic move'
         );
 
         // blocked
