@@ -1,0 +1,17 @@
+{
+	"folders":
+	[
+        {
+            "path": "."
+        }
+	],
+    "build_systems":
+    [
+        {
+            "name": "PHPUnit",
+            "cmd": ["./vendor/bin/phpunit"],
+            "working_dir": "${project_path:${folder}}",
+            "selector": "source.php"
+        }
+    ]
+}
