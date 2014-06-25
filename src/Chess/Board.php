@@ -8,14 +8,21 @@ use \Chess\Piece\Knight;
 use \Chess\Piece\Rook;
 use \Chess\Piece\Pawn;
 use \Chess\Move;
+use \Chess\Player;
 
 class Board
 {
     /**
      * Stores pieces indexed by position
-     * @var array
+     * @var array An array of \Chess\Piece objects
      */
     protected $pieces = array();
+
+    /**
+     * Stores players in turn order
+     * @var array An array of \Chess\Player objects
+     */
+    protected $players = array();
 
     /**
      * List of moves made
@@ -30,46 +37,73 @@ class Board
     {
         if ($pieces !== null) {
             foreach ($pieces as $position => $piece) {
+                $player = $piece->player();
+                if (!in_array($player, $this->players)) {
+                    $this->players[] = $player;
+                }
                 $this->piece($position, $piece);
             }
             return;
         }
 
-        $this->piece('A1', new Rook(Piece::LIGHT));
-        $this->piece('B1', new Knight(Piece::LIGHT));
-        $this->piece('C1', new Bishop(Piece::LIGHT));
-        $this->piece('D1', new Queen(Piece::LIGHT));
-        $this->piece('E1', new King(Piece::LIGHT));
-        $this->piece('F1', new Bishop(Piece::LIGHT));
-        $this->piece('G1', new Knight(Piece::LIGHT));
-        $this->piece('H1', new Rook(Piece::LIGHT));
+        $player1 = new Player();
+        $player2 = new Player();
 
-        $this->piece('A2', new Pawn(Piece::LIGHT));
-        $this->piece('B2', new Pawn(Piece::LIGHT));
-        $this->piece('C2', new Pawn(Piece::LIGHT));
-        $this->piece('D2', new Pawn(Piece::LIGHT));
-        $this->piece('E2', new Pawn(Piece::LIGHT));
-        $this->piece('F2', new Pawn(Piece::LIGHT));
-        $this->piece('G2', new Pawn(Piece::LIGHT));
-        $this->piece('H2', new Pawn(Piece::LIGHT));
+        $this->players = array($player1, $player2);
 
-        $this->piece('A7', new Pawn(Piece::DARK));
-        $this->piece('B7', new Pawn(Piece::DARK));
-        $this->piece('C7', new Pawn(Piece::DARK));
-        $this->piece('D7', new Pawn(Piece::DARK));
-        $this->piece('E7', new Pawn(Piece::DARK));
-        $this->piece('F7', new Pawn(Piece::DARK));
-        $this->piece('G7', new Pawn(Piece::DARK));
-        $this->piece('H7', new Pawn(Piece::DARK));
+        $this->piece('A1', new Rook($player1));
+        $this->piece('B1', new Knight($player1));
+        $this->piece('C1', new Bishop($player1));
+        $this->piece('D1', new Queen($player1));
+        $this->piece('E1', new King($player1));
+        $this->piece('F1', new Bishop($player1));
+        $this->piece('G1', new Knight($player1));
+        $this->piece('H1', new Rook($player1));
 
-        $this->piece('A8', new Rook(Piece::DARK));
-        $this->piece('B8', new Knight(Piece::DARK));
-        $this->piece('C8', new Bishop(Piece::DARK));
-        $this->piece('D8', new Queen(Piece::DARK));
-        $this->piece('E8', new King(Piece::DARK));
-        $this->piece('F8', new Bishop(Piece::DARK));
-        $this->piece('G8', new Knight(Piece::DARK));
-        $this->piece('H8', new Rook(Piece::DARK));
+        $this->piece('A2', new Pawn($player1));
+        $this->piece('B2', new Pawn($player1));
+        $this->piece('C2', new Pawn($player1));
+        $this->piece('D2', new Pawn($player1));
+        $this->piece('E2', new Pawn($player1));
+        $this->piece('F2', new Pawn($player1));
+        $this->piece('G2', new Pawn($player1));
+        $this->piece('H2', new Pawn($player1));
+
+        $this->piece('A7', new Pawn($player2));
+        $this->piece('B7', new Pawn($player2));
+        $this->piece('C7', new Pawn($player2));
+        $this->piece('D7', new Pawn($player2));
+        $this->piece('E7', new Pawn($player2));
+        $this->piece('F7', new Pawn($player2));
+        $this->piece('G7', new Pawn($player2));
+        $this->piece('H7', new Pawn($player2));
+
+        $this->piece('A8', new Rook($player2));
+        $this->piece('B8', new Knight($player2));
+        $this->piece('C8', new Bishop($player2));
+        $this->piece('D8', new Queen($player2));
+        $this->piece('E8', new King($player2));
+        $this->piece('F8', new Bishop($player2));
+        $this->piece('G8', new Knight($player2));
+        $this->piece('H8', new Rook($player2));
+    }
+
+    /**
+     * Returns player
+     * @return \Chess\Player
+     */
+    public function player($index)
+    {
+        return $this->players[$index];
+    }
+
+    /**
+     * Returns list of players
+     * @return array Returns array of \Chess\Player objects
+     */
+    public function players()
+    {
+        return $this->players;
     }
 
     /**

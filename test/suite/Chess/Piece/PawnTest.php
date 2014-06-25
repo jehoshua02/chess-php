@@ -3,14 +3,16 @@
 use \Chess\Board;
 use \Chess\Piece;
 use \Chess\Piece\Pawn;
+use \Chess\Player;
 
 class PawnTest extends \Chess\PieceTestCase
 {
     public function testMove()
     {
         // valid move
-        $board = new Board(array(
-            'D4' => new Pawn(Piece::LIGHT)
+        $player1 = new Player();
+        $board = $this->makeBoard(array(
+            array('D4', 'Pawn', 1)
         ));
         $piece = $board->piece('D4');
         $this->assertTrue($board->piece('D4')->move('D5'), 'Pawn should be able to move');
@@ -18,8 +20,9 @@ class PawnTest extends \Chess\PieceTestCase
         $this->assertTrue($board->piece('D5') === $piece, 'Pawn should now be in D5');
 
         // invalid move
-        $board = new Board(array(
-            'D4' => new Pawn(Piece::LIGHT)
+        $player1 = new Player();
+        $board = $this->makeBoard(array(
+            array('D4', 'Pawn', 1)
         ));
         $piece = $board->piece('D4');
         $this->assertFalse($board->piece('D4')->move('D3'), 'Pawn should not be able to move');
@@ -30,8 +33,9 @@ class PawnTest extends \Chess\PieceTestCase
     {
         // allowed promotions
         foreach (array('Queen', 'Bishop', 'Knight', 'Rook') as $promotion) {
-            $board = new Board(array(
-                'D7' => new Pawn(Piece::LIGHT)
+            $player1 = new Player();
+            $board = $this->makeBoard(array(
+                array('D7', 'Pawn', 1)
             ));
             $piece = $board->piece('D7');
             $status = $piece->move('D8', array('promote' => $promotion));
@@ -42,8 +46,9 @@ class PawnTest extends \Chess\PieceTestCase
 
         // not allowed promotions
         foreach (array('King', 'Pawn') as $promotion) {
-            $board = new Board(array(
-                'D7' => new Pawn(Piece::LIGHT)
+            $player1 = new Player();
+            $board = $this->makeBoard(array(
+                array('D7', 'Pawn', 1)
             ));
             $piece = $board->piece('D7');
             $moved = $piece->move('D8', array('promote' => $promotion));
@@ -53,8 +58,9 @@ class PawnTest extends \Chess\PieceTestCase
         }
 
         // must specify piece to promote to
-        $board = new Board(array(
-            'D7' => new Pawn(Piece::LIGHT)
+        $player1 = new Player();
+        $board = $this->makeBoard(array(
+            array('D7', 'Pawn', 1)
         ));
         try {
             $board->piece('D7')->move('D8');
@@ -71,9 +77,11 @@ class PawnTest extends \Chess\PieceTestCase
     public function testNoMoves()
     {
         // pawn should have no moves
-        $board = new Board(array(
-            'D4' => new Pawn(Piece::LIGHT),
-            'D5' => new Pawn(Piece::DARK)
+        $player1 = new Player();
+        $player2 = new Player();
+        $board = $this->makeBoard(array(
+            array('D4', 'Pawn', 1),
+            array('D5', 'Pawn', 2)
         ));
         $this->assertMoves(
             $board->piece('D4'), 0, array(),
@@ -88,8 +96,9 @@ class PawnTest extends \Chess\PieceTestCase
     public function testOneMove()
     {
         // pawn should have one move: up one
-        $board = new Board(array(
-            'D4' => new Pawn(Piece::LIGHT)
+        $player1 = new Player();
+        $board = $this->makeBoard(array(
+            array('D4', 'Pawn', 1)
         ));
         $this->assertMoves(
             $board->piece('D4'), 1, array('D5'),
@@ -97,8 +106,9 @@ class PawnTest extends \Chess\PieceTestCase
         );
 
         // pawn should have one move: down one
-        $board = new Board(array(
-            'D5' => new Pawn(Piece::DARK)
+        $player2 = new Player();
+        $board = $this->makeBoard(array(
+            array('D5', 'Pawn', 2)
         ));
         $this->assertMoves(
             $board->piece('D5'), 1, array('D4'),
@@ -106,10 +116,12 @@ class PawnTest extends \Chess\PieceTestCase
         );
 
         // pawn should have one move: capture up left
-        $board = new Board(array(
-            'D4' => new Pawn(Piece::LIGHT),
-            'D5' => new Pawn(Piece::DARK),
-            'C5' => new Pawn(Piece::DARK)
+        $player1 = new Player();
+        $player2 = new Player();
+        $board = $this->makeBoard(array(
+            array('D4', 'Pawn', 1),
+            array('D5', 'Pawn', 2),
+            array('C5', 'Pawn', 2)
         ));
         $this->assertMoves(
             $board->piece('D4'), 1, array('C5'),
@@ -117,10 +129,12 @@ class PawnTest extends \Chess\PieceTestCase
         );
 
         // pawn should have one move: capture up right
-        $board = new Board(array(
-            'D4' => new Pawn(Piece::LIGHT),
-            'D5' => new Pawn(Piece::DARK),
-            'E5' => new Pawn(Piece::DARK)
+        $player1 = new Player();
+        $player2 = new Player();
+        $board = $this->makeBoard(array(
+            array('D4', 'Pawn', 1),
+            array('D5', 'Pawn', 2),
+            array('E5', 'Pawn', 2)
         ));
         $this->assertMoves(
             $board->piece('D4'), 1, array('E5'),
@@ -128,10 +142,12 @@ class PawnTest extends \Chess\PieceTestCase
         );
 
         // pawn should have one move: capture down left
-        $board = new Board(array(
-            'D5' => new Pawn(Piece::DARK),
-            'D4' => new Pawn(Piece::LIGHT),
-            'C4' => new Pawn(Piece::LIGHT)
+        $player1 = new Player();
+        $player2 = new Player();
+        $board = $this->makeBoard(array(
+            array('D5', 'Pawn', 2),
+            array('D4', 'Pawn', 1),
+            array('C4', 'Pawn', 1)
         ));
         $this->assertMoves(
             $board->piece('D5'), 1, array('C4'),
@@ -139,10 +155,12 @@ class PawnTest extends \Chess\PieceTestCase
         );
 
         // pawn should have one move: capture down right
-        $board = new Board(array(
-            'D5' => new Pawn(Piece::DARK),
-            'D4' => new Pawn(Piece::LIGHT),
-            'E4' => new Pawn(Piece::LIGHT)
+        $player1 = new Player();
+        $player2 = new Player();
+        $board = $this->makeBoard(array(
+            array('D5', 'Pawn', 2),
+            array('D4', 'Pawn', 1),
+            array('E4', 'Pawn', 1)
         ));
         $this->assertMoves(
             $board->piece('D5'), 1, array('E4'),
@@ -153,8 +171,9 @@ class PawnTest extends \Chess\PieceTestCase
     public function testTwoMoves()
     {
         // pawn should have two moves: up, up two
-        $board = new Board(array(
-            'D2' => new Pawn(Piece::LIGHT)
+        $player1 = new Player();
+        $board = $this->makeBoard(array(
+            array('D2', 'Pawn', 1)
         ));
         $this->assertMoves(
             $board->piece('D2'), 2, array('D3', 'D4'),
@@ -162,9 +181,11 @@ class PawnTest extends \Chess\PieceTestCase
         );
 
         // pawn should have two moves: up, up left
-        $board = new Board(array(
-            'D4' => new Pawn(Piece::LIGHT),
-            'C5' => new Pawn(Piece::DARK)
+        $player1 = new Player();
+        $player2 = new Player();
+        $board = $this->makeBoard(array(
+            array('D4', 'Pawn', 1),
+            array('C5', 'Pawn', 2)
         ));
         $this->assertMoves(
             $board->piece('D4'), 2, array('D5', 'C5'),
@@ -172,10 +193,12 @@ class PawnTest extends \Chess\PieceTestCase
         );
 
         // pawn should have two moves: up, up left (up two blocked)
-        $board = new Board(array(
-            'D2' => new Pawn(Piece::LIGHT),
-            'D4' => new Pawn(Piece::DARK),
-            'C3' => new Pawn(Piece::DARK)
+        $player1 = new Player();
+        $player2 = new Player();
+        $board = $this->makeBoard(array(
+            array('D2', 'Pawn', 1),
+            array('D4', 'Pawn', 2),
+            array('C3', 'Pawn', 2)
         ));
         $this->assertMoves(
             $board->piece('D2'), 2, array('D3', 'C3'),
@@ -183,9 +206,11 @@ class PawnTest extends \Chess\PieceTestCase
         );
 
         // pawn should have two moves: up, up right
-        $board = new Board(array(
-            'D4' => new Pawn(Piece::LIGHT),
-            'E5' => new Pawn(Piece::DARK)
+        $player1 = new Player();
+        $player2 = new Player();
+        $board = $this->makeBoard(array(
+            array('D4', 'Pawn', 1),
+            array('E5', 'Pawn', 2)
         ));
         $this->assertMoves(
             $board->piece('D4'), 2, array('D5', 'E5'),
@@ -193,10 +218,12 @@ class PawnTest extends \Chess\PieceTestCase
         );
 
         // pawn should have two moves: up, up right (up two blocked)
-        $board = new Board(array(
-            'D2' => new Pawn(Piece::LIGHT),
-            'E3' => new Pawn(Piece::DARK),
-            'D4' => new Pawn(Piece::DARK)
+        $player1 = new Player();
+        $player2 = new Player();
+        $board = $this->makeBoard(array(
+            array('D2', 'Pawn', 1),
+            array('E3', 'Pawn', 2),
+            array('D4', 'Pawn', 2)
         ));
         $this->assertMoves(
             $board->piece('D2'), 2, array('D3', 'E3'),
@@ -204,11 +231,13 @@ class PawnTest extends \Chess\PieceTestCase
         );
 
         // pawn should have two moves: up left, up right
-        $board = new Board(array(
-            'D4' => new Pawn(Piece::LIGHT),
-            'D5' => new Pawn(Piece::DARK),
-            'C5' => new Pawn(Piece::DARK),
-            'E5' => new Pawn(Piece::DARK)
+        $player1 = new Player();
+        $player2 = new Player();
+        $board = $this->makeBoard(array(
+            array('D4', 'Pawn', 1),
+            array('D5', 'Pawn', 2),
+            array('C5', 'Pawn', 2),
+            array('E5', 'Pawn', 2)
         ));
         $this->assertMoves(
             $board->piece('D4'), 2, array('C5', 'E5'),
@@ -216,8 +245,9 @@ class PawnTest extends \Chess\PieceTestCase
         );
 
         // pawn should have two moves: down, down two
-        $board = new Board(array(
-            'D7' => new Pawn(Piece::DARK)
+        $player2 = new Player();
+        $board = $this->makeBoard(array(
+            array('D7', 'Pawn', 2)
         ));
         $this->assertMoves(
             $board->piece('D7'), 2, array('D6', 'D5'),
@@ -225,9 +255,9 @@ class PawnTest extends \Chess\PieceTestCase
         );
 
         // pawn should have two moves: down, down left
-        $board = new Board(array(
-            'D5' => new Pawn(Piece::DARK),
-            'C4' => new Pawn(Piece::LIGHT)
+        $board = $this->makeBoard(array(
+            array('D5', 'Pawn', 2),
+            array('C4', 'Pawn', 1)
         ));
         $this->assertMoves(
             $board->piece('D5'), 2, array('D4', 'C4'),
@@ -235,10 +265,10 @@ class PawnTest extends \Chess\PieceTestCase
         );
 
         // pawn should have two moves: down, down left (down two blocked)
-        $board = new Board(array(
-            'D7' => new Pawn(Piece::DARK),
-            'C6' => new Pawn(Piece::LIGHT),
-            'D5' => new Pawn(Piece::LIGHT)
+        $board = $this->makeBoard(array(
+            array('D7', 'Pawn', 2),
+            array('C6', 'Pawn', 1),
+            array('D5', 'Pawn', 1)
         ));
         $this->assertMoves(
             $board->piece('D7'), 2, array('D6', 'C6'),
@@ -246,9 +276,9 @@ class PawnTest extends \Chess\PieceTestCase
         );
 
         // pawn should have two moves: down, down right
-        $board = new Board(array(
-            'D5' => new Pawn(Piece::DARK),
-            'E4' => new Pawn(Piece::LIGHT)
+        $board = $this->makeBoard(array(
+            array('D5', 'Pawn', 2),
+            array('E4', 'Pawn', 1)
         ));
         $this->assertMoves(
             $board->piece('D5'), 2, array('D4', 'E4'),
@@ -256,10 +286,10 @@ class PawnTest extends \Chess\PieceTestCase
         );
 
         // pawn should have two moves: down, down right (down two blocked)
-        $board = new Board(array(
-            'D7' => new Pawn(Piece::DARK),
-            'E6' => new Pawn(Piece::LIGHT),
-            'D5' => new Pawn(Piece::LIGHT)
+        $board = $this->makeBoard(array(
+            array('D7', 'Pawn', 2),
+            array('E6', 'Pawn', 1),
+            array('D5', 'Pawn', 1)
         ));
         $this->assertMoves(
             $board->piece('D7'), 2, array('D6', 'E6'),
@@ -267,11 +297,11 @@ class PawnTest extends \Chess\PieceTestCase
         );
 
         // pawn should have two moves: down left, down right
-        $board = new Board(array(
-            'D5' => new Pawn(Piece::DARK),
-            'D4' => new Pawn(Piece::LIGHT),
-            'C4' => new Pawn(Piece::LIGHT),
-            'E4' => new Pawn(Piece::LIGHT)
+        $board = $this->makeBoard(array(
+            array('D5', 'Pawn', 2),
+            array('D4', 'Pawn', 1),
+            array('C4', 'Pawn', 1),
+            array('E4', 'Pawn', 1)
         ));
         $this->assertMoves(
             $board->piece('D5'), 2, array('C4', 'E4'),
@@ -282,9 +312,9 @@ class PawnTest extends \Chess\PieceTestCase
     public function testThreeMoves()
     {
         // pawn should have three moves: up, up two, up left
-        $board = new Board(array(
-            'D2' => new Pawn(Piece::LIGHT),
-            'C3' => new Pawn(Piece::DARK)
+        $board = $this->makeBoard(array(
+            array('D2', 'Pawn', 1),
+            array('C3', 'Pawn', 2)
         ));
         $this->assertMoves(
             $board->piece('D2'), 3, array('D3', 'D4', 'C3'),
@@ -292,9 +322,9 @@ class PawnTest extends \Chess\PieceTestCase
         );
 
         // pawn should have three moves: up, up two, up right
-        $board = new Board(array(
-            'D2' => new Pawn(Piece::LIGHT),
-            'E3' => new Pawn(Piece::DARK)
+        $board = $this->makeBoard(array(
+            array('D2', 'Pawn', 1),
+            array('E3', 'Pawn', 2)
         ));
         $this->assertMoves(
             $board->piece('D2'), 3, array('D3', 'D4', 'E3'),
@@ -302,10 +332,10 @@ class PawnTest extends \Chess\PieceTestCase
         );
 
         // pawn should have three moves: up, up left, up right
-        $board = new Board(array(
-            'D4' => new Pawn(Piece::LIGHT),
-            'C5' => new Pawn(Piece::DARK),
-            'E5' => new Pawn(Piece::DARK)
+        $board = $this->makeBoard(array(
+            array('D4', 'Pawn', 1),
+            array('C5', 'Pawn', 2),
+            array('E5', 'Pawn', 2)
         ));
         $this->assertMoves(
             $board->piece('D4'), 3, array('D5', 'C5', 'E5'),
@@ -313,11 +343,11 @@ class PawnTest extends \Chess\PieceTestCase
         );
 
         // pawn should have three moves: up, up left, up right (up two blocked)
-        $board = new Board(array(
-            'D2' => new Pawn(Piece::LIGHT),
-            'D4' => new Pawn(Piece::DARK),
-            'C3' => new Pawn(Piece::DARK),
-            'E3' => new Pawn(Piece::DARK)
+        $board = $this->makeBoard(array(
+            array('D2', 'Pawn', 1),
+            array('D4', 'Pawn', 2),
+            array('C3', 'Pawn', 2),
+            array('E3', 'Pawn', 2)
         ));
         $this->assertMoves(
             $board->piece('D2'), 3, array('D3', 'C3', 'E3'),
@@ -325,9 +355,9 @@ class PawnTest extends \Chess\PieceTestCase
         );
 
         // pawn should have three moves: down, down two, down left
-        $board = new Board(array(
-            'D7' => new Pawn(Piece::DARK),
-            'C6' => new Pawn(Piece::LIGHT)
+        $board = $this->makeBoard(array(
+            array('D7', 'Pawn', 2),
+            array('C6', 'Pawn', 1)
         ));
         $this->assertMoves(
             $board->piece('D7'), 3, array('D6', 'D5', 'C6'),
@@ -335,9 +365,9 @@ class PawnTest extends \Chess\PieceTestCase
         );
 
         // pawn should have three moves: down, down two, down right
-        $board = new Board(array(
-            'D7' => new Pawn(Piece::DARK),
-            'E6' => new Pawn(Piece::LIGHT)
+        $board = $this->makeBoard(array(
+            array('D7', 'Pawn', 2),
+            array('E6', 'Pawn', 1)
         ));
         $this->assertMoves(
             $board->piece('D7'), 3, array('D6', 'D5', 'E6'),
@@ -345,10 +375,10 @@ class PawnTest extends \Chess\PieceTestCase
         );
 
         // pawn should have three moves: down, down left, down right
-        $board = new Board(array(
-            'D5' => new Pawn(Piece::DARK),
-            'C4' => new Pawn(Piece::LIGHT),
-            'E4' => new Pawn(Piece::LIGHT)
+        $board = $this->makeBoard(array(
+            array('D5', 'Pawn', 2),
+            array('C4', 'Pawn', 1),
+            array('E4', 'Pawn', 1)
         ));
         $this->assertMoves(
             $board->piece('D5'), 3, array('D4', 'C4', 'E4'),
@@ -356,11 +386,11 @@ class PawnTest extends \Chess\PieceTestCase
         );
 
         // pawn should have three moves: down, down left, down right (down two blocked)
-        $board = new Board(array(
-            'D7' => new Pawn(Piece::DARK),
-            'D5' => new Pawn(Piece::LIGHT),
-            'C6' => new Pawn(Piece::LIGHT),
-            'E6' => new Pawn(Piece::LIGHT)
+        $board = $this->makeBoard(array(
+            array('D7', 'Pawn', 2),
+            array('D5', 'Pawn', 1),
+            array('C6', 'Pawn', 1),
+            array('E6', 'Pawn', 1)
         ));
         $this->assertMoves(
             $board->piece('D7'), 3, array('D6', 'C6', 'E6'),
@@ -371,10 +401,10 @@ class PawnTest extends \Chess\PieceTestCase
     public function testFourMoves()
     {
         // pawn should have four moves: up, up two, up left, up right
-        $board = new Board(array(
-            'D2' => new Pawn(Piece::LIGHT),
-            'C3' => new Pawn(Piece::DARK),
-            'E3' => new Pawn(Piece::DARK)
+        $board = $this->makeBoard(array(
+            array('D2', 'Pawn', 1),
+            array('C3', 'Pawn', 2),
+            array('E3', 'Pawn', 2)
         ));
         $this->assertMoves(
             $board->piece('D2'), 4, array('D3', 'D4', 'C3', 'E3'),
@@ -382,10 +412,10 @@ class PawnTest extends \Chess\PieceTestCase
         );
 
         // pawn should have four moves: down, down two, down left, down right
-        $board = new Board(array(
-            'D7' => new Pawn(Piece::DARK),
-            'C6' => new Pawn(Piece::LIGHT),
-            'E6' => new Pawn(Piece::LIGHT)
+        $board = $this->makeBoard(array(
+            array('D7', 'Pawn', 2),
+            array('C6', 'Pawn', 1),
+            array('E6', 'Pawn', 1)
         ));
         $this->assertMoves(
             $board->piece('D7'), 4, array('D6', 'D5', 'C6', 'E6'),
@@ -395,32 +425,32 @@ class PawnTest extends \Chess\PieceTestCase
 
     public function testEdgeOfBoard()
     {
-        $board = new Board(array(
-            'A4' => new Pawn(Piece::LIGHT)
+        $board = $this->makeBoard(array(
+            array('A4', 'Pawn', 1)
         ));
         $this->assertMoves(
             $board->piece('A4'), 1, array('A5'),
             'Pawn should have one possible move'
         );
 
-        $board = new Board(array(
-            'H4' => new Pawn(Piece::LIGHT)
+        $board = $this->makeBoard(array(
+            array('H4', 'Pawn', 1)
         ));
         $this->assertMoves(
             $board->piece('H4'), 1, array('H5'),
             'Pawn should have one possible move'
         );
 
-        $board = new Board(array(
-            'A5' => new Pawn(Piece::DARK)
+        $board = $this->makeBoard(array(
+            array('A5', 'Pawn', 2)
         ));
         $this->assertMoves(
             $board->piece('A5'), 1, array('A4'),
             'Pawn should have one possible move'
         );
 
-        $board = new Board(array(
-            'H5' => new Pawn(Piece::DARK)
+        $board = $this->makeBoard(array(
+            array('H5', 'Pawn', 2)
         ));
         $this->assertMoves(
             $board->piece('H5'), 1, array('H4'),
@@ -430,9 +460,9 @@ class PawnTest extends \Chess\PieceTestCase
 
     public function testEnPassant()
     {
-        $board = new Board(array(
-            'D4' => new Pawn(Piece::DARK),
-            'C2' => new Pawn(Piece::LIGHT)
+        $board = $this->makeBoard(array(
+            array('D4', 'Pawn', 2),
+            array('C2', 'Pawn', 1)
         ));
         $board->piece('C2')->move('C4');
         $this->assertMoves(
@@ -443,9 +473,9 @@ class PawnTest extends \Chess\PieceTestCase
         $this->assertNull($board->piece('C4'), 'Capturing En Passant should remove pawn from board');
 
         // no move history
-        $board = new Board(array(
-            'D4' => new Pawn(Piece::DARK),
-            'C4' => new Pawn(Piece::LIGHT)
+        $board = $this->makeBoard(array(
+            array('D4', 'Pawn', 2),
+            array('C4', 'Pawn', 1)
         ));
         $this->assertMoves(
             $board->piece('D4'), 1, array('D3'),
@@ -453,10 +483,10 @@ class PawnTest extends \Chess\PieceTestCase
         );
 
         // must be immediately after pawn moves two
-        $board = new Board(array(
-            'D4' => new Pawn(Piece::DARK),
-            'C2' => new Pawn(Piece::LIGHT),
-            'C7' => new Pawn(Piece::DARK)
+        $board = $this->makeBoard(array(
+            array('D4', 'Pawn', 2),
+            array('C2', 'Pawn', 1),
+            array('C7', 'Pawn', 2)
         ));
         $board->piece('C2')->move('C4');
         $board->piece('C7')->move('C6');

@@ -6,14 +6,11 @@ use \Chess\Moves;
 
 abstract class Piece
 {
-    const DARK = 0;
-    const LIGHT = 1;
-
     /**
-     * Color of piece
-     * @var int
+     * Player of the piece
+     * @var \Chess\Player
      */
-    protected $color;
+    protected $player;
 
     /**
      * Board the piece is on
@@ -29,11 +26,11 @@ abstract class Piece
 
     /**
      * Construct method
-     * @param int $color
+     * @param \Chess\Player $player
      */
-    public function __construct($color)
+    public function __construct(\Chess\Player $player)
     {
-        $this->color = $color;
+        $this->player = $player;
     }
 
     /**
@@ -73,12 +70,12 @@ abstract class Piece
     }
 
     /**
-     * Returns color of the piece
-     * @return int
+     * Returns player of piece
+     * @return \Chess\Player
      */
-    public function color()
+    public function player()
     {
-        return $this->color;
+        return $this->player;
     }
 
     /**
@@ -116,7 +113,7 @@ abstract class Piece
         foreach ($this->board()->pieces() as $piece) {
             if (
                 is_a($piece, '\\Chess\\Piece\\King')
-                && $piece->color() === $this->color()
+                && $piece->player() === $this->player()
             ) {
                 return $piece;
             }
@@ -144,7 +141,7 @@ abstract class Piece
     public function underThreat()
     {
         foreach ($this->board()->pieces() as $piece) {
-            if ($piece->color() === $this->color()) {
+            if ($piece->player() === $this->player()) {
                 continue;
             }
 
@@ -182,7 +179,7 @@ abstract class Piece
     protected function hasMoves()
     {
         foreach ($this->board()->pieces() as $piece) {
-            if ($piece->color() !== $this->color()) {
+            if ($piece->player() !== $this->player()) {
                 continue;
             }
             if ($piece->moves()->count() > 0) {
@@ -215,7 +212,7 @@ abstract class Piece
                 continue;
             }
 
-            if ($piece->color() !== $this->color()) {
+            if ($piece->player() !== $this->player()) {
                 $moves[] = new Move($this, $position);
             }
 

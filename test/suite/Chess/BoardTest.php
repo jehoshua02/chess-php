@@ -8,8 +8,9 @@ use \Chess\Piece\Bishop;
 use \Chess\Piece\Knight;
 use \Chess\Piece\Rook;
 use \Chess\Piece\Pawn;
+use \Chess\Player;
 
-class BoardTest extends \PHPUnit_Framework_TestCase
+class BoardTest extends \Chess\TestCase
 {
     public function testVanillaBoard()
     {
@@ -37,20 +38,20 @@ class BoardTest extends \PHPUnit_Framework_TestCase
             }
         }
 
-        // check piece color
+        // check piece player
         $files = str_split('ABCDEFGH');
         foreach ($files as $file) {
             $position = $file . '1';
-            $this->assertEquals($board->piece($position)->color(), Piece::LIGHT);
+            $this->assertEquals($board->piece($position)->player(0), $board->player(0));
 
             $position = $file . '2';
-            $this->assertEquals($board->piece($position)->color(), Piece::LIGHT);
+            $this->assertEquals($board->piece($position)->player(0), $board->player(0));
 
             $position = $file . '7';
-            $this->assertEquals($board->piece($position)->color(), Piece::DARK);
+            $this->assertEquals($board->piece($position)->player(1), $board->player(1));
 
             $position = $file . '8';
-            $this->assertEquals($board->piece($position)->color(), Piece::DARK);
+            $this->assertEquals($board->piece($position)->player(1), $board->player(1));
         }
 
         // check empty spaces
@@ -67,12 +68,15 @@ class BoardTest extends \PHPUnit_Framework_TestCase
 
     public function testPiece()
     {
+        $player1 = new Player();
+        $player2 = new Player();
+
         // set
         $board = new Board();
-        $piece = new Pawn(Piece::DARK);
+        $piece = new Pawn($player1);
         $this->assertEquals($piece, $board->piece('A1', $piece), 'Set should return the set piece');
         $this->assertInstanceOf('\\Chess\\Piece\\Pawn', $board->piece('A1'), 'A1 should be a Pawn');
-        $this->assertFalse($board->piece('H9', new Pawn(Piece::DARK)), 'Set should return false');
+        $this->assertFalse($board->piece('H9', new Pawn($player2)), 'Set should return false');
 
         // unset
         $board = new Board();
@@ -123,8 +127,10 @@ class BoardTest extends \PHPUnit_Framework_TestCase
 
     public function testCustomBoard()
     {
+        $player1 = new Player();
+
         $board = new Board(array(
-            'A1' => new Pawn(Piece::LIGHT),
+            'A1' => new Pawn($player1),
         ));
 
         $this->assertInstanceOf('\\Chess\\Piece\\Pawn', $board->piece('A1'), 'A1 should be a Pawn');
@@ -133,20 +139,22 @@ class BoardTest extends \PHPUnit_Framework_TestCase
 
     public function testPosition()
     {
-        $piece = new Pawn(Piece::LIGHT);
+        $player1 = new Player();
+        $piece = new Pawn($player1);
         $board = new Board(array(
             'A1' => $piece,
         ));
         $this->assertEquals('A1', $board->position($piece), 'Pawn should be on A1');
 
-        $anotherPiece = new Pawn(Piece::LIGHT);
+        $anotherPiece = new Pawn($player1);
         $this->assertFalse($board->position($anotherPiece), 'Pawn should not be found on board');
     }
 
     public function testPieces()
     {
+        $player1 = new Player();
         $pieces = array(
-            'D4' => new Pawn(Piece::LIGHT)
+            'D4' => new Pawn($player1)
         );
         $board = new Board($pieces);
         $this->assertEquals($pieces, $board->pieces(), 'Board should return all the pieces');

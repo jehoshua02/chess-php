@@ -4,13 +4,15 @@ use \Chess\Board;
 use \Chess\Piece;
 use \Chess\Piece\Pawn;
 use \Chess\Piece\Rook;
+use \Chess\Player;
 
 class RookTest extends \Chess\PieceTestCase
 {
     public function testMoves()
     {
-        $board = new Board(array(
-            'D4' => new Rook(Piece::LIGHT)
+        $player1 = new Player();
+        $board = $this->makeBoard(array(
+            array('D4', 'Rook', 1)
         ));
         $this->assertMoves(
             $board->piece('D4'), 14,
@@ -24,12 +26,14 @@ class RookTest extends \Chess\PieceTestCase
 
     public function testMovesBlocked()
     {
-        $board = new Board(array(
-            'D4' => new Rook(Piece::LIGHT),
-            'C4' => new Pawn(Piece::LIGHT),
-            'D2' => new Pawn(Piece::LIGHT),
-            'D5' => new Pawn(Piece::DARK),
-            'F4' => new Pawn(Piece::DARK)
+        $player1 = new Player();
+        $player2 = new Player();
+        $board = $this->makeBoard(array(
+            array('D4', 'Rook', 1),
+            array('C4', 'Pawn', 1),
+            array('D2', 'Pawn', 1),
+            array('D5', 'Pawn', 2),
+            array('F4', 'Pawn', 2)
         ));
         $this->assertMoves(
             $board->piece('D4'), 4,

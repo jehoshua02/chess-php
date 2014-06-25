@@ -2,7 +2,7 @@
 
 namespace Chess;
 
-abstract class PieceTestCase extends \PHPUnit_Framework_TestCase
+abstract class PieceTestCase extends \Chess\TestCase
 {
     /**
      * Asserts possible moves for a piece

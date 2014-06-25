@@ -4,13 +4,15 @@ use \Chess\Board;
 use \Chess\Piece;
 use \Chess\Piece\Pawn;
 use \Chess\Piece\Queen;
+use \Chess\Player;
 
 class QueenTest extends \Chess\PieceTestCase
 {
     public function testMoves()
     {
-        $board = new Board(array(
-            'D4' => new Queen(Piece::LIGHT)
+        $player1 = new Player();
+        $board = $this->makeBoard(array(
+            array('D4', 'Queen', 1)
         ));
         $this->assertMoves(
             $board->piece('D4'), 27,
@@ -26,20 +28,22 @@ class QueenTest extends \Chess\PieceTestCase
 
     public function testMovesBlocked()
     {
-        $board = new Board(array(
-            'D4' => new Queen(Piece::LIGHT),
+        $player1 = new Player();
+        $player2 = new Player();
+        $board = $this->makeBoard(array(
+            array('D4', 'Queen', 1),
 
             // from RookTest
-            'C4' => new Pawn(Piece::LIGHT),
-            'D2' => new Pawn(Piece::LIGHT),
-            'D5' => new Pawn(Piece::DARK),
-            'F4' => new Pawn(Piece::DARK),
+            array('C4', 'Pawn', 1),
+            array('D2', 'Pawn', 1),
+            array('D5', 'Pawn', 2),
+            array('F4', 'Pawn', 2),
 
             // from BishopTest
-            'C5' => new Pawn(Piece::DARK),
-            'F6' => new Pawn(Piece::DARK),
-            'C3' => new Pawn(Piece::LIGHT),
-            'F2' => new Pawn(Piece::LIGHT)
+            array('C5', 'Pawn', 2),
+            array('F6', 'Pawn', 2),
+            array('C3', 'Pawn', 1),
+            array('F2', 'Pawn', 1)
         ));
         $this->assertMoves(
             $board->piece('D4'), 8,

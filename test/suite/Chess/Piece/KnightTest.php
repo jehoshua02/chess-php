@@ -4,13 +4,15 @@ use \Chess\Board;
 use \Chess\Piece;
 use \Chess\Piece\Pawn;
 use \Chess\Piece\Knight;
+use \Chess\Player;
 
 class KnightTest extends \Chess\PieceTestCase
 {
     public function testMoves()
     {
-        $board = new Board(array(
-            'D4' => new Knight(Piece::LIGHT)
+        $player1 = new Player();
+        $board = $this->makeBoard(array(
+            array('D4', 'Knight', 1)
         ));
         $this->assertMoves(
             $board->piece('D4'), 8,
@@ -21,18 +23,20 @@ class KnightTest extends \Chess\PieceTestCase
 
     public function testMovesBlocked()
     {
-        $board = new Board(array(
-            'D4' => new Knight(Piece::LIGHT),
+        $player1 = new Player();
+        $player2 = new Player();
+        $board = $this->makeBoard(array(
+            array('D4', 'Knight', 1),
 
             // pieces to jump over to get to C6
-            'C5' => new Pawn(Piece::LIGHT),
-            'D6' => new Pawn(Piece::LIGHT),
+            array('C5', 'Pawn', 1),
+            array('D6', 'Pawn', 1),
 
             // piece to capture in E6
-            'E6' => new Pawn(Piece::DARK),
+            array('E6', 'Pawn', 2),
 
             // same color will block E2
-            'E2' => new Pawn(Piece::LIGHT)
+            array('E2', 'Pawn', 1)
         ));
         $this->assertMoves(
             $board->piece('D4'), 7,
@@ -43,8 +47,9 @@ class KnightTest extends \Chess\PieceTestCase
 
     public function testEdgeOfBoard()
     {
-        $board = new Board(array(
-            'B4' => new Knight(Piece::LIGHT)
+        $player1 = new Player();
+        $board = $this->makeBoard(array(
+            array('B4', 'Knight', 1)
         ));
         $this->assertMoves(
             $board->piece('B4'), 6,

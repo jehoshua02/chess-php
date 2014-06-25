@@ -49,7 +49,7 @@ class King extends \Chess\Piece
         }
 
         $piece = $this->board()->piece($position);
-        if ($piece && $piece->color() === $this->color()) {
+        if ($piece && $piece->player() === $this->player()) {
             return false;
         }
 
@@ -84,13 +84,13 @@ class King extends \Chess\Piece
             return false;
         }
 
-        // cannot castle if last position does not contain unmoved rook of same color
+        // cannot castle if last position does not contain unmoved rook of same player
         $last = array_pop($positions);
         $piece = $this->board()->piece($last);
         if (
             !$piece
             || !is_a($piece, '\\Chess\\Piece\\Rook')
-            || $piece->color() !== $this->color()
+            || $piece->player() !== $this->player()
             || $piece->moved()
         ) {
             return false;

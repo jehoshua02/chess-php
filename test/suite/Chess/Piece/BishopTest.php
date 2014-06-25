@@ -4,13 +4,16 @@ use \Chess\Board;
 use \Chess\Piece;
 use \Chess\Piece\Pawn;
 use \Chess\Piece\Bishop;
+use \Chess\Player;
 
 class BishopTest extends \Chess\PieceTestCase
 {
     public function testMoves()
     {
-        $board = new Board(array(
-            'D4' => new Bishop(Piece::LIGHT)
+        $player1 = new Player();
+        $player2 = new Player();
+        $board = $this->makeBoard(array(
+            array('D4', 'Bishop', 1)
         ));
         $this->assertMoves(
             $board->piece('D4'), 13,
@@ -19,12 +22,14 @@ class BishopTest extends \Chess\PieceTestCase
         );
 
         // blocked
-        $board = new Board(array(
-            'D4' => new Bishop(Piece::LIGHT),
-            'C5' => new Pawn(Piece::DARK),
-            'F6' => new Pawn(Piece::DARK),
-            'C3' => new Pawn(Piece::LIGHT),
-            'F2' => new Pawn(Piece::LIGHT),
+        $player1 = new Player();
+        $player2 = new Player();
+        $board = $this->makeBoard(array(
+            array('D4', 'Bishop', 1),
+            array('C5', 'Pawn', 2),
+            array('F6', 'Pawn', 2),
+            array('C3', 'Pawn', 1),
+            array('F2', 'Pawn', 1),
         ));
         $this->assertMoves(
             $board->piece('D4'), 4,

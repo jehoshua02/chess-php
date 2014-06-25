@@ -73,7 +73,7 @@ class Pawn extends \Chess\Piece
         }
 
         $piece = $this->board()->piece($diagonal);
-        if ($piece && $piece->color() !== $this->color()) {
+        if ($piece && $piece->player() !== $this->player()) {
             $moves = array_merge($moves, $this->makeMoves($diagonal));
             return $moves;
         }
@@ -82,7 +82,7 @@ class Pawn extends \Chess\Piece
         $side = $this->board()->$side($this->position());
 
         $piece = $this->board()->piece($side);
-        if (!$piece || $piece->color() === $this->color()) {
+        if (!$piece || $piece->player() === $this->player()) {
             return $moves;
         }
 
@@ -113,10 +113,15 @@ class Pawn extends \Chess\Piece
     protected function direction()
     {
         $direction = array(
-            self::LIGHT => 'up',
-            self::DARK => 'down'
+            0 => 'up',
+            1 => 'down'
         );
-        return $direction[$this->color()];
+        foreach ($this->board()->players() as $index => $player) {
+            if ($player === $this->player()) {
+                break;
+            }
+        }
+        return $direction[$index];
     }
 
     /**
@@ -129,7 +134,7 @@ class Pawn extends \Chess\Piece
             self::LIGHT => 2,
             self::DARK => 7
         );
-        $startRank = $startRanks[$this->color()];
+        $startRank = $startRanks[$this->player()];
         list($file, $rank) = $this->position();
         return $rank == $startRank;
     }
@@ -163,7 +168,7 @@ class Pawn extends \Chess\Piece
             self::LIGHT => 8,
             self::DARK => 1
         );
-        $promoteRank = $promotionRanks[$this->color()];
+        $promoteRank = $promotionRanks[$this->player()];
         list($file, $rank) = $position;
         return $rank == $promoteRank;
     }
@@ -177,7 +182,7 @@ class Pawn extends \Chess\Piece
     protected function makePromotionMove($position, $promotion)
     {
         $class = sprintf('\\Chess\\Piece\\%s', $promotion);
-        $piece = new $class($this->color());
+        $piece = new $class($this->player());
         $changes = array(array($position, $piece));
         $properties = array('promote' => $promotion);
         return new Move($this, $position, $changes, $properties);

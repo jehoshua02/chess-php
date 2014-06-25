@@ -7,13 +7,14 @@ use \Chess\Piece\King;
 use \Chess\Piece\Rook;
 use \Chess\Piece\Knight;
 use \Chess\Piece\Bishop;
+use \Chess\Player;
 
 class KingTest extends \Chess\PieceTestCase
 {
     public function testMoves()
     {
-        $board = new Board(array(
-            'D4' => new King(Piece::LIGHT)
+        $board = $this->makeBoard(array(
+            array('D4', 'King', 1)
         ));
         $this->assertMoves(
             $board->piece('D4'), 8,
@@ -22,8 +23,8 @@ class KingTest extends \Chess\PieceTestCase
         );
 
         // edge of board
-        $board = new Board(array(
-            'A4' => new King(Piece::LIGHT)
+        $board = $this->makeBoard(array(
+            array('A4', 'King', 1)
         ));
         $this->assertMoves(
             $board->piece('A4'), 5,
@@ -32,9 +33,9 @@ class KingTest extends \Chess\PieceTestCase
         );
 
         // blocked
-        $board = new Board(array(
-            'D4' => new King(Piece::LIGHT),
-            'D5' => new Pawn(Piece::LIGHT)
+        $board = $this->makeBoard(array(
+            array('D4', 'King', 1),
+            array('D5', 'Pawn', 1)
         ));
         $this->assertMoves(
             $board->piece('D4'), 7,
@@ -43,9 +44,11 @@ class KingTest extends \Chess\PieceTestCase
         );
 
         // cannot move into check
-        $board = new Board(array(
-            'D4' => new King(Piece::LIGHT),
-            'F5' => new Pawn(Piece::DARK)
+        $player1 = new Player();
+        $player2 = new Player();
+        $board = $this->makeBoard(array(
+            array('D4', 'King', 1),
+            array('F5', 'Pawn', 2)
         ));
         $this->assertMoves(
             $board->piece('D4'), 7,
@@ -56,10 +59,11 @@ class KingTest extends \Chess\PieceTestCase
 
     public function testCastling()
     {
-        $board = new Board(array(
-            'E1' => new King(Piece::LIGHT),
-            'A1' => new Rook(Piece::LIGHT),
-            'H1' => new Rook(Piece::LIGHT)
+        $player1 = new Player();
+        $board = $this->makeBoard(array(
+            array('E1', 'King', 1),
+            array('A1', 'Rook', 1),
+            array('H1', 'Rook', 1)
         ));
         $this->assertMoves(
             $board->piece('E1'), 7,
@@ -73,8 +77,9 @@ class KingTest extends \Chess\PieceTestCase
         );
 
         // no rooks
-        $board = new Board(array(
-            'E1' => new King(Piece::LIGHT)
+        $player1 = new Player();
+        $board = $this->makeBoard(array(
+            array('E1', 'King', 1)
         ));
         $this->assertMoves(
             $board->piece('E1'), 5,
@@ -86,14 +91,15 @@ class KingTest extends \Chess\PieceTestCase
         );
 
         // blocked
-        $board = new Board(array(
-            'E1' => new King(Piece::LIGHT),
-            'A1' => new Rook(Piece::LIGHT),
-            'H1' => new Rook(Piece::LIGHT),
+        $player1 = new Player();
+        $board = $this->makeBoard(array(
+            array('E1', 'King', 1),
+            array('A1', 'Rook', 1),
+            array('H1', 'Rook', 1),
 
             // blocking pieces
-            'B1' => new Knight(Piece::LIGHT),
-            'F1' => new Bishop(Piece::LIGHT)
+            array('B1', 'Knight', 1),
+            array('F1', 'Bishop', 1)
         ));
         $this->assertMoves(
             $board->piece('E1'), 4,
@@ -105,13 +111,15 @@ class KingTest extends \Chess\PieceTestCase
         );
 
         // check
-        $board = new Board(array(
-            'E1' => new King(Piece::LIGHT),
-            'A1' => new Rook(Piece::LIGHT),
-            'H1' => new Rook(Piece::LIGHT),
+        $player1 = new Player();
+        $player2 = new Player();
+        $board = $this->makeBoard(array(
+            array('E1', 'King', 1),
+            array('A1', 'Rook', 1),
+            array('H1', 'Rook', 1),
 
             // threatening piece
-            'E4' => new Rook(Piece::DARK)
+            array('E4', 'Rook', 2)
         ));
         $this->assertMoves(
             $board->piece('E1'), 4,
@@ -123,9 +131,10 @@ class KingTest extends \Chess\PieceTestCase
         );
 
         // rook already moved
-        $board = new Board(array(
-            'E1' => new King(Piece::LIGHT),
-            'A1' => new Rook(Piece::LIGHT)
+        $player1 = new Player();
+        $board = $this->makeBoard(array(
+            array('E1', 'King', 1),
+            array('A1', 'Rook', 1)
         ));
         // move rook
         $board->piece('A1')->move('A2');
@@ -140,9 +149,10 @@ class KingTest extends \Chess\PieceTestCase
         );
 
         // king already moved
-        $board = new Board(array(
-            'E1' => new King(Piece::LIGHT),
-            'A1' => new Rook(Piece::LIGHT)
+        $player1 = new Player();
+        $board = $this->makeBoard(array(
+            array('E1', 'King', 1),
+            array('A1', 'Rook', 1)
         ));
         // move king
         $board->piece('E1')->move('E2');
@@ -157,10 +167,12 @@ class KingTest extends \Chess\PieceTestCase
         );
 
         // cannot castle into check
-        $board = new Board(array(
-            'E1' => new King(Piece::LIGHT),
-            'A1' => new Rook(Piece::LIGHT),
-            'C4' => new Rook(Piece::DARK)
+        $player1 = new Player();
+        $player2 = new Player();
+        $board = $this->makeBoard(array(
+            array('E1', 'King', 1),
+            array('A1', 'Rook', 1),
+            array('C4', 'Rook', 2)
         ));
         $this->assertMoves(
             $board->piece('E1'), 5,

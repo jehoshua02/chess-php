@@ -49,7 +49,7 @@ class Knight extends \Chess\Piece
         }
 
         $piece = $this->board()->piece($position);
-        if ($piece && $piece->color() === $this->color()) {
+        if ($piece && $piece->player() === $this->player()) {
             return false;
         }
 
